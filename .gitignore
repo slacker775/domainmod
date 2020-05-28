@@ -5,3 +5,18 @@ domainmod.log
 error_log
 helper.php
 robots.txt
+/vendor/
+
+.buildpath
+.project
+.settings
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
