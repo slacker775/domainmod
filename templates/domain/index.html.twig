@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Domains
+{% endblock %}
+
+{% block body %}
+<a href="{{ path('app.legacy.domains__add') }}">{{ _self.showButton('button','Add Domain') }}</a>
+<a href="/queue/intro.php">{{ _self.showButton('button','Add Domains to Queue') }}</a>
+<a target="_blank" href="/raw.php">{{ _self.showButton('button','Raw List') }}</a>
+<a href="index.php?&export_data=1">{{ _self.showButton('button','Export') }}</a>
+
+<br>
+<br>
+<strong>Total Cost:</strong>
+$1437.00 USD
+<br>
+<strong>Number of Domains:</strong>
+1
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css"
+	href="_includes/theme/plugins/daterangepicker/daterangepicker-bs3.css" />
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript"
+	src="_includes/theme/plugins/daterangepicker/moment.min.js"></script>
+<script type="text/javascript"
+	src="_includes/theme/plugins/daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript">
+	$(function() {
+
+		$('input[name="daterange"]').daterangepicker({
+			autoUpdateInput : false,
+			locale : {
+				format : 'YYYY-MM-DD',
+				cancelLabel : 'Clear'
+			}
+		});
+
+		$('input[name="daterange"]').on(
+				'apply.daterangepicker',
+				function(ev, picker) {
+					$(this).val(
+							picker.startDate.format('YYYY-MM-DD') + ' - '
+									+ picker.endDate.format('YYYY-MM-DD'));
+				});
+
+		$('input[name="daterange"]').on('cancel.daterangepicker',
+				function(ev, picker) {
+					$(this).val('');
+				});
+
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
+<div class="row">
+	<h3 style="padding-left: 20px;">System Totals</h3>
+	{{ _self.displayPanel('Domains', activeDomainCount, 'green', 'checkmark-circled', path('app.legacy.domains__index', { is_active: 'LIVE'})) }}
+
+	{{ _self.displayPanel('SSL Certificates', activeCertCount, 'green', 'checkmark-circled', path('app.legacy.ssl__index', { is_active: 'LIVE'})) }}
+	
+	{% if domainsSold > 0 %}
+	{{ _self.displayPanel('Sold Domains', 0, 'aqua', 'android-cart', path('app.legacy.domains__index', { is_active: '10'})) }}
+	{% endif %}
+</div>
+
+<!--  Expiration Panels -->
+<div class="row">
+	<h3 style="padding-left: 20px;">Expiring in the next 30 days</h3>
+
+	{{ _self.displayPanel('Domains', 0, 'red', 'close-circled', path('app.legacy.domains__index', { daterange: '1234'})) }}
+
+	{{ _self.displayPanel('SSL Certificates', 0, 'red', 'close-circled', path('app.legacy.ssl__index', { daterange: '1234'})) }}
+</div>
+<!--  /Expiration Panels -->
+
+<!-- Domain Queue -->
+<div class="row">
+	<h3 style="padding-left: 20px;">Domain Queue</h3>
+
+	{{ _self.displayPanel('Pending', 0, 'yellow', 'clock', path('app.legacy.queue__index')) }}
+
+	{{ _self.displayPanel('Processing', 0, 'yellow', 'clock', path('app.legacy.queue__index')) }}
+
+	{{ _self.displayPanel('Finished', 0, 'green', 'checkmark-circled', path('app.legacy.queue__index')) }}
+
+</div>
+<!-- /Domain Queue -->
+
+<!-- Domain Panels -->
+{% if domainsPendingRenewal + domainsPendingRegistration + domainsPendingTransfer + domainsPendingOther > 0 %}
+<div class="row">
+	<h3 style="padding-left: 20px;">Pending (Domains)</h3>
+
+	{{ _self.displayPanel('Pending Renewals', domainsPendingRenewal, 'red', 'clock', path('app.legacy.domains__index', { is_active: '3'})) }}
+
+	{{ _self.displayPanel('Pending Registrations', domainsPendingRegistration, 'yellow', 'clock', path('app.legacy.domains__index', { is_active: '5'})) }}
+
+	{{ _self.displayPanel('Pending Transfers', domainsPendingTransfer, 'aqua', 'clock', path('app.legacy.domains__index', { is_active: '2'})) }}
+
+	{{ _self.displayPanel('Pending (Other)', domainsPendingOther, 'green', 'clock', path('app.legacy.domains__index', { is_active: '4'})) }}
+</div>
+<!-- /Domain Panels -->
+{% endif %}
+
+<!-- SSL Panels -->
+<div class="row">
+	<h3 style="padding-left: 20px;">Pending (SSL Certificates)</h3>
+
+	{{ _self.displayPanel('Pending Renewals', 0, 'red', 'clock', path('app.legacy.ssl__index', { is_active: '3'})) }}
+
+	{{ _self.displayPanel('Pending Registrations', 0, 'yellow', 'clock', path('app.legacy.ssl__index', { is_active: '5'})) }}
+
+	{{ _self.displayPanel('Pending (Other)', 0, 'green', 'clock', path('app.legacy.ssl__index', { is_active: '4'})) }}
+</div>
+<!-- /SSL Panels -->
+{% endblock %}
+
+{% macro displayPanel(title, count, color, icon, url) %}
+<div class="col-lg-3 col-xs-6">
+	<div class="small-box bg-{{ color }}">
+		<div class="inner">
+			<h3>
+				{{ count }}
+			</h3>
+			<p>
+				{{ title }}
+			</p>
+		</div>
+		<div class="icon">
+			<i class="ion ion-{{ icon }}" style="padding-top: 16px;"></i>
+		</div>
+		{% if count != 0 %}
+		<a href="{{ url }}" class="small-box-footer">View <i
+			class="fa fa-arrow-circle-right"></i></a>
+		{% endif %}
+	</div>
+</div>
+{% endmacro %}

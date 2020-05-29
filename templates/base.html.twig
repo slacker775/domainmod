@@ -1,12 +1,321 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Welcome!{% endblock %}</title>
+
+<link rel="icon" type="image/ico"
+	href="images/favicon.ico" />
+<style type="text/css">
+html {
+	overflow-y: scroll;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title></title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet"
+	href="_includes/theme/bootstrap/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="_includes/theme/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet"
+	href="_includes/theme/plugins/datatables/dataTables.responsive.css">
+<link rel="stylesheet"
+	href="_includes/theme/plugins/datatables/dataTables.fontAwesome.css">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet"
+	href="_includes/theme/plugins/iCheck/square/red.css">
+<!-- Select2 -->
+<link rel="stylesheet"
+	href="_includes/theme/plugins/select2/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="_includes/theme/dist/css/AdminLTE.min.css">
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+   folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet"
+	href="_includes/theme/dist/css/skins/skin-red.min.css">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+{% block stylesheets %}
+{% endblock %}
+</head>
+<body class="hold-transition skin-red sidebar-mini" onLoad="document.forms[0].elements[0].focus()">
+
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="{{ path('homepage') }}" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini">
+          <img src="images/logo-mini.png">
+      </span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg" >
+          <img src="images/logo.png">
+      </span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <span class="hidden-md hidden-lg">
+         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+             <span class="sr-only">Toggle navigation</span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+      </span>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="hidden-xs"><?php echo $_SESSION['s_first_name'] . " "; ?><?php echo $_SESSION['s_last_name']; ?></span>&nbsp;
+              <i class="fa fa-user"></i>
+            </a>
+
+              <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <!img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                <p>
+                {#
+                    <?php echo $_SESSION['s_first_name'] . " "; ?> <?php echo $_SESSION['s_last_name']; ?><BR>
+                    <?php echo $_SESSION['s_email_address']; ?><BR><BR>
+                    <small>
+                        Currency: <?php echo $_SESSION['s_default_currency']; ?><BR>
+                        Time Zone: <?php echo $_SESSION['s_default_timezone']; ?><BR>
+                        Expiration Emails: <?php
+                        if ($_SESSION['s_expiration_emails'] == '1') {
+                            echo "Yes";
+                        } else {
+                            echo "No";
+                        } ?>
+                    </small>
+                    #}
+                </p>
+              </li>
+
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="/settings/profile/" class="btn btn-default btn-flat">User Profile</a>&nbsp;&nbsp;
+                </div>
+                <div class="pull-right">
+                  <a href="/logout.php" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =============================================== -->
+
+  <!-- Left side column. contains the sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+
+      <!-- search form -->
+      <form action="{{ path('app.legacy.domains__index') }}" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="search_for" class="form-control" placeholder="Domain Keyword Search" {# <?php if ($search_for && $search_for != '') echo ' value="' . $search_for . '"'; ?> #}>
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      {% include '_partials/menu-main.html.twig' %}
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- =============================================== -->
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+
+
+          <span class="visible-sm visible-md visible-lg">
+              {{ _self.breadcrumb('section','left') }}
+          </span>
+
+          <span class="visible-xs">
+              {{ _self.breadcrumb('section','right') }}
+          </span>
+          <BR>
+{#
+        <?php
+        if ($_SESSION['s_message_danger'] != "") {
+            echo $system->showMessageDanger($_SESSION['s_message_danger']);
+            unset($_SESSION['s_message_danger']);
+        }
+
+        if ($_SESSION['s_message_success'] != "") {
+            echo $system->showMessageSuccess($_SESSION['s_message_success']);
+            unset($_SESSION['s_message_success']);
+        }
+
+        if ($_SESSION['s_message_info'] != "") {
+            echo $system->showMessageInfo($_SESSION['s_message_info']);
+            unset($_SESSION['s_message_info']);
+        }
+
+        require_once DIR_INC . '/layout/table-maintenance.inc.php';
+        ?>
+#}
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box box-solid box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?php echo $page_title; ?></h3>
+            <?php if ($software_section_logo != '') { ?>
+                <span class="pull-right"><i class="fa <?php echo $software_section_logo; ?>"></i></span>
+            <?php } ?>
+        </div>
+        <div class="box-body">
+        
+        
+        
+        
+        
+	{% block body %}
+	{% endblock %}
+	
+	
+	
+	
+	        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+
+  </div>
+  <!-- /.content-wrapper -->
+    <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+
+    <footer class="main-footer">
+
+        <div class="pull-right hidden-xs">
+            Version 5.0.0
+        </div>
+        <div class="visible-xs">
+            Version 5.0.0
+        </div>
+        <a href="http://domainmod.org"><?php echo SOFTWARE_TITLE; ?></a> is open source software released under the <a href="http://www.gnu.org/licenses/">GNU/GPL License</a>.
+        Created by <a href="http://chetcuti.com">Greg Chetcuti</a>.<BR>
+
+    </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 2.2.0 -->
+<script src="_includes/theme/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="_includes/theme/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="_includes/theme/plugins/datatables/jquery.dataTables.js"></script>
+<script src="_includes/theme/plugins/datatables/dataTables.bootstrap.js"></script>
+<script src="_includes/theme/plugins/datatables/dataTables.responsive.js"></script>
+<!-- Select2 -->
+<script src="_includes/theme/plugins/select2/select2.full.min.js"></script>
+<!-- SlimScroll -->
+<script src="_includes/theme/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="_includes/theme/plugins/fastclick/fastclick.min.js"></script>
+<!-- AdminLTE App -->
+<script src="_includes/theme/dist/js/app.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="_includes/theme/plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(function () {
+
+    //Initialize Select2 Elements
+    $(".select2").select2();
+
+    //<?php echo $datatable_options; ?>
+
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].square-red, input[type="radio"].square-red').iCheck({
+      checkboxClass: 'icheckbox_square-red',
+      radioClass: 'iradio_square-red'
+    });
+
+    //Colorpicker
+    // $(".my-colorpicker1").colorpicker();
+
+  });
+</script>
+	
+	{% block javascripts %}
+	{% endblock %}
+</body>
 </html>
+
+{% macro breadcrumb(section, position) %}
+      <ol class="breadcrumb pull-{{ position }}">
+          {% if section == 'dashboard' %}
+              <li><i class="fa fa-dashboard"></i></li>
+          {% else %}
+              <li><a href="/dashboard/"><i class="fa fa-dashboard"></i></a></li>
+          {% endif %}
+          <?php require_once DIR_INC . '/breadcrumbs/' . $slug . '.inc.php'; ?>
+      </ol>
+{% endmacro %}
+
+{% macro showButton(type, text) %}
+<button style="margin-top:5px" type="{{ type }}" class="btn btn-primary btn-danger">{{ text }}</button>&nbsp;
+{% endmacro %}

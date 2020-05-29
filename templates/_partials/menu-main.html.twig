@@ -1,0 +1,140 @@
+<!-- Left Nav Menu -->
+<ul class="sidebar-menu">
+	<li class="header">NAVIGATION</li>
+	<li class="active"><a href="{{ path('homepage') }}"><i
+			class="fa fa-dashboard"></i> <span>Dashboard</span></a>
+	</li>
+
+	<li><a href="{{ path('domain') }}"><i
+			class="fa fa-sitemap"></i> <span>Domains</span></a>
+	</li>
+	
+	<!--  If there are domains in queue, show this piece -->
+	<li><a href="/queue/"><i
+			class="fa fa-hourglass-2"></i> <span>Queue</span></a>
+	</li> 
+    <!-- End -->
+
+	<li><a href="/ssl/"><i class="fa fa-lock"></i>
+			<span>SSL Certificates</span></a>
+	</li>
+	<li><a href="/assets/"><i
+			class="fa fa-cubes"></i> <span>Assets</span></a>
+	</li>
+	<li><a href="/segments/"><i
+			class="fa fa-filter"></i> <span>Segments</span></a>		
+	</li> 
+
+    <!-- If session isn't read-only, show this -->	
+	<li><a href="/bulk/"><i class="fa fa-copy"></i>
+			<span>Bulk Updater</span></a>
+	</li>
+	<!-- End -->
+
+	<li><a href="/reporting/"><i
+			class="fa fa-bar-chart"></i> <span>Reporting</span></a>
+	</li>
+	
+	<?php if ($_SESSION['s_is_admin'] === 1) { //@formatter:off ?>
+	<li><a href="/admin/dw/"><i
+			class="fa fa-database"></i> <span>Data Warehouse</span></a>
+	</li> <?php } ?>
+
+	<li class="treeview">
+		<a href="#"> <i class="fa fa-gears"></i> <span>Settings</span> <i
+			class="fa fa-angle-left pull-right"></i>
+	</a>
+		<ul class="treeview-menu">
+			<li><a
+				href="/settings/display/"><i class="fa"></i>Display
+					Settings</a>
+			</li>
+			<li><a
+				href="/settings/defaults/"><i class="fa"></i>User
+					Defaults</a>
+			</li>
+			<li><a
+				href="/settings/profile/"><i class="fa"></i>User
+					Profile</a>
+			</li>
+			<li><a
+				href="/settings/password/"><i class="fa"></i>Change
+					Password</a>
+			</li>
+		</ul>
+	</li> <?php if ($_SESSION['s_read_only'] == '0') { ?>
+
+	<li class="treeview<?php if ($software_section == "maintenance") echo " active"; ?>">
+		<a href="#"> <i class="fa fa-check"></i> <span>Maintenance</span>
+			<i class="fa fa-angle-left pull-right"></i>
+	</a>
+		<ul class="treeview-menu">
+			<li><a
+				href="/maintenance/update-conversions.php"><i
+					class="fa"></i>Update Conversion Rates</a></li>
+			<li><a
+				href="/maintenance/update-domain-fees.php"><i
+					class="fa"></i>Update Domain Fees</a></li>
+			<li><a
+				href="/maintenance/update-ssl-fees.php"><i
+					class="fa"></i>Update SSL Fees</a></li>
+		</ul>
+	</li> <?php } ?> <?php if ($_SESSION['s_is_admin'] === 1) { //@formatter:off
+	?>
+
+	<li class="treeview<?php if ($software_section == "admin") echo " active"; ?>">
+		<a href="#"> <i class="fa fa-wrench"></i> <span>Administration</span>
+			<i class="fa fa-angle-left pull-right"></i>
+	</a>
+		<ul class="treeview-menu">
+			<li><a
+				href="/admin/settings/"><i class="fa"></i>System
+					Settings</a>
+			</li>
+			<li><a
+				href="/admin/defaults/"><i class="fa"></i>System
+					Defaults</a>
+			</li>
+			<li><a
+				href="/admin/users/"><i class="fa"></i>Users</a>
+			</li>
+			<li><a
+				href="/admin/domain-fields/"><i
+					class="fa"></i>Custom Domain Fields</a>
+			</li>
+			<li><a
+				href="/admin/ssl-fields/"><i class="fa"></i>Custom
+					SSL Fields</a>
+			</li>
+			<li><a
+				href="/admin/scheduler/"><i class="fa"></i>Task
+					Scheduler</a>
+			</li>
+			<li><a
+				href="/admin/maintenance/"><i class="fa"></i>Maintenance</a>
+			</li>
+			<li><a
+				href="/admin/backup/"><i class="fa"></i>Backup
+					& Restore</a>
+			</li>
+			<li><a
+				href="/admin/debug-log/"><i class="fa"></i>Debug
+					Log</a>
+			</li>
+			<li><a href="/admin/info/"><i class="fa"></i>System
+					Information</a>
+			</li>
+		</ul>
+	</li> <?php } ?>
+
+	<li class="header">HELP</li>
+	<li><a target="_blank" href="/docs/"><i
+			class="fa fa-book"></i> <span>Documentation</span></a></li>
+	<li><a target="_blank" href="https://domainmod.org/support/"><i
+			class="fa fa-support"></i> <span>Support</span></a></li>
+	<li><a target="_blank" href="https://domainmod.org/news/"><i
+			class="fa fa-newspaper-o"></i> <span>News</span></a></li>
+	<li><a target="_blank" href="https://domainmod.org/contribute/"><i
+			class="fa fa-money"></i> <span>Contribute</span></a></li>
+</ul>
+<!-- /Left Nav Menu -->

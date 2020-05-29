@@ -20,6 +20,7 @@ class LegacyRouteLoader extends Loader
         'reporting',
         'settings',
         'maintenance',
+        'queue',
     ];
 
     private string $projectDir;
