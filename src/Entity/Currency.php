@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="currencies")
  * @ORM\Entity
  */
-class Currencies
+class Currency
 {
     /**
      * @var int

@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 class SslCert
 {
 
+    const STATUS_EXPIRED = 0;
+
+    const STATUS_ACTIVE = 1;
+
     const STATUS_PENDING_RENEWAL = 3;
 
     const STATUS_PENDING_OTHER = 4;
@@ -30,59 +34,66 @@ class SslCert
 
     /**
      *
-     * @var int
+     * @var Owner
      *
-     * @ORM\Column(name="owner_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $ownerId;
+    private $owner;
 
     /**
      *
-     * @var int
+     * @var SslProvider
      *
-     * @ORM\Column(name="ssl_provider_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslProvider")
+     * @ORM\JoinColumn(name="ssl_provider_id", referencedColumnName="id")
      */
-    private $sslProviderId;
+    private $sslProvider;
 
     /**
      *
-     * @var int
+     * @var SslAccount
      *
-     * @ORM\Column(name="account_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslAccount")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
-    private $accountId;
+    private $account;
 
     /**
      *
-     * @var int
+     * @var Domain
      *
-     * @ORM\Column(name="domain_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Domain")
+     * @ORM\JoinColumn(name="domain_id", referencedColumnName="id")
      */
-    private $domainId;
+    private $domain;
 
     /**
      *
-     * @var int
+     * @var SslCertType
      *
-     * @ORM\Column(name="type_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslCertType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
-    private $typeId;
+    private $type;
 
     /**
      *
-     * @var int
+     * @var IpAddress
      *
-     * @ORM\Column(name="ip_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
+     * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
-    private $ipId;
+    private $ip;
 
     /**
      *
-     * @var int
+     * @var Category
      *
-     * @ORM\Column(name="cat_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
      */
-    private $catId;
+    private $category;
 
     /**
      *
@@ -98,19 +109,20 @@ class SslCert
      *
      * @ORM\Column(name="expiry_date", type="date", nullable=false, options={"default"="'1970-01-01'"})
      */
-    private $expiryDate = '\'1970-01-01\'';
+    private $expiryDate;
 
     /**
      *
-     * @var int
+     * @var Fee
      *
-     * @ORM\Column(name="fee_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fee")
+     * @ORM\JoinColumn(name="fee_id", referencedColumnName="id")
      */
-    private $feeId;
+    private $fee;
 
     /**
      *
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="total_cost", type="decimal", precision=10, scale=2, nullable=false)
      */
@@ -126,11 +138,11 @@ class SslCert
 
     /**
      *
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(name="active", type="boolean", nullable=false, options={"default"="1"})
+     * @ORM\Column(name="active", type="string", length=2, nullable=false, options={"default"="1"})
      */
-    private $active = true;
+    private $status;
 
     /**
      *
@@ -138,23 +150,25 @@ class SslCert
      *
      * @ORM\Column(name="fee_fixed", type="boolean", nullable=false)
      */
-    private $feeFixed = '0';
+    private $feeFixed;
 
     /**
      *
-     * @var bool
+     * @var CreationType
      *
-     * @ORM\Column(name="creation_type_id", type="boolean", nullable=false, options={"default"="2"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
+     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
      */
-    private $creationTypeId = '2';
+    private $creationType;
 
     /**
      *
-     * @var int
+     * @var User
      *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
-    private $createdBy = '0';
+    private $createdBy;
 
     /**
      *
@@ -162,7 +176,7 @@ class SslCert
      *
      * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $insertTime;
 
     /**
      *
@@ -170,226 +184,138 @@ class SslCert
      *
      * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updateTime;
 
-    /**
-     *
-     * @return number
-     */
-    public function getId()
+    public function __construct()
+    {
+        $this->status = '1';
+        $this->feeFixed = false;
+        $this->insertTime = new \DateTime();
+        $this->updateTime = new \DateTime();
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getOwnerId()
+    public function getOwner(): Owner
     {
-        return $this->ownerId;
+        return $this->owner;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getSslProviderId()
+    public function getSslProvider(): SslProvider
     {
-        return $this->sslProviderId;
+        return $this->sslProvider;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getAccountId()
+    public function getAccount(): SslAccount
     {
-        return $this->accountId;
+        return $this->account;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getDomainId()
+    public function getDomain(): Domain
     {
         return $this->domainId;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getTypeId()
+    public function getType(): SslCertType
     {
-        return $this->typeId;
+        return $this->type;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getIpId()
+    public function getIp(): IpAddress
     {
-        return $this->ipId;
+        return $this->ip;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getCatId()
+    public function getCategory(): Category
     {
-        return $this->catId;
+        return $this->category;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     *
-     * @return DateTime
-     */
-    public function getExpiryDate()
+    public function getExpiryDate(): \DateTime
     {
         return $this->expiryDate;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getFeeId()
+    public function getFee(): Fee
     {
-        return $this->feeId;
+        return $this->fee;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getTotalCost()
+    public function getTotalCost(): float
     {
         return $this->totalCost;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getNotes()
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isActive()
+    public function getStatus(): string
     {
-        return $this->active;
+        return $this->status;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isFeeFixed()
+    public function isFeeFixed(): bool
     {
         return $this->feeFixed;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isCreationTypeId()
+    public function getCreationType(): CreationType
     {
         return $this->creationTypeId;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getCreatedBy()
+    public function getCreatedBy(): User
     {
         return $this->createdBy;
     }
 
-    /**
-     *
-     * @return DateTime
-     */
-    public function getInsertTime()
+    public function getInsertTime(): \DateTime
     {
         return $this->insertTime;
     }
 
-    /**
-     *
-     * @return DateTime
-     */
-    public function getUpdateTime()
+    public function getUpdateTime(): \DateTime
     {
         return $this->updateTime;
     }
 
-    /**
-     *
-     * @param number $ownerId
-     */
-    public function setOwnerId($ownerId)
+    public function setOwner(Owner $owner): self
     {
-        $this->ownerId = $ownerId;
+        $this->owner = $owner;
         return $this;
     }
 
-    /**
-     *
-     * @param number $sslProviderId
-     */
-    public function setSslProviderId($sslProviderId)
+    public function setSslProvider(SslProvider $sslProvider): self
     {
-        $this->sslProviderId = $sslProviderId;
+        $this->sslProvider = $sslProvider;
         return $this;
     }
 
-    /**
-     *
-     * @param number $accountId
-     */
-    public function setAccountId($accountId)
+    public function setAccount(SslAccount $account): self
     {
-        $this->accountId = $accountId;
+        $this->account = $account;
         return $this;
     }
 
-    /**
-     *
-     * @param number $domainId
-     */
-    public function setDomainId($domainId)
+    public function setDomain(Domain $domain): self
     {
-        $this->domainId = $domainId;
+        $this->domain = $domain;
         return $this;
     }
 
-    /**
-     *
-     * @param number $typeId
-     */
-    public function setTypeId($typeId)
+    public function setType(SslCertType $type): self
     {
-        $this->typeId = $typeId;
+        $this->type = $type;
         return $this;
     }
 
@@ -397,129 +323,69 @@ class SslCert
      *
      * @param number $ipId
      */
-    public function setIpId($ipId)
+    public function setIp(IpAddress $ip): self
     {
-        $this->ipId = $ipId;
+        $this->ip = $ip;
         return $this;
     }
 
-    /**
-     *
-     * @param number $catId
-     */
-    public function setCatId($catId)
+    public function setCategory(Category $category): self
     {
-        $this->catId = $catId;
+        $this->category = $category;
         return $this;
     }
 
-    /**
-     *
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     *
-     * @param DateTime $expiryDate
-     */
-    public function setExpiryDate($expiryDate)
+    public function setExpiryDate(\DateTime $expiryDate): self
     {
         $this->expiryDate = $expiryDate;
         return $this;
     }
 
-    /**
-     *
-     * @param number $feeId
-     */
-    public function setFeeId($feeId)
+    public function setFee(Fee $fee): self
     {
-        $this->feeId = $feeId;
+        $this->fee = $fee;
         return $this;
     }
 
-    /**
-     *
-     * @param string $totalCost
-     */
-    public function setTotalCost($totalCost)
+    public function setTotalCost(float $totalCost): self
     {
         $this->totalCost = $totalCost;
         return $this;
     }
 
-    /**
-     *
-     * @param string $notes
-     */
-    public function setNotes($notes)
+    public function setNotes(string $notes): self
     {
         $this->notes = $notes;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $active
-     */
-    public function setActive($active)
+    public function setStatus(string $status): self
     {
         $this->active = $active;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $feeFixed
-     */
-    public function setFeeFixed($feeFixed)
+    public function setFeeFixed(bool $feeFixed = true): self
     {
         $this->feeFixed = $feeFixed;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $creationTypeId
-     */
-    public function setCreationTypeId($creationTypeId)
+    public function setCreationType(CreationType $creationType): self
     {
-        $this->creationTypeId = $creationTypeId;
+        $this->creationType = $creationType;
         return $this;
     }
 
-    /**
-     *
-     * @param number $createdBy
-     */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(User $createdBy): self
     {
         $this->createdBy = $createdBy;
-        return $this;
-    }
-
-    /**
-     *
-     * @param DateTime $insertTime
-     */
-    public function setInsertTime($insertTime)
-    {
-        $this->insertTime = $insertTime;
-        return $this;
-    }
-
-    /**
-     *
-     * @param DateTime $updateTime
-     */
-    public function setUpdateTime($updateTime)
-    {
-        $this->updateTime = $updateTime;
         return $this;
     }
 }

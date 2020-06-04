@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Segments
@@ -42,6 +43,13 @@ class Segment
      */
     private $segment;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SegmentData", mappedBy="segment")
+     * 
+     * @var Collection
+     */
+    private $segmentData;
+    
     /**
      * @var int
      *
@@ -84,5 +92,103 @@ class Segment
      */
     private $updateTime = '\'1970-01-01 00:00:00\'';
 
+    public function __construct()
+    {
+        $this->segmentData = new ArrayCollection();
+    }
+    /**
+     * @return number
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSegment()
+    {
+        return $this->segment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param number $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @param string $segment
+     */
+    public function setSegment($segment)
+    {
+        $this->segment = $segment;
+        return $this;
+    }
+
+    /**
+     * @param string $notes
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+        return $this;
+    }
+
+    public function getNumberOfDomains(): int
+    {
+        return $this->numberOfDomains;
+    }
+    
+    public function setNumberOfDomains(int $numberOfDomains): self
+    {
+        $this->numberOfDomains = $numberOfDomains;
+        return $this;
+    }
 }

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="ssl_accounts", indexes={@ORM\Index(name="ssl_provider_id", columns={"ssl_provider_id"})})
  * @ORM\Entity
  */
-class SslAccounts
+class SslAccount
 {
     /**
      * @var int

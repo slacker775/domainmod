@@ -113,11 +113,12 @@ class Setting
     private $defaultOwnerSsl = '0';
 
     /**
-     * @var int
+     * @var Registrar
      *
-     * @ORM\Column(name="default_registrar", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\OneToOne(targetEntity="App\Entity\Registrar")
+     * @ORM\JoinColumn(name="default_registrar", referencedColumnName="id")
      */
-    private $defaultRegistrar = '0';
+    private $defaultRegistrar;
 
     /**
      * @var int
@@ -245,5 +246,15 @@ class Setting
      */
     private $updateTime = '\'1970-01-01 00:00:00\'';
 
+    public function getDefaultRegistrar(): ?Registrar
+    {
+        return $this->defaultRegistrar;
+    }
+
+    public function setDefaultRegistrar(Registrar $defaultRegistrar): self
+    {
+        $this->defaultRegistrar = $defaultRegistrar;
+        return $this;
+    }
 
 }

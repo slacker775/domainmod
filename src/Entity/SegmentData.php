@@ -24,9 +24,10 @@ class SegmentData
     /**
      * @var int
      *
-     * @ORM\Column(name="segment_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Segment", inversedBy="segmentData")
+     * @ORM\JoinColumn(name="segment_id", referencedColumnName="id")
      */
-    private $segmentId;
+    private $segment;
 
     /**
      * @var string

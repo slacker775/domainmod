@@ -12,16 +12,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Domain
 {
 
+    const STATUS_EXPIRED = 0;
+
+    const STATUS_ACTIVE = 1;
+
     const STATUS_PENDING_TRANSFER = 2;
 
     const STATUS_PENDING_RENEWAL = 3;
 
     const STATUS_PENDING_OTHER = 4;
-    
+
     const STATUS_PENDING_REGISTRATION = 5;
 
     const STATUS_SOLD = 10;
-    
+
     /**
      *
      * @var int
@@ -38,25 +42,27 @@ class Domain
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
-     * 
+     *
      */
     private $owner;
 
     /**
      *
-     * @var int
+     * @var Registrar
      *
-     * @ORM\Column(name="registrar_id", type="integer", nullable=false, options={"default"="1","unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Registrar", inversedBy="domains")
+     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrarId = '1';
+    private $registrar;
 
     /**
      *
-     * @var int
+     * @var RegistrarAccount
      *
-     * @ORM\Column(name="account_id", type="integer", nullable=false, options={"default"="1","unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
-    private $accountId = '1';
+    private $account;
 
     /**
      *
@@ -80,13 +86,13 @@ class Domain
      *
      * @ORM\Column(name="expiry_date", type="date", nullable=false, options={"default"="'1970-01-01'"})
      */
-    private $expiryDate = '\'1970-01-01\'';
+    private $expiryDate;
 
     /**
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
-     * 
+     *
      * @var Category
      */
     private $category;
@@ -95,13 +101,14 @@ class Domain
      *
      * @var int
      *
-     * @ORM\Column(name="fee_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fee")
+     * @ORM\JoinColumn(name="fee_id", referencedColumnName="id")
      */
-    private $feeId = '0';
+    private $fee;
 
     /**
      *
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="total_cost", type="decimal", precision=10, scale=2, nullable=false)
      */
@@ -109,27 +116,30 @@ class Domain
 
     /**
      *
-     * @var int
+     * @var Dns
      *
-     * @ORM\Column(name="dns_id", type="integer", nullable=false, options={"default"="1","unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Dns")
+     * @ORM\JoinColumn(name="dns_id", referencedColumnName="id")
      */
-    private $dnsId = '1';
+    private $dns;
 
     /**
      *
      * @var int
      *
-     * @ORM\Column(name="ip_id", type="integer", nullable=false, options={"default"="1","unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
+     * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
-    private $ipId = '1';
+    private $ip;
 
     /**
      *
-     * @var int
+     * @var Hosting
      *
-     * @ORM\Column(name="hosting_id", type="integer", nullable=false, options={"default"="1","unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hosting")
+     * @ORM\JoinColumn(name="hosting_id", referencedColumnName="id")
      */
-    private $hostingId = '1';
+    private $hostingProvider;
 
     /**
      *
@@ -153,7 +163,7 @@ class Domain
      *
      * @ORM\Column(name="autorenew", type="boolean", nullable=false)
      */
-    private $autorenew = '0';
+    private $autorenew;
 
     /**
      *
@@ -161,15 +171,15 @@ class Domain
      *
      * @ORM\Column(name="privacy", type="boolean", nullable=false)
      */
-    private $privacy = '0';
+    private $privacy;
 
     /**
      *
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(name="active", type="boolean", nullable=false, options={"default"="1"})
+     * @ORM\Column(name="active", type="string", length=2, nullable=false, options={"default"="1"})
      */
-    private $active = true;
+    private $status;
 
     /**
      *
@@ -177,15 +187,16 @@ class Domain
      *
      * @ORM\Column(name="fee_fixed", type="boolean", nullable=false)
      */
-    private $feeFixed = '0';
+    private $feeFixed;
 
     /**
      *
-     * @var bool
+     * @var CreationType
      *
-     * @ORM\Column(name="creation_type_id", type="boolean", nullable=false, options={"default"="2"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
+     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
      */
-    private $creationTypeId = '2';
+    private $creationType;
 
     /**
      *
@@ -193,7 +204,7 @@ class Domain
      *
      * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
      */
-    private $createdBy = '0';
+    private $createdBy;
 
     /**
      *
@@ -201,7 +212,7 @@ class Domain
      *
      * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $insertTime;
 
     /**
      *
@@ -209,186 +220,119 @@ class Domain
      *
      * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updateTime;
 
-    /**
-     *
-     * @return number
-     */
-    public function getId()
+    public function __construct()
+    {
+        $this->insertTime = new \DateTime();
+        $this->updateTime = new \DateTime();
+        $this->status = '1';
+        $this->totalCost = 0;
+        $this->function = '';
+        $this->notes = '';
+        $this->feeFixed = false;
+        $this->autorenew = false;
+        $this->privacy = false;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getOwnerId()
+    public function getOwner(): ?Owner
     {
-        return $this->ownerId;
+        return $this->owner;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getRegistrarId()
+    public function getRegistrar(): ?Registrar
     {
-        return $this->registrarId;
+        return $this->registrar;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getAccountId()
+    public function getAccount(): ?RegistrarAccount
     {
-        return $this->accountId;
+        return $this->account;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getDomain()
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getTld()
+    public function getTld(): string
     {
         return $this->tld;
     }
 
-    /**
-     *
-     * @return DateTime
-     */
-    public function getExpiryDate()
+    public function getExpiryDate(): ?\DateTime
     {
         return $this->expiryDate;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getCatId()
+    public function getCategory(): ?Category
     {
-        return $this->catId;
+        return $this->category;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getFeeId()
+    public function getFee(): ?Fee
     {
-        return $this->feeId;
+        return $this->fee;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getTotalCost()
+    public function getTotalCost(): float
     {
         return $this->totalCost;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getDnsId()
+    public function getDns(): ?Dns
     {
-        return $this->dnsId;
+        return $this->dns;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getIpId()
+    public function getIp(): ?IpAddress
     {
-        return $this->ipId;
+        return $this->ip;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getHostingId()
+    public function getHostingProvider(): ?Hosting
     {
-        return $this->hostingId;
+        return $this->hostingProvider;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getFunction()
+    public function getFunction(): ?string
     {
         return $this->function;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getNotes()
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isAutorenew()
+    public function isAutorenew(): bool
     {
         return $this->autorenew;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isPrivacy()
+    public function isPrivacy(): bool
     {
         return $this->privacy;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isActive()
+    public function getStatus(): string
     {
-        return $this->active;
+        return $this->status;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isFeeFixed()
+    public function isFeeFixed(): bool
     {
         return $this->feeFixed;
     }
 
-    /**
-     *
-     * @return boolean
-     */
-    public function isCreationTypeId()
+    public function getCreationType(): CreationType
     {
-        return $this->creationTypeId;
+        return $this->creationType;
     }
 
     /**
@@ -400,239 +344,148 @@ class Domain
         return $this->createdBy;
     }
 
-    /**
-     *
-     * @return DateTime
-     */
-    public function getInsertTime()
+    public function getInsertTime(): \DateTime
     {
         return $this->insertTime;
     }
 
-    /**
-     *
-     * @return DateTime
-     */
-    public function getUpdateTime()
+    public function getUpdateTime(): \DateTime
     {
         return $this->updateTime;
     }
 
-    /**
-     *
-     * @param number $ownerId
-     */
-    public function setOwnerId($ownerId)
+    public function setOwner(Owner $owner): self
     {
-        $this->ownerId = $ownerId;
+        $this->owner = $owner;
         return $this;
     }
 
-    /**
-     *
-     * @param number $registrarId
-     */
-    public function setRegistrarId($registrarId)
+    public function setRegistrar(Registrar $registrar): self
     {
-        $this->registrarId = $registrarId;
+        $this->registrar = $registrar;
         return $this;
     }
 
-    /**
-     *
-     * @param number $accountId
-     */
-    public function setAccountId($accountId)
+    public function setAccount(RegistrarAccount $account): self
     {
-        $this->accountId = $accountId;
+        $this->account = $account;
         return $this;
     }
 
-    /**
-     *
-     * @param string $domain
-     */
-    public function setDomain($domain)
+    public function setDomain(string $domain): self
     {
         $this->domain = $domain;
         return $this;
     }
 
-    /**
-     *
-     * @param string $tld
-     */
-    public function setTld($tld)
+    public function setTld(string $tld = null): self
     {
+        if($tld === null and $this->domain !== null) {
+            $tld = preg_replace("/^((.*?)\.)(.*)$/", "\\3", $this->domain);          
+        }
         $this->tld = $tld;
         return $this;
     }
 
-    /**
-     *
-     * @param DateTime $expiryDate
-     */
-    public function setExpiryDate($expiryDate)
+    public function setExpiryDate(\DateTime $expiryDate): self
     {
         $this->expiryDate = $expiryDate;
         return $this;
     }
 
-    /**
-     *
-     * @param number $catId
-     */
-    public function setCatId($catId)
+    public function setCategory(Category $category): self
     {
-        $this->catId = $catId;
+        $this->category = $category;
         return $this;
     }
 
-    /**
-     *
-     * @param number $feeId
-     */
-    public function setFeeId($feeId)
+    public function setFee(Fee $fee): self
     {
-        $this->feeId = $feeId;
+        $this->fee = $fee;
         return $this;
     }
 
-    /**
-     *
-     * @param string $totalCost
-     */
-    public function setTotalCost($totalCost)
+    public function setTotalCost(float $totalCost): self
     {
         $this->totalCost = $totalCost;
         return $this;
     }
 
-    /**
-     *
-     * @param number $dnsId
-     */
-    public function setDnsId($dnsId)
+    public function setDns(Dns $dns): self
     {
-        $this->dnsId = $dnsId;
+        $this->dns = $dns;
         return $this;
     }
 
-    /**
-     *
-     * @param number $ipId
-     */
-    public function setIpId($ipId)
+    public function setIp(IpAddress $ip): self
     {
-        $this->ipId = $ipId;
+        $this->ip = $ip;
         return $this;
     }
 
-    /**
-     *
-     * @param number $hostingId
-     */
-    public function setHostingId($hostingId)
+    public function setHostingProvider(Hosting $hostingProvider): self
     {
-        $this->hostingId = $hostingId;
+        $this->hostingProvider = $hostingProvider;
         return $this;
     }
 
-    /**
-     *
-     * @param string $function
-     */
-    public function setFunction($function)
+    public function setFunction(?string $function): self
     {
+        $function = $function ?? '';
         $this->function = $function;
         return $this;
     }
 
-    /**
-     *
-     * @param string $notes
-     */
-    public function setNotes($notes)
+    public function setNotes(?string $notes): self
     {
+        $notes = $notes ?? '';
         $this->notes = $notes;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $autorenew
-     */
-    public function setAutorenew($autorenew)
+    public function setAutorenew(bool $autorenew = false): self
     {
         $this->autorenew = $autorenew;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $privacy
-     */
-    public function setPrivacy($privacy)
+    public function setPrivacy(bool $privacy = false): self
     {
         $this->privacy = $privacy;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $active
-     */
-    public function setActive($active)
+    public function setStatus(string $status): self
     {
-        $this->active = $active;
+        $this->status = $status;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $feeFixed
-     */
-    public function setFeeFixed($feeFixed)
+    public function setFeeFixed(bool $feeFixed = false): self
     {
         $this->feeFixed = $feeFixed;
         return $this;
     }
 
-    /**
-     *
-     * @param boolean $creationTypeId
-     */
-    public function setCreationTypeId($creationTypeId)
+    public function setCreationType(CreationType $creationType): self
     {
-        $this->creationTypeId = $creationTypeId;
+        $this->creationType = $creationType;
         return $this;
     }
 
-    /**
-     *
-     * @param number $createdBy
-     */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy(User $user): self
     {
-        $this->createdBy = $createdBy;
+        $this->createdBy = $user;
         return $this;
     }
 
-    /**
-     *
-     * @param DateTime $insertTime
-     */
-    public function setInsertTime($insertTime)
+    public function setInsertTime(\DateTime $insertTime): self
     {
         $this->insertTime = $insertTime;
         return $this;
     }
 
-    /**
-     *
-     * @param DateTime $updateTime
-     */
-    public function setUpdateTime($updateTime)
+    public function setUpdateTime(\DateTime $updateTime): self
     {
         $this->updateTime = $updateTime;
         return $this;

@@ -77,5 +77,9 @@ class IpAddress
      */
     private $updateTime = '\'1970-01-01 00:00:00\'';
 
+    public function __toString()
+    {
+        return sprintf("%s (%s)", $this->name, $this->ip);
+    }
 
 }

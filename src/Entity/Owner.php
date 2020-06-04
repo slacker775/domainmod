@@ -63,5 +63,20 @@ class Owner
      */
     private $updateTime = '\'1970-01-01 00:00:00\'';
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

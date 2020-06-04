@@ -22,18 +22,20 @@ class RegistrarAccount
     private $id;
 
     /**
-     * @var int
+     * @var Owner
      *
-     * @ORM\Column(name="owner_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="accounts")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $ownerId;
+    private $owner;
 
     /**
-     * @var int
+     * @var Registrar
      *
-     * @ORM\Column(name="registrar_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Registrar", inversedBy="accounts")
+     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrarId;
+    private $registrar;
 
     /**
      * @var string
@@ -133,5 +135,41 @@ class RegistrarAccount
      */
     private $updateTime = '\'1970-01-01 00:00:00\'';
 
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
 
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    public function getOwner(): Owner
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(Owner $owner): self
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+
+    public function getRegistrar(): Registrar
+    {
+        return $this->registrar;
+    }
+    
+    public function setRegistrar(Registrar $registrar): self
+    {
+        $this->registrar = $registrar;
+        return $this;
+    }
+    
+    public function __toString()
+    {
+        return sprintf("%s, %s (%s)", $this->registrar->getName(), $this->owner->getName(), $this->username);
+    }
 }

@@ -13,26 +13,51 @@ class DomainRepository extends ServiceEntityRepository
         parent::__construct($registry, Domain::class);
     }
 
+    public function save(Domain $domain)
+    {
+        $this->getEntityManager()->persist($domain);
+    }
+
     public function getActiveDomainCount(): int
     {
-        $query = $this->getEntityManager()->createQuery("SELECT count(d) FROM App\Entity\Domain d WHERE d.active NOT IN ('0','10')");
+        $query = $this->getEntityManager()->createQuery("SELECT count(d) FROM App\Entity\Domain d WHERE d.status NOT IN ('0','10')");
         return $query->getSingleScalarResult();
     }
 
     public function getDomainCountByStatus(int $status): int
     {
         $query = $this->getEntityManager()
-            ->createQuery("SELECT count(d) FROM App\Entity\Domain d WHERE d.active = :status")
+            ->createQuery("SELECT count(d) FROM App\Entity\Domain d WHERE d.status = :status")
             ->setParameter('status', $status);
         return $query->getSingleScalarResult();
     }
+
+    public function getExpiringDomains(int $days = 30): array
+    {
+        $expiration = new \DateTime();
+        $expiration->add(new \DateInterval('P' . $days . 'D'));
+        return $this->getEntityManager()
+            ->createQuery("SELECT d FROM App\Entity\Domain d WHERE d.expiryDate <= :expiration AND d.status NOT IN ('0','10')")
+            ->setParameter('expiration', $expiration)
+            ->getResult();
+    }
     
+    public function getExpiringDomainCount(int $days = 30): int
+    {
+        $expiration = new \DateTime();
+        $expiration->add(new \DateInterval('P' . $days . 'D'));
+        return $this->getEntityManager()
+        ->createQuery("SELECT COUNT(d) FROM App\Entity\Domain d WHERE d.expiryDate <= :expiration AND d.status NOT IN ('0','10')")
+        ->setParameter('expiration', $expiration)
+        ->getSingleScalarResult();
+    }
+
     public function getDomainTotalCost(): float
     {
-        $query = $this->getEntityManager()->createQuery("SELECT SUM(d.total_cost * cc.conversion) FROM App\Entity\Domain d JOIN d.cat");
-        
+        $query = $this->getEntityManager()->createQuery("SELECT SUM(d.total_cost * cc.conversion) FROM App\Entity\Domain d JOIN d.category");
+
         return $query->getSingleScalarResult();
-        
+
         $grand_total = $pdo->query("
     SELECT SUM(d.total_cost * cc.conversion)
     FROM domains AS d, registrar_accounts AS ra, registrars AS r, owners AS o, categories AS cat, 
