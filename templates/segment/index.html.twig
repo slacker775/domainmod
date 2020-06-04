@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Segment Filters
+{% endblock %}
+
+{% block body %}
+{# 
+$page_title = "Segment Filters"; 
+$breadcrumb = "Segments";
+$software_section = "segments"; 
+$software_section_logo = "fa-filter";
+$slug = "segments-main"; 
+
+$datatable_css = '#segments-main thead th {
+padding: 2px 0px 2px 6px; border: 0; white-space: nowrap; }
+#segments-main tbody tr:hover { background-color: #dddddd; }
+#segments-main tbody td { padding: 2px 0px 2px 6px; border: 0;
+white-space: nowrap; }'; 
+
+$datatable_class = 'table table-striped
+dt-responsive cell-border compact'; 
+
+$datatable_options = 'var oldStart =
+0; $(\'#segments-main\').DataTable({ "paging": true, "lengthChange":
+true, "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50, 75, 100, "All"] ],
+"searching": true, "info": true, "autoWidth": true, "bAutoWidth": false,
+"responsive": { details: { type: "column" } }, "columnDefs": [ {
+className: "control", orderable: false, targets: 0 } ], "ordering":
+true, "order": [[ 1, "asc" ]], "bSortClasses": false, "dom":
+\'<"top"lif>rt<"bottom"ip><"clear">\', "fnDrawCallback": function (o) {
+if ( o._iDisplayStart != oldStart ) { var targetOffset =
+$("#segments-main").offset().top; $("html,body").animate({scrollTop:
+targetOffset}, 0); oldStart = o._iDisplayStart; } } });'; #}
+
+Segments
+are lists of domains that can be used to help filter and manage your
+<a href="{{ path('domain') }}">domain results</a>
+.
+<br>
+<br>
+Segment filters will tell you which domains match with domains that are
+saved in DomainMOD, as well as which domains don't match, and you can
+easily view and export the results.
+<br>
+<br>
+<a href="{{ path('segment.add') }}">{{ _self.showButton('button','Add Segment') }}</a>
+<a href="index.php?export_data=1">{{ _self.showButton('button','Export') }}</a>
+<br>
+<br>
+
+    <table id="segments-main" class="table table-striped dt-responsive cell-border compact">
+        <thead>
+        <tr>
+            <th width="20px"></th>
+            <th>Name</th>
+            <th>Domains</th>
+            <th>Count</th>
+            <th>Export</th>
+        </tr>
+        </thead>
+        <tbody>
+{% for segment in segments %}
+            <tr>
+                <td></td>
+                <td>
+                    <a href="edit.php?segid={{ segment.getId }}">{{ segment.getName }}</a>
+                </td>
+                <td>{{ segment.segment }}
+                </td>
+                <td>
+                    {{ segment.getNumberOfDomains|number_format}}
+                </td>
+                <td>
+                    <a href="index.php?export_data=1&segid={{ segment.getId }}">EXPORT</a>
+                </td>
+            </tr>
+{% endfor %}
+
+        </tbody>
+    </table>
+    
+{% endblock %}
+
+{% block javascripts %}
+<script>
+	var oldStart = 0;
+	$('#segments-main').DataTable({
+		"paging" : true,
+		"lengthChange" : true,
+		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
+		"searching" : true,
+		"info" : true,
+		"autoWidth" : true,
+		"bAutoWidth" : false,
+		"responsive" : {
+			details : {
+				type : "column"
+			}
+		},
+		"columnDefs" : [ {
+			className : "control",
+			orderable : false,
+			targets : 0
+		} ],
+		"ordering" : true,
+		"order" : [ [ 1, "asc" ] ],
+		"bSortClasses" : false,
+		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+		"fnDrawCallback" : function(o) {
+			if (o._iDisplayStart != oldStart) {
+				var targetOffset = $("#segments-main").offset().top;
+				$("html,body").animate({
+					scrollTop : targetOffset
+				}, 0);
+				oldStart = o._iDisplayStart;
+			}
+		}
+	});
+</script>
+{% endblock %}

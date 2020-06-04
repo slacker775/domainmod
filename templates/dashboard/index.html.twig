@@ -7,24 +7,30 @@ Dashboard
 {% block body %}
 <div class="row">
 	<h3 style="padding-left: 20px;">System Totals</h3>
-	{{ _self.displayPanel('Domains', activeDomainCount, 'green', 'checkmark-circled', path('app.legacy.domains__index', { is_active: 'LIVE'})) }}
+	{{ _self.displayPanel('Domains', activeDomainCount, 'green', 'checkmark-circled', path('domain_index', { is_active: 'LIVE'})) }}
 
-	{{ _self.displayPanel('SSL Certificates', activeCertCount, 'green', 'checkmark-circled', path('app.legacy.ssl__index', { is_active: 'LIVE'})) }}
+	{{ _self.displayPanel('SSL Certificates', activeCertCount, 'green', 'checkmark-circled', path('ssl_cert_index', { is_active: 'LIVE'})) }}
 	
 	{% if domainsSold > 0 %}
-	{{ _self.displayPanel('Sold Domains', 0, 'aqua', 'android-cart', path('app.legacy.domains__index', { is_active: '10'})) }}
+	{{ _self.displayPanel('Sold Domains', 0, 'aqua', 'android-cart', path('domain_index', { is_active: '10'})) }}
 	{% endif %}
 </div>
 
 <!--  Expiration Panels -->
+{% if expiringDomains > 0 or expiringSslCerts > 0 %}
 <div class="row">
 	<h3 style="padding-left: 20px;">Expiring in the next 30 days</h3>
 
-	{{ _self.displayPanel('Domains', 0, 'red', 'close-circled', path('app.legacy.domains__index', { daterange: '1234'})) }}
-
-	{{ _self.displayPanel('SSL Certificates', 0, 'red', 'close-circled', path('app.legacy.ssl__index', { daterange: '1234'})) }}
+    {% if expiringDomains > 0 %}
+	{{ _self.displayPanel('Domains', expiringDomains, 'red', 'close-circled', path('domain_index', { daterange: '1234'})) }}
+    {% endif %}
+    
+    {% if expiringSslCerts > 0 %}
+	{{ _self.displayPanel('SSL Certificates', expiringSslCerts, 'red', 'close-circled', path('ssl_cert_index', { daterange: '1234'})) }}
+	{% endif %}
 </div>
 <!--  /Expiration Panels -->
+{% endif %}
 
 <!-- Domain Queue -->
 <div class="row">
@@ -59,11 +65,11 @@ Dashboard
 <div class="row">
 	<h3 style="padding-left: 20px;">Pending (SSL Certificates)</h3>
 
-	{{ _self.displayPanel('Pending Renewals', 0, 'red', 'clock', path('app.legacy.ssl__index', { is_active: '3'})) }}
+	{{ _self.displayPanel('Pending Renewals', 0, 'red', 'clock', path('ssl_cert_index', { is_active: '3'})) }}
 
-	{{ _self.displayPanel('Pending Registrations', 0, 'yellow', 'clock', path('app.legacy.ssl__index', { is_active: '5'})) }}
+	{{ _self.displayPanel('Pending Registrations', 0, 'yellow', 'clock', path('ssl_cert_index', { is_active: '5'})) }}
 
-	{{ _self.displayPanel('Pending (Other)', 0, 'green', 'clock', path('app.legacy.ssl__index', { is_active: '4'})) }}
+	{{ _self.displayPanel('Pending (Other)', 0, 'green', 'clock', path('ssl_cert_index', { is_active: '4'})) }}
 </div>
 <!-- /SSL Panels -->
 {% endblock %}

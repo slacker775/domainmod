@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AssetController!{% endblock %}
+
+{% block body %}
+<h3>Domains</h3>
+<a href="{{ path('registrar_index') }}">Domain Registrars</a><BR>
+<a href="registrar-accounts.php">Domain Registrar Accounts</a><BR>
+<a href="dns.php">DNS Profiles</a><BR>
+<a href="hosting.php">Web Hosting Providers</a>
+
+<h3>SSL Certificates</h3>
+<a href="ssl-providers.php">SSL Providers</a><BR>
+<a href="ssl-accounts.php">SSL Provider Accounts</a><BR>
+<a href="ssl-types.php">SSL Certificate Types</a>
+
+<h3>Shared</h3>
+<a href="account-owners.php">Account Owners</a><BR>
+<a href="{{ path('category_index') }}">Categories</a><BR>
+<a href="ip-addresses.php">IP Addresses</a><BR><BR>
+
+{% endblock %}

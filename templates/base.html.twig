@@ -2,10 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>{% block title %}Welcome!{% endblock %}</title>
+<title>DomainMOD :: {% block title %}Welcome!{% endblock %}</title>
 
 <link rel="icon" type="image/ico"
-	href="images/favicon.ico" />
+	href="/images/favicon.ico" />
 <style type="text/css">
 html {
 	overflow-y: scroll;
@@ -21,7 +21,7 @@ html {
 	name="viewport">
 <!-- Bootstrap 3.3.5 -->
 <link rel="stylesheet"
-	href="_includes/theme/bootstrap/css/bootstrap.min.css">
+	href="/_includes/theme/bootstrap/css/bootstrap.min.css">
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -30,23 +30,23 @@ html {
 	href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <!-- DataTables -->
 <link rel="stylesheet"
-	href="_includes/theme/plugins/datatables/dataTables.bootstrap.css">
+	href="/_includes/theme/plugins/datatables/dataTables.bootstrap.css">
 <link rel="stylesheet"
-	href="_includes/theme/plugins/datatables/dataTables.responsive.css">
+	href="/_includes/theme/plugins/datatables/dataTables.responsive.css">
 <link rel="stylesheet"
-	href="_includes/theme/plugins/datatables/dataTables.fontAwesome.css">
+	href="/_includes/theme/plugins/datatables/dataTables.fontAwesome.css">
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet"
-	href="_includes/theme/plugins/iCheck/square/red.css">
+	href="/_includes/theme/plugins/iCheck/square/red.css">
 <!-- Select2 -->
 <link rel="stylesheet"
-	href="_includes/theme/plugins/select2/select2.min.css">
+	href="/_includes/theme/plugins/select2/select2.min.css">
 <!-- Theme style -->
-<link rel="stylesheet" href="_includes/theme/dist/css/AdminLTE.min.css">
+<link rel="stylesheet" href="/_includes/theme/dist/css/AdminLTE.min.css">
 <!-- AdminLTE Skins. Choose a skin from the css/skins
    folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet"
-	href="_includes/theme/dist/css/skins/skin-red.min.css">
+	href="/_includes/theme/dist/css/skins/skin-red.min.css">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -67,11 +67,11 @@ html {
     <a href="{{ path('homepage') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">
-          <img src="images/logo-mini.png">
+          <img src="/images/logo-mini.png">
       </span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg" >
-          <img src="images/logo.png">
+          <img src="/images/logo.png">
       </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -144,7 +144,7 @@ html {
       <!-- Sidebar user panel -->
 
       <!-- search form -->
-      <form action="{{ path('app.legacy.domains__index') }}" method="get" class="sidebar-form">
+      <form action="{{ path('domain_index') }}" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="search_for" class="form-control" placeholder="Domain Keyword Search" {# <?php if ($search_for && $search_for != '') echo ' value="' . $search_for . '"'; ?> #}>
               <span class="input-group-btn">
@@ -171,10 +171,13 @@ html {
 
           <span class="visible-sm visible-md visible-lg">
               {{ _self.breadcrumb('section','left') }}
+              {% block breadcrumbs %}
+              {% endblock %}
           </span>
 
           <span class="visible-xs">
               {{ _self.breadcrumb('section','right') }}
+              {{ block('breadcrumbs') }}
           </span>
           <BR>
 {#
@@ -205,7 +208,7 @@ html {
       <!-- Default box -->
       <div class="box box-solid box-danger">
         <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $page_title; ?></h3>
+            <h3 class="box-title">{{ block('title') }}</h3>
             <?php if ($software_section_logo != '') { ?>
                 <span class="pull-right"><i class="fa <?php echo $software_section_logo; ?>"></i></span>
             <?php } ?>
@@ -254,7 +257,7 @@ html {
         <div class="visible-xs">
             Version 5.0.0
         </div>
-        <a href="http://domainmod.org"><?php echo SOFTWARE_TITLE; ?></a> is open source software released under the <a href="http://www.gnu.org/licenses/">GNU/GPL License</a>.
+        <a href="http://domainmod.org">DomainMOD </a> is open source software released under the <a href="http://www.gnu.org/licenses/">GNU/GPL License</a>.
         Created by <a href="http://chetcuti.com">Greg Chetcuti</a>.<BR>
 
     </footer>
@@ -263,30 +266,31 @@ html {
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.0 -->
-<script src="_includes/theme/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="/_includes/theme/plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- Bootstrap 3.3.5 -->
-<script src="_includes/theme/bootstrap/js/bootstrap.min.js"></script>
+<script src="/_includes/theme/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
-<script src="_includes/theme/plugins/datatables/jquery.dataTables.js"></script>
-<script src="_includes/theme/plugins/datatables/dataTables.bootstrap.js"></script>
-<script src="_includes/theme/plugins/datatables/dataTables.responsive.js"></script>
+<script src="/_includes/theme/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/_includes/theme/plugins/datatables/dataTables.bootstrap.js"></script>
+<script src="/_includes/theme/plugins/datatables/dataTables.responsive.js"></script>
 <!-- Select2 -->
-<script src="_includes/theme/plugins/select2/select2.full.min.js"></script>
+<script src="/_includes/theme/plugins/select2/select2.full.min.js"></script>
 <!-- SlimScroll -->
-<script src="_includes/theme/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="/_includes/theme/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="_includes/theme/plugins/fastclick/fastclick.min.js"></script>
+<script src="/_includes/theme/plugins/fastclick/fastclick.min.js"></script>
 <!-- AdminLTE App -->
-<script src="_includes/theme/dist/js/app.min.js"></script>
+<script src="/_includes/theme/dist/js/app.min.js"></script>
 <!-- iCheck 1.0.1 -->
-<script src="_includes/theme/plugins/iCheck/icheck.min.js"></script>
+<script src="/_includes/theme/plugins/iCheck/icheck.min.js"></script>
 <script>
   $(function () {
 
     //Initialize Select2 Elements
     $(".select2").select2();
 
-    //<?php echo $datatable_options; ?>
+    {% block datatable_options %}
+    {% endblock %}
 
     //Red color scheme for iCheck
     $('input[type="checkbox"].square-red, input[type="radio"].square-red').iCheck({
@@ -310,9 +314,8 @@ html {
           {% if section == 'dashboard' %}
               <li><i class="fa fa-dashboard"></i></li>
           {% else %}
-              <li><a href="/dashboard/"><i class="fa fa-dashboard"></i></a></li>
+              <li><a href="{{ path('homepage') }}"><i class="fa fa-dashboard"></i></a></li>
           {% endif %}
-          <?php require_once DIR_INC . '/breadcrumbs/' . $slug . '.inc.php'; ?>
       </ol>
 {% endmacro %}
 

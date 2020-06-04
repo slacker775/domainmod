@@ -1,0 +1,6 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button style="margin-top:5px" class="btn btn-primary btn-danger">{{ button_label|default('Add Category') }}</button>
+{{ form_end(form) }}

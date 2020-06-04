@@ -18,6 +18,8 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/index.html.twig', [
             'activeDomainCount' => $domainRepository->getActiveDomainCount(),
             'activeCertCount' => $sslRepository->getActiveCertificateCount(),
+            'expiringDomains' => $domainRepository->getExpiringDomainCount(30),
+            'expiringSslCerts' => $sslRepository->getExpiringSslCertCount(30),
             'domainsSold' => $domainRepository->getDomainCountByStatus(Domain::STATUS_SOLD),
             'domainsPendingRenewal' => $domainRepository->getDomainCountByStatus(Domain::STATUS_PENDING_RENEWAL),
             'domainsPendingRegistration' => $domainRepository->getDomainCountByStatus(Domain::STATUS_PENDING_REGISTRATION),

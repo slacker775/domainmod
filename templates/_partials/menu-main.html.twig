@@ -5,7 +5,7 @@
 			class="fa fa-dashboard"></i> <span>Dashboard</span></a>
 	</li>
 
-	<li><a href="{{ path('domain') }}"><i
+	<li><a href="{{ path('domain_index') }}"><i
 			class="fa fa-sitemap"></i> <span>Domains</span></a>
 	</li>
 	
@@ -15,13 +15,13 @@
 	</li> 
     <!-- End -->
 
-	<li><a href="/ssl/"><i class="fa fa-lock"></i>
+	<li><a href="{{ path('ssl_cert_index') }}"><i class="fa fa-lock"></i>
 			<span>SSL Certificates</span></a>
 	</li>
-	<li><a href="/assets/"><i
+	<li><a href="{{ path('asset') }}"><i
 			class="fa fa-cubes"></i> <span>Assets</span></a>
 	</li>
-	<li><a href="/segments/"><i
+	<li><a href="{{ path('segment') }}"><i
 			class="fa fa-filter"></i> <span>Segments</span></a>		
 	</li> 
 

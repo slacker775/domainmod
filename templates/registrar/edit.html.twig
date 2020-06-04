@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Registrar{% endblock %}
+
+{% block body %}
+    <h1>Edit Registrar</h1>
+
+    {{ include('registrar/_form.html.twig', {'button_label': 'Save'}) }}
+
+    <a href="{{ path('registrar_index') }}">back to list</a>
+
+    {{ include('registrar/_delete_form.html.twig') }}
+{% endblock %}

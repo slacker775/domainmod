@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Domain{% endblock %}
+
+{% block body %}
+
+<strong>Domain</strong><br>
+{{ domain.domain|e('html') }}<br><br>
+    {{ include('domain/_form.html.twig', {'button_label': 'Save'}) }}
+
+    {{ include('domain/_delete_form.html.twig') }}
+    
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

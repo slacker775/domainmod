@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SslCert index{% endblock %}
+
+{% block body %}
+    <h1>SslCert index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ip</th>
+                <th>Name</th>
+                <th>ExpiryDate</th>
+                <th>TotalCost</th>
+                <th>Notes</th>
+                <th>Status</th>
+                <th>FeeFixed</th>
+                <th>CreatedBy</th>
+                <th>InsertTime</th>
+                <th>UpdateTime</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ssl_cert in ssl_certs %}
+            <tr>
+                <td>{{ ssl_cert.id }}</td>
+                <td>{{ ssl_cert.ip }}</td>
+                <td>{{ ssl_cert.name }}</td>
+                <td>{{ ssl_cert.expiryDate ? ssl_cert.expiryDate|date('Y-m-d') : '' }}</td>
+                <td>{{ ssl_cert.totalCost }}</td>
+                <td>{{ ssl_cert.notes }}</td>
+                <td>{{ ssl_cert.status }}</td>
+                <td>{{ ssl_cert.feeFixed ? 'Yes' : 'No' }}</td>
+                <td>{{ ssl_cert.createdBy }}</td>
+                <td>{{ ssl_cert.insertTime ? ssl_cert.insertTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ssl_cert.updateTime ? ssl_cert.updateTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('ssl_cert_show', {'id': ssl_cert.id}) }}">show</a>
+                    <a href="{{ path('ssl_cert_edit', {'id': ssl_cert.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ssl_cert_new') }}">Create new</a>
+{% endblock %}

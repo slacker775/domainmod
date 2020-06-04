@@ -5,7 +5,7 @@ Domains
 {% endblock %}
 
 {% block body %}
-<a href="{{ path('app.legacy.domains__add') }}">{{ _self.showButton('button','Add Domain') }}</a>
+<a href="{{ path('domain_new') }}">{{ _self.showButton('button','Add Domain') }}</a>
 <a href="/queue/intro.php">{{ _self.showButton('button','Add Domains to Queue') }}</a>
 <a target="_blank" href="/raw.php">{{ _self.showButton('button','Raw List') }}</a>
 <a href="index.php?&export_data=1">{{ _self.showButton('button','Export') }}</a>
@@ -13,26 +13,407 @@ Domains
 <br>
 <br>
 <strong>Total Cost:</strong>
-$1437.00 USD
+$X,437.00 USD
 <br>
 <strong>Number of Domains:</strong>
-1
+{{ domains|length }}
 <br>
 <br>
 <br>
 <br>
 
+{% if domains is empty %}
+Your search returned zero results.
+{% else %}
+        <table id="domains-main" class="table table-striped dt-responsive cell-border compact">
+            <thead>
+            <tr>
+                {% if not systemLargeMode %}
+                    <th width="20px"></th>
+                {% endif %}
+
+                <th class="all">
+                    {% if systemLargeMode %}
+                        <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                        ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                        echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date); ?>&segid=<?php
+                        echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active); ?>&result_limit=<?php
+                        echo urlencode($result_limit); ?>&sort_by=<?php
+                        if ($sort_by == "dn_a") {
+                            echo "dn_d";
+                        } else {
+                            echo "dn_a";
+                        } ?>&from_dropdown=1" style="color:#000000;">Domain</a>
+                        {% else %}
+                           Domain
+                    {% endif %}
+                </th>
+                {% if systemDisplayDomainExpiryDate %}                
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php
+                            echo $dnsid; ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid;
+                            ?>&raid=<?php echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php
+                            echo urlencode($new_end_date); ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php
+                            echo urlencode($is_active); ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "ed_a") {
+                                echo "ed_d";
+                            } else {
+                                echo "ed_a";
+                            }
+                            ?>&from_dropdown=1" style="color:#000000;">Expiry</a>
+                        {% else %}
+                            Expiry
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainFee %}                
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php
+                            echo $dnsid; ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid;
+                            ?>&raid=<?php echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php
+                            echo urlencode($new_end_date); ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php
+                            echo urlencode($is_active); ?>&result_limit=<?php echo urlencode($result_limit);
+                            ?>&sort_by=<?php
+                            if ($sort_by == "df_a") {
+                                echo "df_d";
+                            } else {
+                                echo "df_a";
+                            }
+                            ?>&from_dropdown=1" style="color:#000000;">Fee (<?php echo $_SESSION['s_default_currency']; ?>)</a>
+                        {% else %}
+                                Fee (<?php echo $_SESSION['s_default_currency']; ?>)
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainTld %}                
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                        <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                        ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                        echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php
+                        echo urlencode($new_end_date); ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php
+                        echo urlencode($is_active); ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                        if ($sort_by == "tld_a") {
+                            echo "tld_d";
+                        } else {
+                            echo "tld_a";
+                        } ?>&from_dropdown=1" style="color:#000000;">TLD</a>
+                        {% else %}
+                            TLD
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainRegistrar %}                
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
+                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
+                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "r_a") {
+                                echo "r_d";
+                            } else {
+                                echo "r_a";
+                            } ?>&from_dropdown=1" style="color:#000000;">Registrar</a>
+                        {% else %}
+                                Registrar
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainAccount %}                
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
+                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
+                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "ra_a") {
+                                echo "ra_d";
+                            } else {
+                                echo "ra_a";
+                            } ?>&from_dropdown=1" style="color:#000000;">Account</a>
+                        {% else %}
+                                Account
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainDns %}                
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
+                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
+                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "dns_a") {
+                                echo "dns_d";
+                            } else {
+                                echo "dns_a";
+                            } ?>&from_dropdown=1" style="color:#000000;">DNS</a>
+                        {% else %}
+                                DNS
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainIp %}   
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
+                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
+                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "ip_a") {
+                                echo "ip_d";
+                            } else {
+                                echo "ip_a";
+                            } ?>&from_dropdown=1" style="color:#000000;">IP</a>
+                        {% else %}
+                                IP
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainHost %}  
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
+                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
+                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "wh_a") {
+                                echo "wh_d";
+                            } else {
+                                echo "wh_a";
+                            } ?>&from_dropdown=1" style="color:#000000;">Host</a>
+                        {% else %}
+                                Host
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainCategory %} 
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
+                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
+                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "pc_a") {
+                                echo "pc_d";
+                            } else {
+                                echo "pc_a";
+                            } ?>&from_dropdown=1" style="color:#000000;">Category</a>
+                        {% else %}
+                                Category
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {% if systemDisplayDomainOwner %}
+                    <th {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                    {% if systemLargeMode %}
+                            <a href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
+                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
+                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
+                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
+                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
+                            if ($sort_by == "o_a") {
+                                echo "o_d";
+                            } else {
+                                echo "o_a";
+                            } ?>&from_dropdown=1" style="color:#000000;">Owner</a>
+                        {% else %}
+                                Owner
+                    {% endif %}
+                    </th>
+                {% endif %}
+                {#<?php if ($_SESSION['s_cdf_data']) {
+
+                    foreach ($_SESSION['s_cdf_data'] as $field) {
+
+                        if ($field['value'] == '1' && $field['type_id'] != '3') { // Don't show column for Text Areas ?>
+
+                            <th<?php if ($_SESSION['s_system_large_mode'] == '1') { echo ' style="padding-left:20px;"'; } ?>>
+
+                                <?php if ($_SESSION['s_system_large_mode'] == '1') { ?>
+
+                                    <span style="color:#000000;"><?php echo $field['name']; ?></span>
+
+                                <?php } else { ?>
+
+                                    <?php echo $field['name']; ?>
+
+                                <?php } ?>
+
+                            </th><?php
+
+                        }
+
+                    }
+
+                } ?>#}
+            </tr>
+            </thead>
+            <tbody>
+            {% for domain in domains %}
+                <tr>
+
+                    {% if not systemLargeMode %}
+                        <td></td>
+                    {% endif %}
+
+                    <td>
+                        {% if domain.status == "0" %}
+                            <a title="Inactive Domain"><strong>x</strong></a>&nbsp;
+                        {% elseif domain.status == "2" %}
+                            <a title="Pending (Transfer)"><strong>T</strong></a>&nbsp;
+                        {% elseif domain.status == "3" %}
+                            echo "<a title=\"Pending (Renewal)\"><strong>PRn</strong></a>&nbsp;";
+                        {% elseif domain.status == "4" %}
+                            echo "<a title=\"Pending (Other)\"><strong>PO</strong></a>&nbsp;";
+                        {% elseif domain.status == "5" %}
+                            echo "<a title=\"Pending (Registration)\"><strong>PRg</strong></a>&nbsp;";
+                        {% elseif domain.status == "10" %}
+                            echo "<a title=\"Sold\"><strong>S</strong></a>&nbsp;";
+                        {% endif %}                       
+                        <a href="{{ path('domain_edit',{id: domain.id}) }}">{{ domain.domain }}</a>
+                            {% if domain.privacy %}
+                            &nbsp;<a title="Private WHOIS Registration"><strong>prv</strong></a>
+                            {% endif %}
+                    </td>
+                    {% if systemDisplayDomainExpiryDate %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="{{ path('domain_edit', { id: domain.id }) }}">{{ domain.getExpiryDate|date('Y-m-d') }}</a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainFee %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/registrar-fee.php?rid=<?php echo $row->r_id; ?>&fee_id=<?php echo $row->f_id; ?>">
+                                <?php
+                                $converted_total_cost = $row->total_cost * $row->conversion;
+                                $temp_output_amount = $currency->format($converted_total_cost,
+                                    $_SESSION['s_default_currency_symbol'], $_SESSION['s_default_currency_symbol_order'],
+                                    $_SESSION['s_default_currency_symbol_space']);
+                                echo htmlentities($temp_output_amount, ENT_QUOTES, 'UTF-8');
+                                ?>
+                            </a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainTld %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/registrar-fee.php?rid=<?php echo $row->r_id; ?>&fee_id=<?php echo $row->f_id; ?>">.{{ domain.tld }}</a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainRegistrar %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/registrar.php?rid=<?php echo $row->r_id; ?>"{{ domain.registrar.name }}</a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainAccount %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/registrar.php?rid=<?php echo $row->r_id; ?>">{{ domain.registrar.name }}</a>,
+                            <a href="../assets/edit/account-owner.php?oid=<?php echo $row->o_id; ?>">{{ domain.owner }}</a>
+                            (<a href="../assets/edit/registrar-account.php?raid=<?php echo $row->ra_id; ?>">{{ domain.account.username }}</a>)
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainDns %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/dns.php?dnsid=<?php echo $row->dnsid; ?>">{{ domain.dns.name }}</a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainIp %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/ip-address.php?ipid=<?php echo $row->ipid; ?>">{{ domain.ip.name }}
+                                (<?php echo $row->ip; ?>)</a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainHost %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/host.php?whid=<?php echo $row->whid; ?>"><?php echo $row->wh_name; ?></a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainCategory %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/category.php?pcid=<?php echo $row->pcid; ?>"><?php echo $row->category_name; ?></a>
+                        </td>
+                    {% endif %}
+                    {% if systemDisplayDomainOwner %}
+                        <td {% if systemLargeMode %} style="padding-left:20px;" {% endif %}>
+                            <a href="../assets/edit/account-owner.php?oid=<?php echo $row->o_id; ?>">{{ domain.owner.name }}</a>
+                        </td>
+                    {% endif %}
+
+                    {#<?php if ($_SESSION['s_cdf_data']) {
+
+                        foreach ($_SESSION['s_cdf_data'] as $field) {
+
+                            if ($field['value'] == '1' && $field['type_id'] != '3') { // Don't show data for Text Areas ?>
+
+                            <td<?php if ($_SESSION['s_system_large_mode'] == '1') { echo ' style="padding-left:20px;"'; } ?>><?php
+
+                                if ($field['type_id'] == '1') { // Check Box
+
+                                    echo ($row->{$field['field']} == '1' ? 'Yes' : 'No');
+
+                                } elseif ($field['type_id'] == '2') { // Text
+
+                                    echo $row->{$field['field']};
+
+                                } elseif ($field['type_id'] == '4') { // Date
+
+                                    if ($row->{$field['field']} == '1970-01-01') {
+
+                                        echo '';
+
+                                    } else {
+
+                                        echo $row->{$field['field']};
+
+                                    }
+
+                                } elseif ($field['type_id'] == '5') { // Time Stamp
+
+                                    if ($row->{$field['field']} == '1970-01-01 00:00:00') {
+
+                                        echo '';
+
+                                    } else {
+
+                                        echo $row->{$field['field']};
+
+                                    }
+
+                                } ?>
+
+                            </td><?php
+
+                            }
+
+                        }
+
+                    } ?>#}
+
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table><br>
+{% endif %}
 {% endblock %}
+
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css"
-	href="_includes/theme/plugins/daterangepicker/daterangepicker-bs3.css" />
+	href="/_includes/theme/plugins/daterangepicker/daterangepicker-bs3.css" />
 {% endblock %}
 
 {% block javascripts %}
 <script type="text/javascript"
-	src="_includes/theme/plugins/daterangepicker/moment.min.js"></script>
+	src="/_includes/theme/plugins/daterangepicker/moment.min.js"></script>
 <script type="text/javascript"
-	src="_includes/theme/plugins/daterangepicker/daterangepicker.js"></script>
+	src="/_includes/theme/plugins/daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript">
 	$(function() {
 
@@ -59,4 +440,38 @@ $1437.00 USD
 
 	});
 </script>
+{% endblock %}
+
+{% block datatable_options %}
+var oldStart = 0;
+                          $('#domains-main').DataTable({
+                              "paging": true,
+                              "lengthChange": true,
+                              "lengthMenu": [ [{{ domains|length }}, 50, 75, 100, -1], [{{ domains|length }}, 50, 75, 100, "All"] ],
+                              "searching": true,
+                              "info": true,
+                              "autoWidth": true,
+                              "bAutoWidth": false,
+                              "responsive": {
+                                   details: {
+                                             type: "column"
+                                            }
+                                            },
+                              "columnDefs": [ {
+                                               className: "control",
+                                               orderable: false,
+                                               targets:   0
+                                               } ],
+                              "ordering": true,
+                              "order": [[ {{ systemDisplayDomainExpiryDate ? 2 : 1 }}, "asc" ]],
+                              "bSortClasses": false,
+                              "dom": '<"top"lif>rt<"bottom"ip><"clear">',
+                              "fnDrawCallback": function (o) {
+                                if ( o._iDisplayStart != oldStart ) {
+                                    var targetOffset = $("#domains-main").offset().top;
+                                    $("html,body").animate({scrollTop: targetOffset}, 0);
+                                    oldStart = o._iDisplayStart;
+                                }
+                              }
+                          });
 {% endblock %}

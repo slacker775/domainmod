@@ -12,9 +12,7 @@ class LegacyRouteLoader extends Loader
     private $webDir = [
         'dashboard',
         'admin',
-        'domains',
         'assets',
-        'ssl',
         'segments',
         'bulk',
         'reporting',

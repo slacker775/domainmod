@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Domain Registrar{% endblock %}
+
+{% block body %}
+
+    {{ include('registrar/_form.html.twig') }}
+
+    <a href="{{ path('registrar_index') }}">back to list</a>
+{% endblock %}

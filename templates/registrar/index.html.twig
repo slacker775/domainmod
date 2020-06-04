@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Domain Registrars
+{% endblock %}
+
+{% block body %}
+Below is a list of all the Domain Registrars that are stored in
+DomainMOD.
+<br>
+<br>
+<a href="{{ path('registrar_new') }}">{{ _self.showButton('button','Add Registrar') }}</a>
+<a href="registrars.php?export_data=1">{{ _self.showButton('button','Export') }}</a>
+<br>
+<br>
+
+{% if registrars is not empty %}
+
+<table id="assets-registrars"
+	class="table table-striped dt-responsive cell-border compact">
+	<thead>
+		<tr>
+			<th width="20px"></th>
+			<th>Registrar</th>
+			<th>Accounts</th>
+			<th>Domains</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+
+	<tbody>
+
+		{% for registrar in registrars %}
+		{% if registrar.numDomains >= 1 or displayInactiveAssets %}
+		<tr>
+			<td></td>
+			<td><a href="{{ path('registrar_edit',{ id: registrar.id}) }}">{{ registrar.name }}</a>
+			{% if defaultRegistrar.id == registrar.id %}<strong>*</strong>
+			{% endif %}</td>
+			<td>{% if registrar.numAccounts >= 1 %} <a
+				href="registrar-accounts.php?rid={{ registrar.id }}">{{ registrar.numAccounts|number_format }}</a><?php
+				{% else %} - {% endif %}</td>
+			<td>{% if registrar.numDomains >= 1 %} <a
+				href="../domains/index.php?rid={{ registrar.id }}">{{ registrar.numDomains|number_format }}</a><?php
+				{% else %} - {% endif %}</td>
+			<td><a href="registrar-fees.php?rid={{ registrar.id }}">fees</a>&nbsp;&nbsp;<a
+				target="_blank" href="{{ registrar.url }}">www</a></td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+	</tbody>
+</table>
+
+<strong>*</strong>
+= Default (
+<a href="../settings/defaults/">set defaults</a>
+)
+<br>
+<br>
+<?php
+
+{% else %}
+<br>
+You don't currently have any Domain Registrars.
+<a href="{{ path('registrar_new') }}">Click here to add one</a>
+.
+{% endif %}
+
+{% if displayInactiveAssets %}
+<em>Inactive Assets are currently displayed. <a
+	href="/settings/toggles/inactive-assets.php">Click here to hide
+		them</a>.
+</em>
+<br>
+{% else %}
+<em>Inactive Assets are currently hidden. <a
+	href="/settings/toggles/inactive-assets.php">Click here to display
+		them</a>.
+</em>
+<br>
+{% endif %}
+
+{% endblock %}
+
+{% block datatable_options %}
+
+	var oldStart = 0;
+	$('#assets-registrars').DataTable({
+		"paging" : true,
+		"lengthChange" : true,
+		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
+		"searching" : true,
+		"info" : true,
+		"autoWidth" : true,
+		"bAutoWidth" : false,
+		"responsive" : {
+			details : {
+				type : "column"
+			}
+		},
+		"columnDefs" : [ {
+			className : "control",
+			orderable : false,
+			targets : 0
+		} ],
+		"ordering" : true,
+		"order" : [ [ 1, "asc" ] ],
+		"bSortClasses" : false,
+		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+		"fnDrawCallback" : function(o) {
+			if (o._iDisplayStart != oldStart) {
+				var targetOffset = $("#assets-registrars").offset().top;
+				$("html,body").animate({
+					scrollTop : targetOffset
+				}, 0);
+				oldStart = o._iDisplayStart;
+			}
+		}
+	});
+
+{% endblock %}
