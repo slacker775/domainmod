@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit DNS Profile{% endblock %}
+
+{% block body %}
+
+    {{ include('dns/_form.html.twig', {'button_label': 'Save'}) }}
+
+    {{ include('dns/_delete_form.html.twig') }}
+{% endblock %}

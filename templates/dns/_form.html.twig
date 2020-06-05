@@ -1,0 +1,66 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{{ form_start(form) }}
+{# {{ form_widget(form) }} #}
+<table width="100%">
+	<tr>
+		<td colspan="3">{{ form_row(form.name) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns1) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip1) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns2) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip2) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns3) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip3) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns4) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip4) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns5) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip5) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns6) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip6) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns7) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip7) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns8) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip8) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns9) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip9) }}</td>
+	</tr>
+	<tr>
+		<td width="49%">{{ form_row(form.dns10) }}</td>
+		<td width="2%"></td>
+		<td width="49%">{{ form_row(form.ip10) }}</td>
+	</tr>
+	<tr>
+		<td colspan="3">{{ form_row(form.notes) }}</td>
+	</tr>
+</table>
+<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+	{{ button_label|default('Add DNS Profile') }}
+</button>
+{{ form_end(form) }}

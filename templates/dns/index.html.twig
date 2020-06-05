@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+DNS Profiles
+{% endblock %}
+
+{% block body %}
+Below is a list of all the DNS Profiles that are stored in DomainMOD.
+<BR>
+<BR>
+<a href="{{ path('dns_new') }}">{{ _self.showButton('button','Add DNS Profile') }}</a>
+<a href="dns.php?export_data=1">{{ _self.showButton('button','Export') }}</a>
+<br>
+<br>
+
+{% if dns|length > 0 %}
+<table id='assets-dns'
+	class="table table-striped dt-responsive cell-border compact">
+	<thead>
+		<tr>
+			<th width="20px"></th>
+			<th>Name</th>
+			<th>Servers</th>
+			<th>Domains</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for dn in dns %}
+		<tr>
+			<td></td>
+			<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.name }}</a></td>
+			<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.numberOfServers }}</a></td>
+			<td><a href="{{ path('domain_index', {'dns': dn.id}) }}">{{ dn.getActiveDomains|length }}</a></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<strong>*</strong>
+= Default (
+<a href="../settings/defaults/">set defaults</a>
+)
+<BR>
+<BR>
+{% else %}
+<br>
+You don't currently have any DNS Profiles.
+<a href="{{ path('dns_new') }}">Click here to add one</a>
+.
+{% endif %}
+{% endblock %}
+
+{% block datatable_options %}
+	var oldStart = 0;
+	$('#assets-dns').DataTable({
+		"paging" : true,
+		"lengthChange" : true,
+		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
+		"searching" : true,
+		"info" : true,
+		"autoWidth" : true,
+		"bAutoWidth" : false,
+		"responsive" : {
+			details : {
+				type : "column"
+			}
+		},
+		"columnDefs" : [ {
+			className : "control",
+			orderable : false,
+			targets : 0
+		} ],
+		"ordering" : true,
+		"order" : [ [ 1, "asc" ] ],
+		"bSortClasses" : false,
+		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+		"fnDrawCallback" : function(o) {
+			if (o._iDisplayStart != oldStart) {
+				var targetOffset = $("#assets-dns").offset().top;
+				$("html,body").animate({
+					scrollTop : targetOffset
+				}, 0);
+				oldStart = o._iDisplayStart;
+			}
+		}
+	});
+
+{% endblock %}
