@@ -14,6 +14,9 @@ use App\Entity\Dns;
 use App\Entity\IpAddress;
 use App\Entity\Setting;
 use App\Entity\ApiRegistrar;
+use App\Entity\Scheduler;
+use Symfony\Component\Intl\Timezones;
+use App\Entity\Timezone;
 
 class AppFixtures extends Fixture
 {
@@ -110,7 +113,14 @@ class AppFixtures extends Fixture
     {}
 
     private function loadTimezones(ObjectManager $manager)
-    {}
+    {
+        $timezones = Timezones::getNames();
+        foreach($timezones as $tz => $local) {
+            $obj = new Timezone();
+            $obj->setTimezone($tz);
+            $manager->persist($obj);
+        }
+    }
 
     private function loadCustomFieldTypes(ObjectManager $manager)
     {
@@ -168,7 +178,69 @@ class AppFixtures extends Fixture
     }
 
     private function loadScheduler(ObjectManager $manager)
-    {}
+    {
+        $items = [
+            [
+                'name' => 'Domain Queue Processing',
+                'description' => 'Retrieves information for domains in the queue and adds them to DomainMOD.',
+                'interval' => 'Every 5 Minutes',
+                'expression' => '*/5 * * * * *',
+                'slug' => 'domain-queue',
+                'sort_order' => 10
+            ],
+            [
+                'name' => 'Send Expiration Email',
+                'description' => 'Sends an email out to everyone who\'s subscribed, letting them know of upcoming Domain & SSL Certificate expirations.<BR><BR>Users can subscribe via their User Profile.<BR><BR>Administrators can set the FROM email address and the number of days in the future to display in the email via System Settings.',
+                'interval' => 'Daily',
+                'expression' => '0 0 * * * *',
+                'slug' => 'expiration-email',
+                'sort_order' => 20
+            ],
+            [
+                'name' => 'Update Conversion Rates',
+                'description' => 'Retrieves the current currency conversion rates and updates the entire system, which keeps all of the financial information in DomainMOD accurate and up-to-date.<BR><BR>Users can set their default currency via their User Profile.',
+                'interval' => 'Daily',
+                'expression' => '0 0 * * * *',
+                'slug' => 'update-conversion-rates',
+                'sort_order' => 40
+            ],
+            [
+                'name' => 'System Cleanup',
+                'description' => '<em>Domains:</em> Converts all domain entries to lowercase.<br><br><em>TLDs:</em> Updates all TLD entries in the database to ensure their accuracy.<br><br><em>Segments:</em> Compares the Segment data to the domain database and records the status of each domain. This keeps the Segment filtering data up-to-date and running smoothly.<br><br><em>Fees:</em> Cross-references the Domain, SSL Certificate, and fee tables, making sure that everything is accurate. It also deletes all unused fees.',
+                'interval' => 'Daily',
+                'expression' => '0 0 * * * *',
+                'slug' => 'cleanup',
+                'sort_order' => 60
+            ],
+            [
+                'name' => 'Check For New Version',
+                'description' => 'Checks to see if there is a newer version of DomainMOD available to download.',
+                'interval' => 'Daily',
+                'expression' => '0 0 * * * *',
+                'slug' => 'check-new-version',
+                'sort_order' => 80
+            ],
+            [
+                'name' => 'Data Warehouse Build',
+                'description' => 'Rebuilds the Data Warehouse so that you have the most up-to-date information available.',
+                'interval' => 'Daily',
+                'expression' => '0 0 * * * *',
+                'slug' => 'data-warehouse-build',
+                'sort_order' => 100
+            ]
+        ];
+
+        foreach ($items as $item) {
+            $obj = new Scheduler();
+            $obj->setName($item['name'])
+                ->setDescription($item['description'])
+                ->setInterval($item['interval'])
+                ->setExpression($item['expression'])
+                ->setSlug($item['slug'])
+                ->setSortOrder($item['sort_order']);
+            $manager->persist($obj);
+        }
+    }
 
     private function loadApiRegistrars(ObjectManager $manager)
     {
