@@ -35,7 +35,7 @@ DomainMOD.
 		<tr>
 			<td></td>
 			<td><a href="{{ path('registrar_edit',{ id: registrar.id}) }}">{{ registrar.name }}</a>
-			{% if defaultRegistrar.id == registrar.id %}<strong>*</strong>
+			{% if defaultRegistrar and defaultRegistrar.id == registrar.id %}<strong>*</strong>
 			{% endif %}</td>
 			<td>{% if registrar.numAccounts >= 1 %} <a
 				href="registrar-accounts.php?rid={{ registrar.id }}">{{ registrar.numAccounts|number_format }}</a><?php

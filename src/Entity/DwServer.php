@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DwServer
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,6 +23,7 @@ class DwServer
     private $id;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
@@ -29,6 +31,7 @@ class DwServer
     private $name;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="host", type="string", length=100, nullable=false)
@@ -36,6 +39,7 @@ class DwServer
     private $host;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="protocol", type="string", length=5, nullable=false)
@@ -43,6 +47,7 @@ class DwServer
     private $protocol;
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="port", type="integer", nullable=false)
@@ -50,6 +55,7 @@ class DwServer
     private $port;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=100, nullable=false)
@@ -57,6 +63,7 @@ class DwServer
     private $username;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="api_token", type="string", length=255, nullable=false)
@@ -64,6 +71,7 @@ class DwServer
     private $apiToken;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="hash", type="text", length=0, nullable=false)
@@ -71,6 +79,7 @@ class DwServer
     private $hash;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="notes", type="text", length=0, nullable=false)
@@ -78,6 +87,7 @@ class DwServer
     private $notes;
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="dw_accounts", type="integer", nullable=false, options={"unsigned"=true})
@@ -85,6 +95,7 @@ class DwServer
     private $dwAccounts;
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="dw_dns_zones", type="integer", nullable=false, options={"unsigned"=true})
@@ -92,6 +103,7 @@ class DwServer
     private $dwDnsZones;
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="dw_dns_records", type="integer", nullable=false, options={"unsigned"=true})
@@ -99,6 +111,7 @@ class DwServer
     private $dwDnsRecords;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="build_status", type="boolean", nullable=false)
@@ -106,20 +119,23 @@ class DwServer
     private $buildStatus = '0';
 
     /**
+     *
      * @var \DateTime
      *
-     * @ORM\Column(name="build_start_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="build_start_time", type="datetime", nullable=false)
      */
     private $buildStartTime = '\'1970-01-01 00:00:00\'';
 
     /**
+     *
      * @var \DateTime
      *
-     * @ORM\Column(name="build_end_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="build_end_time", type="datetime", nullable=false)
      */
     private $buildEndTime = '\'1970-01-01 00:00:00\'';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="build_time", type="integer", nullable=false, options={"unsigned"=true})
@@ -127,6 +143,7 @@ class DwServer
     private $buildTime = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="has_ever_been_built", type="boolean", nullable=false)
@@ -134,6 +151,7 @@ class DwServer
     private $hasEverBeenBuilt = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="build_status_overall", type="boolean", nullable=false)
@@ -141,20 +159,23 @@ class DwServer
     private $buildStatusOverall = '0';
 
     /**
+     *
      * @var \DateTime
      *
-     * @ORM\Column(name="build_start_time_overall", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="build_start_time_overall", type="datetime", nullable=false)
      */
     private $buildStartTimeOverall = '\'1970-01-01 00:00:00\'';
 
     /**
+     *
      * @var \DateTime
      *
-     * @ORM\Column(name="build_end_time_overall", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="build_end_time_overall", type="datetime", nullable=false)
      */
     private $buildEndTimeOverall = '\'1970-01-01 00:00:00\'';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="build_time_overall", type="integer", nullable=false, options={"unsigned"=true})
@@ -162,6 +183,7 @@ class DwServer
     private $buildTimeOverall = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="has_ever_been_built_overall", type="boolean", nullable=false)
@@ -169,6 +191,7 @@ class DwServer
     private $hasEverBeenBuiltOverall = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="creation_type_id", type="boolean", nullable=false, options={"default"="2"})
@@ -176,6 +199,7 @@ class DwServer
     private $creationTypeId = '2';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
@@ -183,18 +207,24 @@ class DwServer
     private $createdBy = '0';
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updated;
 
-
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
 }

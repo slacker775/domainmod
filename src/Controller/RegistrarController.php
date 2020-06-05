@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Registrar;
@@ -12,11 +11,14 @@ use App\Repository\RegistrarRepository;
 use App\Repository\SettingRepository;
 
 /**
+ *
  * @Route("/assets/registrar")
  */
 class RegistrarController extends AbstractController
 {
+
     /**
+     *
      * @Route("/", name="registrar_index", methods={"GET"})
      */
     public function index(RegistrarRepository $repository, SettingRepository $settingRepository): Response
@@ -27,11 +29,12 @@ class RegistrarController extends AbstractController
         return $this->render('registrar/index.html.twig', [
             'registrars' => $registrars,
             'displayInactiveAssets' => true,
-            'defaultRegistrar' => $settings->getDefaultRegistrar(),
+            'defaultRegistrar' => $settings->getDefaultRegistrar()
         ]);
     }
 
     /**
+     *
      * @Route("/new", name="registrar_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -50,21 +53,23 @@ class RegistrarController extends AbstractController
 
         return $this->render('registrar/new.html.twig', [
             'registrar' => $registrar,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
     /**
+     *
      * @Route("/{id}", name="registrar_show", methods={"GET"})
      */
     public function show(Registrar $registrar): Response
     {
         return $this->render('registrar/show.html.twig', [
-            'registrar' => $registrar,
+            'registrar' => $registrar
         ]);
     }
 
     /**
+     *
      * @Route("/{id}/edit", name="registrar_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Registrar $registrar): Response
@@ -73,28 +78,41 @@ class RegistrarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
             return $this->redirectToRoute('registrar_index');
         }
 
         return $this->render('registrar/edit.html.twig', [
             'registrar' => $registrar,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
     /**
+     *
      * @Route("/{id}", name="registrar_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Registrar $registrar): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$registrar->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $registrar->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($registrar);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('registrar_index');
+    }
+
+    /**
+     * @Route("/missing/fees", name="registrar_missing_fees", methods={"GET"})
+     */
+    public function missingFees(RegistrarRepository $repository)
+    {
+        return $this->render('registrar/missing-fees.html.twig', [
+            'fees' => $repository->getMissingFees(),
+        ]);
     }
 }

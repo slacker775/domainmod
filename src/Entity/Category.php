@@ -42,7 +42,7 @@ class Category
      *
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
 
@@ -68,22 +68,29 @@ class Category
      *
      * @var \DateTimeInterface
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime;
+    private $created;
 
     /**
      *
      * @var \DateTimeInterface
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime;
+    private $updated;
 
     public function __construct()
     {
-        $this->insertTime = new \DateTime();
-        $this->updateTime = new \DateTime();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
+    
+    public static function create(string $name, string $stakeholder): self
+    {
+        $obj = new self();
+        $obj->setName($name)->setStakeholder($stakeholder);
+        return $obj;
     }
 
     public function getId(): int
@@ -116,14 +123,14 @@ class Category
         return $this->createdBy;
     }
 
-    public function getInsertTime(): \DateTimeInterface
+    public function getCreated(): \DateTimeInterface
     {
-        return $this->insertTime;
+        return $this->created;
     }
 
-    public function getUpdateTime(): \DateTimeInterface
+    public function getUpdated(): \DateTimeInterface
     {
-        return $this->updateTime;
+        return $this->updated;
     }
 
     public function setStakeholder(string $stakeholder): self

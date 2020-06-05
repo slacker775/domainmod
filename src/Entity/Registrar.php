@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Registrars
  *
- * @ORM\Table(name="registrars", indexes={@ORM\Index(name="name", columns={"name"})})
+ * @ORM\Table(name="registrars", indexes={@ORM\Index(name="registrars_name", columns={"name"})})
  * @ORM\Entity
  */
 class Registrar
@@ -101,25 +101,25 @@ class Registrar
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime;
+    private $created;
 
     /**
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime;
+    private $updated;
 
     public function __construct()
     {
         $this->domains = new ArrayCollection();
         $this->accounts = new ArrayCollection();
         $this->fees = new ArrayCollection();
-        $this->insertTime = new \DateTime();
-        $this->updateTime = new \DateTime();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     public function getId(): int

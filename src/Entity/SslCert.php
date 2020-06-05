@@ -107,15 +107,15 @@ class SslCert
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false, options={"default"="'1970-01-01'"})
+     * @ORM\Column(name="expiry_date", type="date", nullable=false)
      */
     private $expiryDate;
 
     /**
      *
-     * @var Fee
+     * @var SslFee
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Fee")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslFee")
      * @ORM\JoinColumn(name="fee_id", referencedColumnName="id")
      */
     private $fee;
@@ -174,17 +174,17 @@ class SslCert
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime;
+    private $created;
 
     /**
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime;
+    private $updated;
 
     public function __construct()
     {
@@ -244,7 +244,7 @@ class SslCert
         return $this->expiryDate;
     }
 
-    public function getFee(): Fee
+    public function getFee(): SslFee
     {
         return $this->fee;
     }
@@ -347,7 +347,7 @@ class SslCert
         return $this;
     }
 
-    public function setFee(Fee $fee): self
+    public function setFee(SslFee $fee): self
     {
         $this->fee = $fee;
         return $this;

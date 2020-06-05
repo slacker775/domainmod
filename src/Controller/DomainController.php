@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Form\DomainType;
 use App\Repository\RegistrarRepository;
 use App\Repository\CreationTypeRepository;
+use App\Repository\UserRepository;
 
 /**
  *
@@ -49,7 +50,7 @@ class DomainController extends AbstractController
      *
      * @Route("/new", name="domain_new", methods={"GET","POST"})
      */
-    public function new(Request $request, DomainRepository $repository, RegistrarRepository $registrarRepository, CreationTypeRepository $creationTypeRepository): Response
+    public function new(Request $request, DomainRepository $repository, RegistrarRepository $registrarRepository, CreationTypeRepository $creationTypeRepository, UserRepository $userRepository): Response
     {
         $domain = new Domain();
         $form = $this->createForm(DomainType::class, $domain);
@@ -65,7 +66,8 @@ class DomainController extends AbstractController
                 ->getRegistrar())
                 ->setFee($registrarRepository->getFeeByTld($domain->getAccount()
                 ->getRegistrar(), $domain->getTld()))
-                ->setCreationType($creationTypeRepository->findByName('Manual'));
+                ->setCreationType($creationTypeRepository->findByName('Manual'))
+                ->setCreatedBy($userRepository->findByName('admin'));
             $repository->save($domain);
             $entityManager->flush();
 

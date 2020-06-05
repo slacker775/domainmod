@@ -22,11 +22,12 @@ class DomainQueueList
     private $id;
 
     /**
-     * @var int
+     * @var ApiRegistrar
      *
-     * @ORM\Column(name="api_registrar_id", type="smallint", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\ApiRegistrar")
+     * @ORM\JoinColumn(name="api_registrar_id", referencedColumnName="id")
      */
-    private $apiRegistrarId = '0';
+    private $apiRegistrar = '0';
 
     /**
      * @var int
@@ -36,25 +37,28 @@ class DomainQueueList
     private $domainCount = '0';
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="owner_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Owner
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $ownerId = '0';
+    private $owner = '0';
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="registrar_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Registrar
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\Registrar")
+     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrarId = '0';
+    private $registrar = '0';
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="account_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var RegistrarAccount
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
-    private $accountId = '0';
+    private $account = '0';
 
     /**
      * @var bool
@@ -85,18 +89,19 @@ class DomainQueueList
     private $copiedToHistory = '0';
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
     private $createdBy = '0';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
 
 }

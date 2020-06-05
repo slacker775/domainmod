@@ -81,16 +81,16 @@ class Segment
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updated;
 
     public function __construct()
     {

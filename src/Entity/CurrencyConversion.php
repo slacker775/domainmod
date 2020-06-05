@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CurrencyConversion
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,6 +23,7 @@ class CurrencyConversion
     private $id;
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="currency_id", type="integer", nullable=false, options={"unsigned"=true})
@@ -29,6 +31,7 @@ class CurrencyConversion
     private $currencyId;
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="user_id", type="integer", nullable=false, options={"unsigned"=true})
@@ -36,6 +39,7 @@ class CurrencyConversion
     private $userId;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="conversion", type="decimal", precision=12, scale=4, nullable=false)
@@ -43,18 +47,24 @@ class CurrencyConversion
     private $conversion;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updated;
 
-
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
 }

@@ -53,7 +53,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns3", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns3", type="string", length=255, nullable=true)
      */
     private $dns3;
 
@@ -61,7 +61,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns4", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns4", type="string", length=255, nullable=true)
      */
     private $dns4;
 
@@ -69,7 +69,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns5", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns5", type="string", length=255, nullable=true)
      */
     private $dns5;
 
@@ -77,7 +77,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns6", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns6", type="string", length=255, nullable=true)
      */
     private $dns6;
 
@@ -85,7 +85,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns7", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns7", type="string", length=255, nullable=true)
      */
     private $dns7;
 
@@ -93,7 +93,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns8", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns8", type="string", length=255, nullable=true)
      */
     private $dns8;
 
@@ -101,7 +101,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns9", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns9", type="string", length=255, nullable=true)
      */
     private $dns9;
 
@@ -109,7 +109,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="dns10", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dns10", type="string", length=255, nullable=true)
      */
     private $dns10;
 
@@ -117,7 +117,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip1", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip1", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip1;
@@ -126,7 +126,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip2", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip2", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip2;
@@ -135,7 +135,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip3", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip3", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip3;
@@ -144,7 +144,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip4", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip4", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip4;
@@ -153,7 +153,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip5", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip5", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip5;
@@ -162,7 +162,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip6", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip6", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip6;
@@ -171,7 +171,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip7", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip7", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip7;
@@ -180,7 +180,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip8", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip8", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip8;
@@ -189,7 +189,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip9", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip9", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip9;
@@ -198,7 +198,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="ip10", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ip10", type="string", length=45, nullable=true)
      * @Assert\Ip
      */
     private $ip10;
@@ -207,7 +207,7 @@ class Dns
      *
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
 
@@ -249,24 +249,24 @@ class Dns
      *
      * @var \DateTimeInterface
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
     /**
      *
      * @var \DateTimeInterface
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updated;
 
     public function __construct()
     {
         $this->domains = new ArrayCollection();
         $this->numberOfServers = 0;
-        $this->insertTime = new \DateTime();
-        $this->updateTime = new \DateTime();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     public function getName(): string
@@ -294,97 +294,97 @@ class Dns
         return $this->dns2;
     }
 
-    public function getDns3(): string
+    public function getDns3(): ?string
     {
         return $this->dns3;
     }
 
-    public function getDns4(): string
+    public function getDns4(): ?string
     {
         return $this->dns4;
     }
 
-    public function getDns5(): string
+    public function getDns5(): ?string
     {
         return $this->dns5;
     }
 
-    public function getDns6(): string
+    public function getDns6(): ?string
     {
         return $this->dns6;
     }
 
-    public function getDns7(): string
+    public function getDns7(): ?string
     {
         return $this->dns7;
     }
 
-    public function getDns8(): string
+    public function getDns8(): ?string
     {
         return $this->dns8;
     }
 
-    public function getDns9(): string
+    public function getDns9(): ?string
     {
         return $this->dns9;
     }
 
-    public function getDns10(): string
+    public function getDns10(): ?string
     {
         return $this->dns10;
     }
 
-    public function getIp1(): string
+    public function getIp1(): ?string
     {
         return $this->ip1;
     }
 
-    public function getIp2(): string
+    public function getIp2(): ?string
     {
         return $this->ip2;
     }
 
-    public function getIp3(): string
+    public function getIp3(): ?string
     {
         return $this->ip3;
     }
 
-    public function getIp4(): string
+    public function getIp4(): ?string
     {
         return $this->ip4;
     }
 
-    public function getIp5(): string
+    public function getIp5(): ?string
     {
         return $this->ip5;
     }
 
-    public function getIp6(): string
+    public function getIp6(): ?string
     {
         return $this->ip6;
     }
 
-    public function getIp7(): string
+    public function getIp7(): ?string
     {
         return $this->ip7;
     }
 
-    public function getIp8(): string
+    public function getIp8(): ?string
     {
         return $this->ip8;
     }
 
-    public function getIp9(): string
+    public function getIp9(): ?string
     {
         return $this->ip9;
     }
 
-    public function getIp10(): string
+    public function getIp10(): ?string
     {
         return $this->ip10;
     }
 
-    public function getNotes(): string
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
@@ -402,16 +402,6 @@ class Dns
     public function getCreatedBy(): User
     {
         return $this->createdBy;
-    }
-
-    public function getInsertTime(): \DateTimeInterface
-    {
-        return $this->insertTime;
-    }
-
-    public function getUpdateTime(): \DateTimeInterface
-    {
-        return $this->updateTime;
     }
 
     public function setName(string $name): self

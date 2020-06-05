@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Timezone
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,6 +23,7 @@ class Timezone
     private $id;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="timezone", type="string", length=50, nullable=false)
@@ -29,11 +31,31 @@ class Timezone
     private $timezone;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+    }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getTimezone(): string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(string $timezone): self
+    {
+        $this->timezone = $timezone;
+        return $this;
+    }
 }

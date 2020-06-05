@@ -59,7 +59,7 @@ class Scheduler
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_run", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="last_run", type="datetime", nullable=true)
      */
     private $lastRun = '\'1970-01-01 00:00:00\'';
 
@@ -73,7 +73,7 @@ class Scheduler
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="next_run", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="next_run", type="datetime", nullable=true)
      */
     private $nextRun = '\'1970-01-01 00:00:00\'';
 
@@ -101,16 +101,16 @@ class Scheduler
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updated;
 
 
 }

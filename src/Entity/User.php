@@ -106,7 +106,7 @@ class User
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="last_login", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
 
@@ -132,17 +132,17 @@ class User
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime;
+    private $created;
 
     /**
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime;
+    private $updated;
 
     public function __construct()
     {
@@ -152,8 +152,8 @@ class User
         $this->active = true;
         $this->numberOfLogins = 0;
         $this->lastLogin = null;
-        $this->insertTime = new \DateTime();
-        $this->updateTime = new \DateTime();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     public function getId(): int

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Domain Registrar Missing Fees
+{% endblock %}
+
+{% block body %}
+{{ dump(fees) }}
+The following Registrars/TLDs are missing Domain fees. In order to
+ensure your domain reporting is accurate please update these fees as
+soon as possible.
+<BR>
+
+<table id="assets-registrar-fees-missing"
+	class="table table-striped dt-responsive cell-border compact">
+	<thead>
+		<tr>
+			<th width="20px"></th>
+			<th>Registrar</th>
+			<th>Missing TLD Fees</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for f in fees %}
+		<tr>
+			<td></td>
+			<td>{{ f.name }}</td>
+			<td></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+
+{% block datatable_options %}
+	var oldStart = 0;
+	$('#assets-registrar-fees-missing').DataTable(
+			{
+				"paging" : false,
+				"lengthChange" : false,
+				"lengthMenu" : [ [ 25, 50, 75, 100, -1 ],
+						[ 25, 50, 75, 100, "All" ] ],
+				"searching" : false,
+				"info" : false,
+				"autoWidth" : true,
+				"bAutoWidth" : false,
+				"responsive" : {
+					details : {
+						type : "column"
+					}
+				},
+				"columnDefs" : [ {
+					className : "control",
+					orderable : false,
+					targets : 0
+				} ],
+				"ordering" : true,
+				"order" : [ [ 1, "asc" ] ],
+				"bSortClasses" : false,
+				"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+				"fnDrawCallback" : function(o) {
+					if (o._iDisplayStart != oldStart) {
+						var targetOffset = $("#assets-registrar-fees-missing")
+								.offset().top;
+						$("html,body").animate({
+							scrollTop : targetOffset
+						}, 0);
+						oldStart = o._iDisplayStart;
+					}
+				}
+			});
+{% endblock %}

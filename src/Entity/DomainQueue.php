@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DomainQueue
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,48 +23,60 @@ class DomainQueue
     private $id;
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="api_registrar_id", type="smallint", nullable=false)
+     * @var ApiRegistrar
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\ApiRegistrar")
+     * @ORM\JoinColumn(name="api_registrar_id", referencedColumnName="id")
      */
-    private $apiRegistrarId = '0';
+    private $apiRegistrar;
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="domain_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Domain
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\ApiRegistrar")
+     * @ORM\JoinColumn(name="domain_id", referencedColumnName="id")
      */
-    private $domainId = '0';
+    private $domain = '0';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="owner_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Owner
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $ownerId = '0';
+    private $owner = '0';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="registrar_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Registrar
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Registrar")
+     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrarId = '0';
+    private $registrar = '0';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="account_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var RegistrarAccount
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
+     * @ORM\JoinColumn(name="account_id",referencedColumnName="id")
      */
-    private $accountId = '0';
+    private $account = '0';
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="domain", type="string", length=255, nullable=false)
      */
-    private $domain;
+    private $domainName;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="tld", type="string", length=50, nullable=false)
@@ -71,41 +84,51 @@ class DomainQueue
     private $tld;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false, options={"default"="'1970-01-01'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="expiry_date", type="date", nullable=false)
      */
     private $expiryDate = '\'1970-01-01\'';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="cat_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Category
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
      */
-    private $catId = '0';
+    private $category = '0';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="dns_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Dns
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Dns")
+     * @ORM\JoinColumn(name="dns_id", referencedColumnName="id")
      */
-    private $dnsId = '0';
+    private $dns = '0';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="ip_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var IpAddress
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
+     * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
-    private $ipId = '0';
+    private $ip = '0';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="hosting_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Hosting
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hosting")
+     * @ORM\JoinColumn(name="hosting_id", referencedColumnName="id")
      */
-    private $hostingId = '0';
+    private $hosting = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="autorenew", type="boolean", nullable=false)
@@ -113,6 +136,7 @@ class DomainQueue
     private $autorenew = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="privacy", type="boolean", nullable=false)
@@ -120,6 +144,7 @@ class DomainQueue
     private $privacy = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="processing", type="boolean", nullable=false)
@@ -127,6 +152,7 @@ class DomainQueue
     private $processing = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="ready_to_import", type="boolean", nullable=false)
@@ -134,6 +160,7 @@ class DomainQueue
     private $readyToImport = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="finished", type="boolean", nullable=false)
@@ -141,6 +168,7 @@ class DomainQueue
     private $finished = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="already_in_domains", type="boolean", nullable=false)
@@ -148,6 +176,7 @@ class DomainQueue
     private $alreadyInDomains = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="already_in_queue", type="boolean", nullable=false)
@@ -155,6 +184,7 @@ class DomainQueue
     private $alreadyInQueue = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="invalid_domain", type="boolean", nullable=false)
@@ -162,6 +192,7 @@ class DomainQueue
     private $invalidDomain = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="copied_to_history", type="boolean", nullable=false)
@@ -169,18 +200,18 @@ class DomainQueue
     private $copiedToHistory = '0';
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
     private $createdBy = '0';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
-
-
+    private $created;
 }

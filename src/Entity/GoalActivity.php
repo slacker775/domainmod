@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class GoalActivity
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,6 +23,7 @@ class GoalActivity
     private $id;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=7, nullable=false, options={"default"="'unknown'"})
@@ -29,6 +31,7 @@ class GoalActivity
     private $type = '\'unknown\'';
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="old_version", type="string", length=10, nullable=false, options={"default"="'unknown'"})
@@ -36,6 +39,7 @@ class GoalActivity
     private $oldVersion = '\'unknown\'';
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="new_version", type="string", length=10, nullable=false, options={"default"="'unknown'"})
@@ -43,6 +47,7 @@ class GoalActivity
     private $newVersion = '\'unknown\'';
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="ip", type="string", length=45, nullable=false, options={"default"="'unknown'"})
@@ -50,6 +55,7 @@ class GoalActivity
     private $ip = '\'unknown\'';
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="agent", type="text", length=0, nullable=false)
@@ -57,6 +63,7 @@ class GoalActivity
     private $agent;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="language", type="string", length=100, nullable=false, options={"default"="'unknown'"})
@@ -64,6 +71,7 @@ class GoalActivity
     private $language = '\'unknown\'';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="new_activity", type="boolean", nullable=false, options={"default"="1"})
@@ -71,18 +79,24 @@ class GoalActivity
     private $newActivity = true;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updated;
 
-
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
 }

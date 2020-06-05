@@ -73,7 +73,7 @@ class DomainQueueHistory
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false, options={"default"="'1970-01-01'"})
+     * @ORM\Column(name="expiry_date", type="date", nullable=false)
      */
     private $expiryDate = '\'1970-01-01\'';
 
@@ -143,9 +143,9 @@ class DomainQueueHistory
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
 
 }

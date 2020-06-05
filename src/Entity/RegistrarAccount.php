@@ -24,7 +24,7 @@ class RegistrarAccount
     /**
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="accounts")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
     private $owner;
@@ -40,21 +40,21 @@ class RegistrarAccount
     /**
      * @var string
      *
-     * @ORM\Column(name="email_address", type="string", length=100, nullable=false)
+     * @ORM\Column(name="email_address", type="string", length=100, nullable=true)
      */
     private $emailAddress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=100, nullable=false)
+     * @ORM\Column(name="username", type="string", length=100, nullable=true)
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     * @ORM\Column(name="password", type="string", length=255, nullable=true)
      */
     private $password;
 
@@ -68,28 +68,28 @@ class RegistrarAccount
     /**
      * @var string
      *
-     * @ORM\Column(name="reseller_id", type="string", length=100, nullable=false)
+     * @ORM\Column(name="reseller_id", type="string", length=100, nullable=true)
      */
     private $resellerId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="api_app_name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="api_app_name", type="string", length=255, nullable=true)
      */
     private $apiAppName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="api_key", type="string", length=255, nullable=false)
+     * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
      */
     private $apiKey;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="api_secret", type="string", length=255, nullable=false)
+     * @ORM\Column(name="api_secret", type="string", length=255, nullable=true)
      */
     private $apiSecret;
 
@@ -103,38 +103,46 @@ class RegistrarAccount
     /**
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
 
     /**
-     * @var bool
      *
-     * @ORM\Column(name="creation_type_id", type="boolean", nullable=false, options={"default"="2"})
+     * @var CreationType
+     *
+     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
      */
-    private $creationTypeId = '2';
-
+    private $creationType;
+    
     /**
-     * @var int
      *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
-     */
-    private $createdBy = '0';
-
-    /**
-     * @var \DateTime
+     * @var User
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $createdBy;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
+     */
+    private $updated;
+
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
     public function getUsername(): string
     {
         return $this->username;

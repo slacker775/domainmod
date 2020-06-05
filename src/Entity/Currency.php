@@ -59,23 +59,30 @@ class Currency
     /**
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
-
+    private $created;
+    
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
-
+    private $updated;
+    
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
 
 }

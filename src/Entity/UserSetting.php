@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class UserSetting
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,6 +23,7 @@ class UserSetting
     private $id;
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="user_id", type="integer", nullable=false, options={"unsigned"=true})
@@ -29,6 +31,7 @@ class UserSetting
     private $userId;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="default_currency", type="string", length=3, nullable=false)
@@ -36,6 +39,7 @@ class UserSetting
     private $defaultCurrency;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="default_timezone", type="string", length=50, nullable=false, options={"default"="'Canada/Pacific'"})
@@ -43,6 +47,7 @@ class UserSetting
     private $defaultTimezone = '\'Canada/Pacific\'';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_category_domains", type="integer", nullable=false, options={"unsigned"=true})
@@ -50,6 +55,7 @@ class UserSetting
     private $defaultCategoryDomains = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_category_ssl", type="integer", nullable=false, options={"unsigned"=true})
@@ -57,6 +63,7 @@ class UserSetting
     private $defaultCategorySsl = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_dns", type="integer", nullable=false, options={"unsigned"=true})
@@ -64,6 +71,7 @@ class UserSetting
     private $defaultDns = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_host", type="integer", nullable=false, options={"unsigned"=true})
@@ -71,6 +79,7 @@ class UserSetting
     private $defaultHost = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_ip_address_domains", type="integer", nullable=false, options={"unsigned"=true})
@@ -78,6 +87,7 @@ class UserSetting
     private $defaultIpAddressDomains = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_ip_address_ssl", type="integer", nullable=false, options={"unsigned"=true})
@@ -85,6 +95,7 @@ class UserSetting
     private $defaultIpAddressSsl = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_owner_domains", type="integer", nullable=false, options={"unsigned"=true})
@@ -92,6 +103,7 @@ class UserSetting
     private $defaultOwnerDomains = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_owner_ssl", type="integer", nullable=false, options={"unsigned"=true})
@@ -99,6 +111,7 @@ class UserSetting
     private $defaultOwnerSsl = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_registrar", type="integer", nullable=false, options={"unsigned"=true})
@@ -106,6 +119,7 @@ class UserSetting
     private $defaultRegistrar = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_registrar_account", type="integer", nullable=false, options={"unsigned"=true})
@@ -113,6 +127,7 @@ class UserSetting
     private $defaultRegistrarAccount = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_ssl_provider_account", type="integer", nullable=false, options={"unsigned"=true})
@@ -120,6 +135,7 @@ class UserSetting
     private $defaultSslProviderAccount = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_ssl_type", type="integer", nullable=false, options={"unsigned"=true})
@@ -127,6 +143,7 @@ class UserSetting
     private $defaultSslType = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="default_ssl_provider", type="integer", nullable=false, options={"unsigned"=true})
@@ -134,6 +151,7 @@ class UserSetting
     private $defaultSslProvider = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="expiration_emails", type="boolean", nullable=false)
@@ -141,6 +159,7 @@ class UserSetting
     private $expirationEmails = '0';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="number_of_domains", type="integer", nullable=false, options={"default"="50"})
@@ -148,6 +167,7 @@ class UserSetting
     private $numberOfDomains = '50';
 
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="number_of_ssl_certs", type="integer", nullable=false, options={"default"="50"})
@@ -155,6 +175,7 @@ class UserSetting
     private $numberOfSslCerts = '50';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_owner", type="boolean", nullable=false)
@@ -162,6 +183,7 @@ class UserSetting
     private $displayDomainOwner = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_registrar", type="boolean", nullable=false)
@@ -169,6 +191,7 @@ class UserSetting
     private $displayDomainRegistrar = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_account", type="boolean", nullable=false, options={"default"="1"})
@@ -176,6 +199,7 @@ class UserSetting
     private $displayDomainAccount = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_expiry_date", type="boolean", nullable=false, options={"default"="1"})
@@ -183,6 +207,7 @@ class UserSetting
     private $displayDomainExpiryDate = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_category", type="boolean", nullable=false, options={"default"="1"})
@@ -190,6 +215,7 @@ class UserSetting
     private $displayDomainCategory = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_dns", type="boolean", nullable=false, options={"default"="1"})
@@ -197,6 +223,7 @@ class UserSetting
     private $displayDomainDns = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_host", type="boolean", nullable=false)
@@ -204,6 +231,7 @@ class UserSetting
     private $displayDomainHost = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_ip", type="boolean", nullable=false)
@@ -211,6 +239,7 @@ class UserSetting
     private $displayDomainIp = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_tld", type="boolean", nullable=false, options={"default"="1"})
@@ -218,6 +247,7 @@ class UserSetting
     private $displayDomainTld = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_domain_fee", type="boolean", nullable=false, options={"default"="1"})
@@ -225,6 +255,7 @@ class UserSetting
     private $displayDomainFee = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_owner", type="boolean", nullable=false, options={"default"="1"})
@@ -232,6 +263,7 @@ class UserSetting
     private $displaySslOwner = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_provider", type="boolean", nullable=false)
@@ -239,6 +271,7 @@ class UserSetting
     private $displaySslProvider = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_account", type="boolean", nullable=false, options={"default"="1"})
@@ -246,6 +279,7 @@ class UserSetting
     private $displaySslAccount = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_domain", type="boolean", nullable=false, options={"default"="1"})
@@ -253,6 +287,7 @@ class UserSetting
     private $displaySslDomain = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_type", type="boolean", nullable=false, options={"default"="1"})
@@ -260,6 +295,7 @@ class UserSetting
     private $displaySslType = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_expiry_date", type="boolean", nullable=false, options={"default"="1"})
@@ -267,6 +303,7 @@ class UserSetting
     private $displaySslExpiryDate = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_ip", type="boolean", nullable=false)
@@ -274,6 +311,7 @@ class UserSetting
     private $displaySslIp = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_category", type="boolean", nullable=false)
@@ -281,6 +319,7 @@ class UserSetting
     private $displaySslCategory = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_ssl_fee", type="boolean", nullable=false)
@@ -288,6 +327,7 @@ class UserSetting
     private $displaySslFee = '0';
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_inactive_assets", type="boolean", nullable=false, options={"default"="1"})
@@ -295,6 +335,7 @@ class UserSetting
     private $displayInactiveAssets = true;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="display_dw_intro_page", type="boolean", nullable=false, options={"default"="1"})
@@ -302,18 +343,24 @@ class UserSetting
     private $displayDwIntroPage = true;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime = '\'1970-01-01 00:00:00\'';
+    private $created;
 
     /**
-     * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime = '\'1970-01-01 00:00:00\'';
+    private $updated;
 
-
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
 }

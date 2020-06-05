@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Domains
  *
- * @ORM\Table(name="domains", indexes={@ORM\Index(name="domain", columns={"domain"})})
+ * @ORM\Table(name="domains", indexes={@ORM\Index(name="domain_idx", columns={"domain"})})
  * @ORM\Entity
  */
 class Domain
@@ -84,7 +84,7 @@ class Domain
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false, options={"default"="'1970-01-01'"})
+     * @ORM\Column(name="expiry_date", type="date", nullable=false)
      */
     private $expiryDate;
 
@@ -99,7 +99,7 @@ class Domain
 
     /**
      *
-     * @var int
+     * @var Fee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Fee")
      * @ORM\JoinColumn(name="fee_id", referencedColumnName="id")
@@ -118,7 +118,7 @@ class Domain
      *
      * @var Dns
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Dns")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Dns", inversedBy="domains")
      * @ORM\JoinColumn(name="dns_id", referencedColumnName="id")
      */
     private $dns;
@@ -145,7 +145,7 @@ class Domain
      *
      * @var string
      *
-     * @ORM\Column(name="function", type="string", length=255, nullable=false)
+     * @ORM\Column(name="function", type="string", length=255, nullable=true)
      */
     private $function;
 
@@ -153,7 +153,7 @@ class Domain
      *
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
 
@@ -200,9 +200,10 @@ class Domain
 
     /**
      *
-     * @var int
+     * @var User
      *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
     private $createdBy;
 
@@ -210,22 +211,22 @@ class Domain
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime;
+    private $created;
 
     /**
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
-    private $updateTime;
+    private $updated;
 
     public function __construct()
     {
-        $this->insertTime = new \DateTime();
-        $this->updateTime = new \DateTime();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
         $this->status = '1';
         $this->totalCost = 0;
         $this->function = '';
@@ -335,23 +336,9 @@ class Domain
         return $this->creationType;
     }
 
-    /**
-     *
-     * @return number
-     */
-    public function getCreatedBy()
+    public function getCreatedBy(): User
     {
         return $this->createdBy;
-    }
-
-    public function getInsertTime(): \DateTime
-    {
-        return $this->insertTime;
-    }
-
-    public function getUpdateTime(): \DateTime
-    {
-        return $this->updateTime;
     }
 
     public function setOwner(Owner $owner): self
@@ -399,7 +386,7 @@ class Domain
         return $this;
     }
 
-    public function setFee(Fee $fee): self
+    public function setFee(?Fee $fee): self
     {
         $this->fee = $fee;
         return $this;
@@ -479,15 +466,4 @@ class Domain
         return $this;
     }
 
-    public function setInsertTime(\DateTime $insertTime): self
-    {
-        $this->insertTime = $insertTime;
-        return $this;
-    }
-
-    public function setUpdateTime(\DateTime $updateTime): self
-    {
-        $this->updateTime = $updateTime;
-        return $this;
-    }
 }

@@ -38,7 +38,7 @@ class DomainQueueTemp
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false, options={"default"="'1970-01-01'"})
+     * @ORM\Column(name="expiry_date", type="date", nullable=false)
      */
     private $expiryDate = '\'1970-01-01\'';
 

@@ -36,13 +36,14 @@ class CreationType
      *
      * @var \DateTime
      *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false, options={"default"="'1970-01-01 00:00:00'"})
+     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
-    private $insertTime;
+    private $created;
 
-    public function __construct()
+    public function __construct(string $name)
     {
-        $this->insertTime = new \DateTime();
+        $this->name = $name;
+        $this->created = new \DateTime();
     }
 
     public function getId(): int
@@ -55,9 +56,9 @@ class CreationType
         return $this->name;
     }
 
-    public function getInsertTime(): \DateTime
+    public function getCreated(): \DateTime
     {
-        return $this->insertTime;
+        return $this->created;
     }
 
     public function setName(string $name): self

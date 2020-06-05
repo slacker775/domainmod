@@ -13,9 +13,7 @@
                 <th>Stakeholder</th>
                 <th>Notes</th>
                 <th>CreationType</th>
-                {# <th>CreatedBy</th> #}
-                <th>InsertTime</th>
-                <th>UpdateTime</th>
+                <th>CreatedBy</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -27,9 +25,7 @@
                 <td>{{ category.stakeholder }}</td>
                 <td>{{ category.notes }}</td>
                 <td>{{ category.creationType }}</td>
-                {# <td>{{ category.createdBy }}</td> #}
-                <td>{{ category.insertTime ? category.insertTime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ category.updateTime ? category.updateTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ category.createdBy }}</td>
                 <td>
                     <a href="{{ path('category_show', {'id': category.id}) }}">show</a>
                     <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
