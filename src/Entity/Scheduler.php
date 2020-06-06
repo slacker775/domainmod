@@ -167,17 +167,17 @@ class Scheduler
         return $this->expression;
     }
 
-    public function getLastRun(): \DateTimeInterface
+    public function getLastRun(): ?\DateTimeInterface
     {
         return $this->lastRun;
     }
 
-    public function getLastDuration(): string
+    public function getLastDuration(): ?string
     {
         return $this->lastDuration;
     }
 
-    public function getNextRun(): \DateTimeInterface
+    public function getNextRun(): ?\DateTimeInterface
     {
         return $this->nextRun;
     }
