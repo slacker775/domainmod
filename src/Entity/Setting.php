@@ -356,12 +356,12 @@ class Setting
         return $this;
     }
 
-    public function getDefaultOwnerDomains(): Owner
+    public function getDefaultOwnerDomains(): ?Owner
     {
         return $this->defaultOwnerDomains;
     }
 
-    public function getDefaultOwnerSsl(): Owner
+    public function getDefaultOwnerSsl(): ?Owner
     {
         return $this->defaultOwnerSsl;
     }
@@ -378,52 +378,52 @@ class Setting
         return $this;
     }
 
-    public function getDefaultCategoryDomains(): Category
+    public function getDefaultCategoryDomains(): ?Category
     {
         return $this->defaultCategoryDomains;
     }
 
-    public function getDefaultCategorySsl(): Category
+    public function getDefaultCategorySsl(): ?Category
     {
         return $this->defaultCategorySsl;
     }
 
-    public function getDefaultDns(): Dns
+    public function getDefaultDns(): ?Dns
     {
         return $this->defaultDns;
     }
 
-    public function getDefaultHost(): Hosting
+    public function getDefaultHost(): ?Hosting
     {
         return $this->defaultHost;
     }
 
-    public function getDefaultIpAddressDomains(): IpAddress
+    public function getDefaultIpAddressDomains(): ?IpAddress
     {
         return $this->defaultIpAddressDomains;
     }
 
-    public function getDefaultIpAddressSsl(): IpAddress
+    public function getDefaultIpAddressSsl(): ?IpAddress
     {
         return $this->defaultIpAddressSsl;
     }
 
-    public function getDefaultRegistrarAccount(): RegistrarAccount
+    public function getDefaultRegistrarAccount(): ?RegistrarAccount
     {
         return $this->defaultRegistrarAccount;
     }
 
-    public function getDefaultSslProviderAccount(): SslAccount
+    public function getDefaultSslProviderAccount(): ?SslAccount
     {
         return $this->defaultSslProviderAccount;
     }
 
-    public function getDefaultSslType(): SslCertType
+    public function getDefaultSslType(): ?SslCertType
     {
         return $this->defaultSslType;
     }
 
-    public function getDefaultSslProvider(): SslProvider
+    public function getDefaultSslProvider(): ?SslProvider
     {
         return $this->defaultSslProvider;
     }

@@ -1,0 +1,27 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{{ form_start(form) }}
+<h3>Domain Defaults</h3>
+
+{{ form_row(form.defaultRegistrar) }}
+{{ form_row(form.defaultRegistrarAccount) }}
+{{ form_row(form.defaultDns) }}
+{{ form_row(form.defaultHost) }}
+{{ form_row(form.defaultIpAddressDomains) }}
+{{ form_row(form.defaultCategoryDomains) }}
+{{ form_row(form.defaultOwnerDomains) }}
+
+<br>
+<h3>SSL Defaults</h3>
+
+{{ form_row(form.defaultSslProvider) }}
+{{ form_row(form.defaultSslProviderAccount) }}
+{{ form_row(form.defaultSslType) }}
+{{ form_row(form.defaultIpAddressSsl) }}
+{{ form_row(form.defaultCategorySsl) }}
+{{ form_row(form.defaultOwnerSsl) }}
+
+<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+	{{ button_label|default('Update System Defaults') }}
+</button>
+{{ form_end(form) }}
