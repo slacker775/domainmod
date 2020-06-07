@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Domain Registrar Accounts
+{% endblock %}
+
+{% block body %}
+
+Below is a list of all the Domain Registrar Accounts that are stored in
+DomainMOD.
+<br>
+<br>
+<a href="{{ path('registrar_account_new') }}">{{ _self.showButton('button','Add Registrar Account') }}</a>
+<a href="{{ path('registrar_account_export') }}">{{ _self.showButton('button','Export') }}</a>
+<br>
+<br>
+{% if registrar_accounts|length > 0 %}
+<table id="assets-registrar-accounts"
+	class="table table-striped dt-responsive cell-border compact">
+	<thead>
+		<tr>
+			<th width="20px"></th>
+			<th>Registrar</th>
+			<th>Account</th>
+			<th>Owner</th>
+			<th>Domains</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for registrar_account in registrar_accounts %}
+		<tr>
+			<td></td>
+			<td><a
+				href="{{ path('registrar_edit', { id: registrar_account.registrar.id }) }}">{{ registrar_account.registrar }}</a>
+			</td>
+
+			<td><a
+				href="{{ path('registrar_account_edit', { id: registrar_account.id }) }}">{{ registrar_account.username }}</a>
+				{% if defaultRegistrarAccount == registrar_account %} <strong>*</strong>
+				{% endif %} {% if registrar_account.reseller %} <strong>^</strong> {% endif %}
+			</td>
+
+			<td><a href="edit/account-owner.php?oid=1">{{ registrar_account.owner }}</a></td>
+
+			<td>{% if registrar_account.getActiveDomainCount > 0 %} <a
+				href="{{ path('domain_index') }}">{{ registrar_account.getActiveDomainCount }}</a>
+				{% else %} - {% endif %}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<strong>*</strong>
+= Default (
+<a href="../settings/defaults/">set defaults</a>
+)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<strong>^</strong>
+= Reseller
+<br>
+<br>
+{% else %}
+<br>
+You don't currently have any Registrar Accounts.
+<a href="{{ path('registrar_account_new') }}">Click here to add one</a>
+.
+<br>
+{% endif %}
+{% endblock %}
+
+{% block datatable_options %}
+
+var oldStart = 0; $('#assets-registrar-accounts').DataTable( { "paging"
+: true, "lengthChange" : true, "lengthMenu" : [ [ 25, 50, 75, 100, -1 ],
+[ 25, 50, 75, 100, "All" ] ], "searching" : true, "info" : true,
+"autoWidth" : true, "bAutoWidth" : false, "responsive" : { details : {
+type : "column" } }, "columnDefs" : [ { className : "control", orderable
+: false, targets : 0 } ], "ordering" : true, "order" : [ [ 1, "asc" ] ],
+"bSortClasses" : false, "dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+"fnDrawCallback" : function(o) { if (o._iDisplayStart != oldStart) { var
+targetOffset = $("#assets-registrar-accounts") .offset().top;
+$("html,body").animate({ scrollTop : targetOffset }, 0); oldStart =
+o._iDisplayStart; } } });
+{% endblock %}

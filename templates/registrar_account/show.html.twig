@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RegistrarAccount{% endblock %}
+
+{% block body %}
+    <h1>RegistrarAccount</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ registrar_account.id }}</td>
+            </tr>
+            <tr>
+                <th>EmailAddress</th>
+                <td>{{ registrar_account.emailAddress }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ registrar_account.username }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ registrar_account.password }}</td>
+            </tr>
+            <tr>
+                <th>Reseller</th>
+                <td>{{ registrar_account.reseller ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ResellerId</th>
+                <td>{{ registrar_account.resellerId }}</td>
+            </tr>
+            <tr>
+                <th>ApiAppName</th>
+                <td>{{ registrar_account.apiAppName }}</td>
+            </tr>
+            <tr>
+                <th>ApiKey</th>
+                <td>{{ registrar_account.apiKey }}</td>
+            </tr>
+            <tr>
+                <th>ApiSecret</th>
+                <td>{{ registrar_account.apiSecret }}</td>
+            </tr>
+            <tr>
+                <th>ApiIpId</th>
+                <td>{{ registrar_account.apiIpId }}</td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>{{ registrar_account.notes }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ registrar_account.created ? registrar_account.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ registrar_account.updated ? registrar_account.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('registrar_account_index') }}">back to list</a>
+
+    <a href="{{ path('registrar_account_edit', {'id': registrar_account.id}) }}">edit</a>
+
+    {{ include('registrar_account/_delete_form.html.twig') }}
+{% endblock %}

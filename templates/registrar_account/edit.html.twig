@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit RegistrarAccount{% endblock %}
+
+{% block body %}
+    <h1>Edit RegistrarAccount</h1>
+
+    {{ include('registrar_account/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {{ include('registrar_account/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SslCertType{% endblock %}
+
+{% block body %}
+    <h1>Create new SslCertType</h1>
+
+    {{ include('ssl_cert_type/_form.html.twig') }}
+
+    <a href="{{ path('ssl_cert_type_index') }}">back to list</a>
+{% endblock %}

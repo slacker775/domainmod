@@ -18,7 +18,7 @@ class RegistrarRepository extends ServiceEntityRepository
     public function getFeeByTld(Registrar $registrar, string $tld): ?Fee
     {
         $query = $this->getEntityManager()
-            ->createQuery('SELECT f FROM App\Entity\Fee f WHERE f.tld=:tld AND f.registrar=:registrar ORDER BY f.updateTime DESC')
+            ->createQuery('SELECT f FROM App\Entity\Fee f WHERE f.tld=:tld AND f.registrar=:registrar ORDER BY f.updated DESC')
             ->setParameters([
             'tld' => $tld,
             'registrar' => $registrar

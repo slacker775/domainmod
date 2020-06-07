@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit SslProvider{% endblock %}
+
+{% block body %}
+    <h1>Edit SslProvider</h1>
+
+    {{ include('ssl_provider/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('ssl_provider_index') }}">back to list</a>
+
+    {{ include('ssl_provider/_delete_form.html.twig') }}
+{% endblock %}

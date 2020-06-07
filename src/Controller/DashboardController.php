@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Domain;
 use App\Repository\DomainRepository;
+use App\Repository\QueueRepository;
 use App\Repository\SslCertRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,9 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractController
 {
     /**
-     * @Route("/dashboard-new", name="homepage")
+     * @Route("/dashboard", name="home")
      */
-    public function index(DomainRepository $domainRepository, SslCertRepository $sslRepository)
+    public function index(DomainRepository $domainRepository, SslCertRepository $sslRepository, QueueRepository $queueRepository)
     {
         return $this->render('dashboard/index.html.twig', [
             'activeDomainCount' => $domainRepository->getActiveDomainCount(),
@@ -25,7 +26,12 @@ class DashboardController extends AbstractController
             'domainsPendingRegistration' => $domainRepository->getDomainCountByStatus(Domain::STATUS_PENDING_REGISTRATION),
             'domainsPendingTransfer' => $domainRepository->getDomainCountByStatus(Domain::STATUS_PENDING_TRANSFER),
             'domainsPendingOther' => $domainRepository->getDomainCountByStatus(Domain::STATUS_PENDING_OTHER),
-            'controller_name' => 'Dashboard'
+            'queuePending' => $queueRepository->getPendingCount(),
+            'queueProcessing' => $queueRepository->getProcessingCount(),
+            'queueFinished' => $queueRepository->getFinishedCount(),
+            'sslPendingRenewal' => $sslRepository->getPendingRenewalCount(),
+            'sslPendingRegistration' => $sslRepository->getPendingRegistrationCount(),
+            'sslPendingOther' => $sslRepository->getPendingOtherCount()
         ]);
     }
 }

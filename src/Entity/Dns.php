@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -269,7 +271,7 @@ class Dns
         $this->updated = new \DateTime();
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -284,12 +286,12 @@ class Dns
         return $this->id;
     }
 
-    public function getDns1(): string
+    public function getDns1(): ?string
     {
         return $this->dns1;
     }
 
-    public function getDns2(): string
+    public function getDns2(): ?string
     {
         return $this->dns2;
     }

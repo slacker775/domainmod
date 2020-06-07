@@ -18,24 +18,42 @@ class SslCertRepository extends ServiceEntityRepository
         $query = $this->getEntityManager()->createQuery("SELECT count(s) FROM App\Entity\SslCert s WHERE s.status != '0'");
         return $query->getSingleScalarResult();
     }
-    
+
     public function getExpiringSSlCerts(int $days = 30): array
     {
         $expiration = new \DateTime();
         $expiration->add(new \DateInterval('P' . $days . 'D'));
         return $this->getEntityManager()
-        ->createQuery("SELECT d FROM App\Entity\SslCert d WHERE d.expiryDate <= :expiration AND d.status != '0'")
-        ->setParameter('expiration', $expiration)
-        ->getResult();
+            ->createQuery("SELECT d FROM App\Entity\SslCert d WHERE d.expiryDate <= :expiration AND d.status != '0'")
+            ->setParameter('expiration', $expiration)
+            ->getResult();
     }
-    
+
     public function getExpiringSslCertCount(int $days = 30): int
     {
         $expiration = new \DateTime();
         $expiration->add(new \DateInterval('P' . $days . 'D'));
         return $this->getEntityManager()
-        ->createQuery("SELECT COUNT(d) FROM App\Entity\SslCert d WHERE d.expiryDate <= :expiration AND d.status != '0'")
-        ->setParameter('expiration', $expiration)
-        ->getSingleScalarResult();
+            ->createQuery("SELECT COUNT(d) FROM App\Entity\SslCert d WHERE d.expiryDate <= :expiration AND d.status != '0'")
+            ->setParameter('expiration', $expiration)
+            ->getSingleScalarResult();
+    }
+
+    public function getPendingRenewalCount(): int
+    {
+        $query = $this->getEntityManager()->createQuery("SELECT COUNT(s) FROM App\Entity\SslCert s WHERE s.status = '3'");
+        return $query->getSingleScalarResult();
+    }
+    
+    public function getPendingRegistrationCount(): int
+    {
+        $query = $this->getEntityManager()->createQuery("SELECT COUNT(s) FROM App\Entity\SslCert s WHERE s.status = '5'");
+        return $query->getSingleScalarResult();
+    }
+    
+    public function getPendingOtherCount(): int
+    {
+        $query = $this->getEntityManager()->createQuery("SELECT COUNT(s) FROM App\Entity\SslCert s WHERE s.status = '4'");
+        return $query->getSingleScalarResult();
     }
 }

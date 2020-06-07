@@ -96,6 +96,9 @@ class IpAddress
 
     public function getId(): int
     {
+        if(is_string($this->id) === true){
+            $this->id = intval($this->id);
+        }
         return $this->id;
     }
 

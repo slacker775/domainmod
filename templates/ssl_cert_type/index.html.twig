@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SslCertType index{% endblock %}
+
+{% block body %}
+    <h1>SslCertType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Notes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ssl_cert_type in ssl_cert_types %}
+            <tr>
+                <td>{{ ssl_cert_type.id }}</td>
+                <td>{{ ssl_cert_type.type }}</td>
+                <td>{{ ssl_cert_type.notes }}</td>
+                <td>
+                    <a href="{{ path('ssl_cert_type_show', {'id': ssl_cert_type.id}) }}">show</a>
+                    <a href="{{ path('ssl_cert_type_edit', {'id': ssl_cert_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ssl_cert_type_new') }}">Create new</a>
+{% endblock %}

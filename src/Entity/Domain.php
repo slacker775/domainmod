@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -59,7 +61,7 @@ class Domain
      *
      * @var RegistrarAccount
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
+     * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount", inversedBy="domains")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
     private $account;

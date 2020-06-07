@@ -33,16 +33,18 @@ Dashboard
 {% endif %}
 
 <!-- Domain Queue -->
+{% if queueProcessing > 0 or queuePending > 0 or queueFinished > 0 %}
 <div class="row">
 	<h3 style="padding-left: 20px;">Domain Queue</h3>
 
-	{{ _self.displayPanel('Pending', 0, 'yellow', 'clock', path('app.legacy.queue__index')) }}
+	{{ _self.displayPanel('Pending', 0, 'yellow', 'clock', path('queue')) }}
 
-	{{ _self.displayPanel('Processing', 0, 'yellow', 'clock', path('app.legacy.queue__index')) }}
+	{{ _self.displayPanel('Processing', 0, 'yellow', 'clock', path('queue')) }}
 
-	{{ _self.displayPanel('Finished', 0, 'green', 'checkmark-circled', path('app.legacy.queue__index')) }}
+	{{ _self.displayPanel('Finished', 0, 'green', 'checkmark-circled', path('queue')) }}
 
 </div>
+{% endif %}
 <!-- /Domain Queue -->
 
 <!-- Domain Panels -->
@@ -62,15 +64,23 @@ Dashboard
 {% endif %}
 
 <!-- SSL Panels -->
+{% if sslPendingRenewal > 0 or sslPendingRegistration > 0 or sslPendingOther > 0 %}
 <div class="row">
 	<h3 style="padding-left: 20px;">Pending (SSL Certificates)</h3>
 
-	{{ _self.displayPanel('Pending Renewals', 0, 'red', 'clock', path('ssl_cert_index', { is_active: '3'})) }}
+    {% if sslPendingRenewal > 0 %}
+	    {{ _self.displayPanel('Pending Renewals', 0, 'red', 'clock', path('ssl_cert_index', { is_active: '3'})) }}
+	{% endif %}
 
-	{{ _self.displayPanel('Pending Registrations', 0, 'yellow', 'clock', path('ssl_cert_index', { is_active: '5'})) }}
+    {% if sslPendingRegistration > 0 %}
+	    {{ _self.displayPanel('Pending Registrations', 0, 'yellow', 'clock', path('ssl_cert_index', { is_active: '5'})) }}
+	{% endif %}
 
-	{{ _self.displayPanel('Pending (Other)', 0, 'green', 'clock', path('ssl_cert_index', { is_active: '4'})) }}
+    {% if sslPendingOther > 0 %}
+	    {{ _self.displayPanel('Pending (Other)', 0, 'green', 'clock', path('ssl_cert_index', { is_active: '4'})) }}
+    {% endif %}	
 </div>
+{% endif %}
 <!-- /SSL Panels -->
 {% endblock %}
 
