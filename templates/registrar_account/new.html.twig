@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New RegistrarAccount{% endblock %}
+{% block title %}Add Registrar Account{% endblock %}
 
 {% block body %}
-    <h1>Create new RegistrarAccount</h1>
 
     {{ include('registrar_account/_form.html.twig') }}
 
-    <a href="{{ path('registrar_account_index') }}">back to list</a>
 {% endblock %}

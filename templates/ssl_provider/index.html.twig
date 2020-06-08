@@ -1,47 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SslProvider index{% endblock %}
+{% block title %}
+SSL Providers
+{% endblock %}
 
 {% block body %}
-    <h1>SslProvider index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Url</th>
-                <th>Notes</th>
-                <th>CreationTypeId</th>
-                <th>CreatedBy</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ssl_provider in ssl_providers %}
-            <tr>
-                <td>{{ ssl_provider.id }}</td>
-                <td>{{ ssl_provider.name }}</td>
-                <td>{{ ssl_provider.url }}</td>
-                <td>{{ ssl_provider.notes }}</td>
-                <td>{{ ssl_provider.creationTypeId ? 'Yes' : 'No' }}</td>
-                <td>{{ ssl_provider.createdBy }}</td>
-                <td>{{ ssl_provider.created ? ssl_provider.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ssl_provider.updated ? ssl_provider.updated|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('ssl_provider_show', {'id': ssl_provider.id}) }}">show</a>
-                    <a href="{{ path('ssl_provider_edit', {'id': ssl_provider.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+Below is a list of all the SSL Certificate Providers that are stored in
+DomainMOD.
+<br>
+<br>
+<a href="{{ path('ssl_provider_new') }}">{{ _self.showButton('button','Add SSL Provider') }}</a>
+<a href="{{ path('ssl_provider_export') }}">{{ _self.showButton('button','Export') }}</a>
+<br>
+<br>
 
-    <a href="{{ path('ssl_provider_new') }}">Create new</a>
+<table id="assets-ssl-providers"
+	class="table table-striped dt-responsive cell-border compact">
+	<thead>
+		<tr>
+			<th width="20px"></th>
+			<th>Provider</th>
+			<th>Accounts</th>
+			<th>Certs</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for ssl_provider in ssl_providers %}
+		<tr>
+			<td></td>
+			<td><a
+				href="{{ path('ssl_provider_edit', { id: ssl_provider.id }) }}">{{ ssl_provider }}</a></td>
+			<td><a href="">{{ ssl_provider.accounts|length }}</a></td>
+			<td>{{ ssl_provider.certs|length }}</td>
+			<td><a href="ssl-provider-fees.php?sslpid=1">fees</a>&nbsp;&nbsp;
+				<a target="_blank" href="{{ ssl_provider.url }}">www</a></td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="9">no records found</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}
+
+{% block datatable_options %}
+	var oldStart = 0;
+	$('#assets-ssl-providers').DataTable({
+		"paging" : true,
+		"lengthChange" : true,
+		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
+		"searching" : true,
+		"info" : true,
+		"autoWidth" : true,
+		"bAutoWidth" : false,
+		"responsive" : {
+			details : {
+				type : "column"
+			}
+		},
+		"columnDefs" : [ {
+			className : "control",
+			orderable : false,
+			targets : 0
+		} ],
+		"ordering" : true,
+		"order" : [ [ 1, "asc" ] ],
+		"bSortClasses" : false,
+		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+		"fnDrawCallback" : function(o) {
+			if (o._iDisplayStart != oldStart) {
+				var targetOffset = $("#assets-ssl-providers").offset().top;
+				$("html,body").animate({
+					scrollTop : targetOffset
+				}, 0);
+				oldStart = o._iDisplayStart;
+			}
+		}
+	});
 {% endblock %}

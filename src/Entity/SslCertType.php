@@ -84,7 +84,7 @@ class SslCertType
         return $this->id;
     }
 
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -94,12 +94,12 @@ class SslCertType
         return $this->notes;
     }
 
-    public function getCreationType(): CreationType
+    public function getCreationType(): ?CreationType
     {
         return $this->creationType;
     }
 
-    public function getCreatedBy(): User
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }
@@ -127,7 +127,17 @@ class SslCertType
         $this->createdBy = $createdBy;
         return $this;
     }
-    
+
+    public function getCreated(): \DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function getUpdated(): \DateTimeInterface
+    {
+        return $this->updated;
+    }
+
     public function __toString()
     {
         return $this->type;

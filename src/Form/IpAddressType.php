@@ -16,10 +16,6 @@ class IpAddressType extends AbstractType
             ->add('ip')
             ->add('rdns')
             ->add('notes')
-            ->add('created')
-            ->add('updated')
-            ->add('creationType')
-            ->add('createdBy')
         ;
     }
 

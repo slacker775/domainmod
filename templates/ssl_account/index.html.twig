@@ -9,18 +9,14 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>OwnerId</th>
-                <th>SslProviderId</th>
+                <th>Owner</th>
+                <th>SslProvider</th>
                 <th>EmailAddress</th>
                 <th>Username</th>
                 <th>Password</th>
                 <th>Reseller</th>
                 <th>ResellerId</th>
                 <th>Notes</th>
-                <th>CreationTypeId</th>
-                <th>CreatedBy</th>
-                <th>Created</th>
-                <th>Updated</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -28,18 +24,14 @@
         {% for ssl_account in ssl_accounts %}
             <tr>
                 <td>{{ ssl_account.id }}</td>
-                <td>{{ ssl_account.ownerId }}</td>
-                <td>{{ ssl_account.sslProviderId }}</td>
+                <td>{{ ssl_account.owner }}</td>
+                <td>{{ ssl_account.sslProvider }}</td>
                 <td>{{ ssl_account.emailAddress }}</td>
                 <td>{{ ssl_account.username }}</td>
                 <td>{{ ssl_account.password }}</td>
                 <td>{{ ssl_account.reseller ? 'Yes' : 'No' }}</td>
                 <td>{{ ssl_account.resellerId }}</td>
                 <td>{{ ssl_account.notes }}</td>
-                <td>{{ ssl_account.creationTypeId ? 'Yes' : 'No' }}</td>
-                <td>{{ ssl_account.createdBy }}</td>
-                <td>{{ ssl_account.created ? ssl_account.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ssl_account.updated ? ssl_account.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('ssl_account_show', {'id': ssl_account.id}) }}">show</a>
                     <a href="{{ path('ssl_account_edit', {'id': ssl_account.id}) }}">edit</a>

@@ -12,16 +12,16 @@ DomainMOD. For more information please see the
 .
 <br>
 <br>
-<a href="/queue/add.php">{{ _self.showButton('button', 'Add Domains to Queue') }}</a>
+<a href="{{ path('queue_add') }}">{{ _self.showButton('button', 'Add Domains to Queue') }}</a>
 {% if domainsInQueue %}
 <a href="index.php?clear=1">{{ _self.showButton('button', 'Clear Completed') }}</a>
 {% endif %}
-<a href="intro.php">{{ _self.showButton('button', 'More Info') }}</a>
+<a href="{{ path('queue_intro') }}">{{ _self.showButton('button', 'More Info') }}</a>
 {% if domainsInListQueue %}
-<a href="index.php?s=lists&export_data=1">{{ _self.showButton('button', 'Export Lists') }}</a>
+<a href="{{ path('queue_export_lists') }}">{{ _self.showButton('button', 'Export Lists') }}</a>
 {% endif %}
 {% if domainsInQueue %}
-<a href="index.php?s=domains&export_data=1">{{ _self.showButton('button', 'Export Domains') }}</a>
+<a href="{{ path('queue_export_domains') }}">{{ _self.showButton('button', 'Export Domains') }}</a>
 {% endif %}
 <br>
 <br>

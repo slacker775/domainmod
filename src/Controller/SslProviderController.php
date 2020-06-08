@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\SslProvider;
 use App\Form\SslProviderType;
+use App\Repository\SslProviderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,20 +28,26 @@ class SslProviderController extends AbstractController
             'ssl_providers' => $sslProviders,
         ]);
     }
-
+    
+    /**
+     * @Route("/export", name="ssl_provider_export")
+     */
+    public function export()
+    {
+        return $this->redirectToRoute('ssl_provider_index');       
+    }
+    
     /**
      * @Route("/new", name="ssl_provider_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SslProviderRepository $repository): Response
     {
         $sslProvider = new SslProvider();
         $form = $this->createForm(SslProviderType::class, $sslProvider);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($sslProvider);
-            $entityManager->flush();
+            $repository->save($sslProvider);
 
             return $this->redirectToRoute('ssl_provider_index');
         }
@@ -70,7 +77,6 @@ class SslProviderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('ssl_provider_index');
         }
@@ -84,14 +90,13 @@ class SslProviderController extends AbstractController
     /**
      * @Route("/{id}", name="ssl_provider_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, SslProvider $sslProvider): Response
+    public function delete(Request $request, SslProvider $sslProvider, SslProviderRepository $repository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$sslProvider->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($sslProvider);
-            $entityManager->flush();
+            $repository->save($sslProvider);
         }
 
         return $this->redirectToRoute('ssl_provider_index');
     }
+
 }

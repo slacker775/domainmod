@@ -16,9 +16,6 @@
                 <th>Notes</th>
                 <th>Status</th>
                 <th>FeeFixed</th>
-                <th>CreatedBy</th>
-                <th>InsertTime</th>
-                <th>UpdateTime</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -33,9 +30,6 @@
                 <td>{{ ssl_cert.notes }}</td>
                 <td>{{ ssl_cert.status }}</td>
                 <td>{{ ssl_cert.feeFixed ? 'Yes' : 'No' }}</td>
-                <td>{{ ssl_cert.createdBy }}</td>
-                <td>{{ ssl_cert.insertTime ? ssl_cert.insertTime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ssl_cert.updateTime ? ssl_cert.updateTime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('ssl_cert_show', {'id': ssl_cert.id}) }}">show</a>
                     <a href="{{ path('ssl_cert_edit', {'id': ssl_cert.id}) }}">edit</a>

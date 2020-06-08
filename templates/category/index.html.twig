@@ -12,8 +12,6 @@
                 <th>Name</th>
                 <th>Stakeholder</th>
                 <th>Notes</th>
-                <th>CreationType</th>
-                <th>CreatedBy</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -24,8 +22,6 @@
                 <td>{{ category.name }}</td>
                 <td>{{ category.stakeholder }}</td>
                 <td>{{ category.notes }}</td>
-                <td>{{ category.creationType }}</td>
-                <td>{{ category.createdBy }}</td>
                 <td>
                     <a href="{{ path('category_show', {'id': category.id}) }}">show</a>
                     <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>

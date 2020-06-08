@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\SslCert;
 use App\Form\SslCertType;
+use App\Repository\SslCertRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,16 +32,14 @@ class SslCertController extends AbstractController
     /**
      * @Route("/new", name="ssl_cert_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SslCertRepository $repository): Response
     {
         $sslCert = new SslCert();
         $form = $this->createForm(SslCertType::class, $sslCert);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($sslCert);
-            $entityManager->flush();
+            $repository->save($sslCert);
 
             return $this->redirectToRoute('ssl_cert_index');
         }
@@ -84,12 +83,10 @@ class SslCertController extends AbstractController
     /**
      * @Route("/{id}", name="ssl_cert_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, SslCert $sslCert): Response
+    public function delete(Request $request, SslCert $sslCert, SslCertRepository $repository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$sslCert->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($sslCert);
-            $entityManager->flush();
+            $repository->remove($sslCert);
         }
 
         return $this->redirectToRoute('ssl_cert_index');

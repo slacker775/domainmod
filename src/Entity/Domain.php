@@ -467,5 +467,10 @@ class Domain
         $this->createdBy = $user;
         return $this;
     }
+    
+    public function __toString()
+    {
+        return $this->domain;
+    }
 
 }

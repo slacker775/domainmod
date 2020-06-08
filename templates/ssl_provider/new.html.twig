@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New SslProvider{% endblock %}
+{% block title %}Add SSL Provider{% endblock %}
 
 {% block body %}
-    <h1>Create new SslProvider</h1>
 
     {{ include('ssl_provider/_form.html.twig') }}
 
-    <a href="{{ path('ssl_provider_index') }}">back to list</a>
 {% endblock %}

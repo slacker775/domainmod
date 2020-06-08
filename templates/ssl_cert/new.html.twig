@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New SslCert{% endblock %}
+{% block title %}Add SSL Certificate{% endblock %}
 
 {% block body %}
-    <h1>Create new SslCert</h1>
 
     {{ include('ssl_cert/_form.html.twig') }}
 
-    <a href="{{ path('ssl_cert_index') }}">back to list</a>
 {% endblock %}

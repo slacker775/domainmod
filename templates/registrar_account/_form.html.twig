@@ -1,6 +1,33 @@
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button style="margin-top:5px" class="btn btn-primary btn-danger">{{ button_label|default('Add Registrar Account') }}</button>
-{{ form_end(form) }}
+{{ form_row(form.registrar) }}
+{{ form_row(form.owner) }}
+{{ form_row(form.emailAddress) }}
+{{ form_row(form.username) }}
+{{ form_row(form.password) }}
+{{ form_row(form.reseller) }}
+{{ form_row(form.resellerId) }}
+
+<div class="box box-default collapsed-box box-solid">
+	<div class="box-header with-border">
+		<h3 class="box-title" style="padding-top: 3px;">
+			<button type="button" class="btn btn-box-tool" data-widget="collapse">
+				<i class="fa fa-plus"></i>
+			</button>
+			&nbsp;API Credentials
+		</h3>
+	</div>
+	<div class="box-body">
+		{{ form_row(form.apiAppName) }}
+		{{ form_row(form.apiKey) }}
+		{{ form_row(form.apiSecret) }}
+		{{ form_row(form.apiIp) }}
+	</div>
+
+	{{ form_row(form.notes) }}
+
+	<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+		{{ button_label|default('Add Registrar Account') }}
+	</button>
+	{{ form_end(form) }}

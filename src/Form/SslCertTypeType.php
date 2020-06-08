@@ -14,10 +14,6 @@ class SslCertTypeType extends AbstractType
         $builder
             ->add('type')
             ->add('notes')
-            ->add('created')
-            ->add('updated')
-            ->add('creationType')
-            ->add('createdBy')
         ;
     }
 

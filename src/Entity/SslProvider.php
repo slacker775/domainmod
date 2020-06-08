@@ -2,12 +2,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * SslProviders
  *
  * @ORM\Table(name="ssl_providers")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class SslProvider
 {
@@ -48,6 +51,28 @@ class SslProvider
 
     /**
      *
+     * @ORM\OneToOne(targetEntity="App\Entity\SslFee", mappedBy="sslProvider")
+     *
+     * @var SslFee
+     */
+    private $fee;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SslAccount", mappedBy="sslProvider")
+     * 
+     * @var Collection
+     */
+    private $accounts;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SslCert", mappedBy="sslProvider")
+     * 
+     * @var Collection
+     */
+    private $certs;
+    
+    /**
+     *
      * @var CreationType
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
@@ -79,6 +104,35 @@ class SslProvider
      * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
     private $updated;
+
+    public function __construct()
+    {
+        $this->accounts = new ArrayCollection();
+        $this->certs = new ArrayCollection();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
+
+    public function getCerts(): Collection
+    {
+        return $this->certs;
+    }
+
+    public function getAccounts(): Collection
+    {
+        return $this->accounts;
+    }
+
+    public function getFee(): SslFee
+    {
+        return $this->fee;
+    }
+
+    public function setFee(SslFee $fee): self
+    {
+        $this->fee = $fee;
+        return $this;
+    }
 
     public function getId(): int
     {
@@ -143,5 +197,16 @@ class SslProvider
     public function __toString()
     {
         return $this->name;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function prePersist()
+    {
+        /* Want to remove this when we fix the DB schema */
+        $this->url = $this->url ?? '';
+        $this->notes = $this->notes ?? '';
     }
 }

@@ -45,7 +45,7 @@ class SslCert
      *
      * @var SslProvider
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\SslProvider")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslProvider", inversedBy="certs")
      * @ORM\JoinColumn(name="ssl_provider_id", referencedColumnName="id")
      */
     private $sslProvider;
@@ -189,9 +189,10 @@ class SslCert
     public function __construct()
     {
         $this->status = '1';
+        $this->total_cost = 0.0;
         $this->feeFixed = false;
-        $this->insertTime = new \DateTime();
-        $this->updateTime = new \DateTime();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -199,57 +200,57 @@ class SslCert
         return $this->id;
     }
 
-    public function getOwner(): Owner
+    public function getOwner(): ?Owner
     {
         return $this->owner;
     }
 
-    public function getSslProvider(): SslProvider
+    public function getSslProvider(): ?SslProvider
     {
         return $this->sslProvider;
     }
 
-    public function getAccount(): SslAccount
+    public function getAccount(): ?SslAccount
     {
         return $this->account;
     }
 
-    public function getDomain(): Domain
+    public function getDomain(): ?Domain
     {
-        return $this->domainId;
+        return $this->domain;
     }
 
-    public function getType(): SslCertType
+    public function getType(): ?SslCertType
     {
         return $this->type;
     }
 
-    public function getIp(): IpAddress
+    public function getIp(): ?IpAddress
     {
         return $this->ip;
     }
 
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getExpiryDate(): \DateTime
+    public function getExpiryDate(): ?\DateTimeInterface
     {
         return $this->expiryDate;
     }
 
-    public function getFee(): SslFee
+    public function getFee(): ?SslFee
     {
         return $this->fee;
     }
 
-    public function getTotalCost(): float
+    public function getTotalCost(): ?float
     {
         return $this->totalCost;
     }
@@ -361,7 +362,7 @@ class SslCert
 
     public function setNotes(string $notes): self
     {
-        $this->notes = $notes;
+        $this->notes = $notes ?? '';
         return $this;
     }
 

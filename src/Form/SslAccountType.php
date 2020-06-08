@@ -12,18 +12,14 @@ class SslAccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ownerId')
-            ->add('sslProviderId')
+            ->add('owner')
+            ->add('sslProvider')
             ->add('emailAddress')
             ->add('username')
             ->add('password')
             ->add('reseller')
             ->add('resellerId')
             ->add('notes')
-            ->add('creationTypeId')
-            ->add('createdBy')
-            ->add('created')
-            ->add('updated')
         ;
     }
 
