@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DomainMOD :: {% block title %}Welcome!{% endblock %}</title>
+
+<link rel="icon" type="image/ico"
+	href="/images/favicon.ico" />
+<style type="text/css">
+html {
+	overflow-y: scroll;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title></title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet"
+	href="/_includes/theme/bootstrap/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="/_includes/theme/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet"
+	href="/_includes/theme/plugins/datatables/dataTables.responsive.css">
+<link rel="stylesheet"
+	href="/_includes/theme/plugins/datatables/dataTables.fontAwesome.css">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet"
+	href="/_includes/theme/plugins/iCheck/square/red.css">
+<!-- Select2 -->
+<link rel="stylesheet"
+	href="/_includes/theme/plugins/select2/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="/_includes/theme/dist/css/AdminLTE.min.css">
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+   folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet"
+	href="/_includes/theme/dist/css/skins/skin-red.min.css">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+	<div class="login-box">
+		<div class="login-logo">
+			<img src="/images/logo-lg.png">
+		</div>
+
+		<div class="login-box-body">
+			<form method="post">
+				{% if error %}
+				<div class="alert alert-danger">
+					{{ error.messageKey|trans(error.messageData, 'security') }}
+				</div>
+				{% endif %}
+
+				{% if app.user %}
+				<div class="mb-3">
+					You are logged in as
+					{{ app.user.username }}
+					, <a href="{{ path('app_logout') }}">Logout</a>
+				</div>
+				{% endif %}
+
+
+<div class="form-group">  
+				<label for="inputUsername">Username</label> <input type="text"
+					value="{{ last_username }}" name="username" id="inputUsername"
+					class="form-control" required autofocus>
+            </div>
+					
+					<label
+					for="inputPassword">Password</label> <input type="password"
+					name="password" id="inputPassword" class="form-control" required>
+
+				<input type="hidden" name="_csrf_token"
+					value="{{ csrf_token('authenticate') }}"> {# Uncomment this
+				section and add a remember_me option below your firewall to activate
+				remember me functionality. See
+				https://symfony.com/doc/current/security/remember_me.html <div
+				class="checkbox mb-3"> <label> <input type="checkbox"
+				name="_remember_me"> Remember me </label> </div> #}
+				
+				<button style="margin-top:5px" type="submit" class="btn btn-primary btn-danger">Login</button>
+				
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

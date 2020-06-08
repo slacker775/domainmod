@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Users
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User
+class User implements UserInterface
 {
 
     /**
@@ -307,5 +308,20 @@ class User
     public function __toString()
     {
         return $this->username;
+    }
+    
+    public function getRoles()
+    {
+        return [ 'ROLE_USER' ];
+    }
+    
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        return;
     }
 }
