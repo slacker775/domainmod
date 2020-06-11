@@ -13,6 +13,7 @@ use App\Entity\Category;
 use App\Entity\Dns;
 use App\Entity\IpAddress;
 use App\Entity\Hosting;
+use App\Entity\DomainQueueListHistory;
 
 class DomainQueue implements LoggerAwareInterface
 {
@@ -158,7 +159,31 @@ class DomainQueue implements LoggerAwareInterface
     }
 
     private function copyToHistoryList()
-    {}
+    {
+        $entries = $this->domainQueueListRepository->findBy([
+            'finished' => true,
+            'copiedToHistory' => false
+        ], [
+            'created' => 'ASC'
+        ]);
+
+        if ($entries !== null) {
+            foreach ($entries as $entry) {
+                $dqh = new DomainQueueListHistory();
+                $dqh->setDomainCount($entry->getDomainCount())
+                    ->setApiRegistrar($entry->getApiRegistrar())
+                    ->setRegistrar($entry->getRegistrar())
+                    ->setOwner($entry->getOwner())
+                    ->setAccount($entry->getAccount())
+                    ->setCreatedBy($entry->getCreatedBy());
+                $this->entityManager->persist($dqh);
+            }
+            $this->domainQueueListRepository->markCopiedToHistory();
+            $this->entityManager->flush();
+        } else {
+            $this->log->info('No Domain Queue List results to copy to history table');
+        }
+    }
 
     private function domainInMainTable(string $domain): bool
     {

@@ -13,4 +13,13 @@ class DomainQueueRepository extends ServiceEntityRepository
         parent::__construct($registry, DomainQueue::class);
     }
     
+    public function save(DomainQueue $q)
+    {
+        $this->getEntityManager()->persist($q);
+    }
+    
+    public function remove(DomainQueue $q)
+    {
+        $this->getEntityManager()->remove($q);
+    }
 }

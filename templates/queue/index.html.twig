@@ -25,4 +25,191 @@ DomainMOD. For more information please see the
 {% endif %}
 <br>
 <br>
+
+{% if domainsInListQueue %}
+    <h3>Domain List Queue</h3>
+    <table id="queue-main-lists" class="table table-striped dt-responsive cell-border compact">
+        <thead>
+        <tr>
+            <th width="20px"></th>
+            <th>Status</th>
+            <th>Registrar Account</th>
+            <th>Domain Count</th>
+            <th>Added By</th>
+            <th>Added</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+
+{% for dql in domainsInListQueue %}
+
+            <tr>
+            <td></td>
+            <td>
+            {% if dql.finished %}
+                Domains Added to Queue
+            {% elseif dql.processing %}
+                Processing
+            {% else %}
+                Pending
+            {% endif %}
+            </td>
+            <td>
+               {{ dql.account }}
+            </td>
+            <td>
+               {{ dql.domainCount != 0 ? dql.domainCount : 'Pending' }}
+            </td>
+            <td>
+               {{ dql.createdBy.firstname ~ ' ' ~ dql.createdBy.lastname }}
+            </td>
+            <td>
+            {{ dql.created|date }}
+            </td>
+            <td>
+                <a href="{{ path('queue_delete_list', { id: dql.id }) }}"><i class="fa fa-times" style="padding-top: 3px;"></i></a>
+            </td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% if domainsInQueue %}
+    <h3>Domain Queue</h3>
+    <table id="queue-main-domains" class="table table-striped dt-responsive cell-border compact">
+        <thead>
+        <tr>
+            <th width="20px"></th>
+            <th>Status</th>
+            <th>Domain</th>
+            <th>Registrar Account</th>
+            <th>Expiry Date</th>
+            <th>DNS</th>
+            <th>IP</th>
+            <th>Added By</th>
+            <th>Added</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+
+{% for dq in domainsInQueue %}
+
+            <tr>
+            <td></td>
+            <td>
+            {% if dq.finished and not dq.processing %}
+              {% if dq.alreadyInDomains %}
+                {{ _self.highlightText('red','Already in DomainMOD') }}
+              {% elseif dq.alreadyInQueue %}
+                {{ _self.highlightText('red','Already in Domain Queue') }}
+              {% elseif dq.invalidDomain %}
+                {{ _self.highlightText('red','Invalid Domain') }}
+              {% else %}
+                {{ _self.highlightText('green','Successfully Imported') }}
+              {% endif %}
+            {% else %}
+              {% if dq.processing %}
+                Processing
+              {% else %}
+                Pending
+              {% endif %}
+            {% endif %}
+            </td>
+            <td>
+                {{ dq.domainName }}
+            </td>
+            <td>
+                {{ dq.account }}
+            </td>
+            <td>{% if dq.expiryDate|date('m/d/Y') == '1/1/1970' %} {{ dq.expiryDate|date }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
+				- {% else %} Pending {% endif %} {% endif %}
+            </td>
+            <td>{% if dq.dns %} {{ dq.dns }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
+				- {% else %} Pending {% endif %} {% endif %}
+            </td>
+            <td>{% if dq.ip %} {{ dq.ip }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
+				- {% else %} Pending {% endif %} {% endif %}</td>
+            <td>
+               {{ dq.createdBy.firstname ~ ' ' ~ dq.createdBy.lastname }}
+            </td>
+            <td>
+               {{ dq.created|date }}
+            </td>
+            <td>
+                <a href="{{ path('queue_delete_domain', { id: dq.id }) }}"><i class="fa fa-times" style="padding-top: 3px;"></i></a>
+            </td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+{% endif %}    
+{% endblock %}
+
+{% block datatable_options %}
+
+var oldStart = 0;
+$('#queue-main-lists').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "lengthMenu": [ [5, 10, 25, 50, 75, 100, -1], [5, 10, 25, 50, 75, 100, "All"] ],
+    "searching": true,
+    "info": true,
+    "autoWidth": true,
+    "bAutoWidth": false,
+    "responsive": {
+         details: {
+                   type: "column"
+                  }
+                  },
+    "columnDefs": [ {
+                     className: "control",
+                     orderable: false,
+                     targets:   0
+                     } ],
+    "ordering": true,
+    "order": [[ 5, "desc" ]],
+    "bSortClasses": false,
+    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
+    "fnDrawCallback": function (o) {
+      if ( o._iDisplayStart != oldStart ) {
+          var targetOffset = $("#queue-main-lists").offset().top;
+          $("html,body").animate({scrollTop: targetOffset}, 0);
+          oldStart = o._iDisplayStart;
+      }
+    }
+});
+
+$('#queue-main-domains').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50, 75, 100, "All"] ],
+    "searching": true,
+    "info": true,
+    "autoWidth": true,
+    "bAutoWidth": false,
+    "responsive": {
+         details: {
+                   type: "column"
+                  }
+                  },
+    "columnDefs": [ {
+                     className: "control",
+                     orderable: false,
+                     targets:   0
+                     } ],
+    "ordering": true,
+    "bSortClasses": false,
+    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
+    "fnDrawCallback": function (o) {
+      if ( o._iDisplayStart != oldStart ) {
+          var targetOffset = $("#queue-main-domains").offset().top;
+          $("html,body").animate({scrollTop: targetOffset}, 0);
+          oldStart = o._iDisplayStart;
+      }
+    }
+});
+
 {% endblock %}

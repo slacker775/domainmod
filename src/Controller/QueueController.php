@@ -8,7 +8,10 @@ use App\Repository\RegistrarAccountRepository;
 use App\Entity\RegistrarAccount;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\DomainQueueList;
+use App\Entity\DomainQueue as DomainQueueEntity;
 use App\Service\DomainQueue;
+use App\Repository\DomainQueueListRepository;
+use App\Repository\DomainQueueRepository;
 
 /**
  *
@@ -19,10 +22,16 @@ class QueueController extends AbstractController
 {
 
     private RegistrarAccountRepository $accountRepository;
+    
+    private DomainQueueListRepository $domainQueueListRepository;
+    
+    private DomainQueueRepository $domainQueueRepository;
 
-    public function __construct(RegistrarAccountRepository $accountRepository)
+    public function __construct(RegistrarAccountRepository $accountRepository, DomainQueueRepository $domainQueueRepository, DomainQueueListRepository $domainQueueListRepository)
     {
         $this->accountRepository = $accountRepository;
+        $this->domainQueueRepository = $domainQueueRepository;
+        $this->domainQueueListRepository = $domainQueueListRepository;
     }
 
     /**
@@ -32,8 +41,8 @@ class QueueController extends AbstractController
     public function index()
     {
         return $this->render('queue/index.html.twig', [
-            'domainsInQueue' => false,
-            'domainsInListQueue' => false
+            'domainsInQueue' => $this->domainQueueRepository->findBy([],['created' => 'DESC']),
+            'domainsInListQueue' => $this->domainQueueListRepository->findBy([],['created' => 'ASC']),
         ]);
     }
 
@@ -85,6 +94,43 @@ class QueueController extends AbstractController
     public function run(DomainQueue $service)
     {
         $service->run();
+        return $this->redirectToRoute('queue');
+    }
+    
+    /**
+     * @Route("/list/export", name="queue_export_lists")
+     *
+     */
+    public function exportList()
+    {
+        return $this->redirectToRoute('queue');
+    }
+    
+    /**
+     * @Route("/list/{id}/delete", name="queue_delete_list")
+     *
+     */
+    public function deleteList(DomainQueueList $list)
+    {
+        $this->domainQueueListRepository->remove($list);
+        return $this->redirectToRoute('queue');
+    }
+
+    /**
+     * @Route("/domain/export", name="queue_export_domains")
+     *
+     */
+    public function exportDomain()
+    {
+        return $this->redirectToRoute('queue');
+    }
+    
+    /**
+     * @Route("/domain/{id}/delete", name="queue_delete_domain")
+     *
+     */
+    public function deleteDomain(DomainQueueEntity $queue)
+    {
         return $this->redirectToRoute('queue');
     }
 }

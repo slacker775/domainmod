@@ -305,3 +305,7 @@ html {
 {% macro showButton(type, text) %}
 <button style="margin-top:5px" type="{{ type }}" class="btn btn-primary btn-danger">{{ text }}</button>&nbsp;
 {% endmacro %}
+
+{% macro highlightText(color, text) %}
+<strong><span style="color: {{ color == 'red' ? '#a30000' : '#009933' }}">{{ text }}</span></strong>
+{% endmacro %}
