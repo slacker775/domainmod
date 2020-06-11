@@ -136,7 +136,7 @@ class ApiRegistrar
 
     /**
      *
-     * @var \DateTime
+     * @var \DateTimeInterface
      *
      * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
@@ -144,7 +144,7 @@ class ApiRegistrar
 
     /**
      *
-     * @var \DateTime
+     * @var \DateTimeInterface
      *
      * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
@@ -173,98 +173,62 @@ class ApiRegistrar
         return $this->id;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isReqAccountUsername()
+    public function reqAccountUsername(): bool
     {
         return $this->reqAccountUsername;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isReqAccountPassword()
+    public function reqAccountPassword(): bool
     {
         return $this->reqAccountPassword;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isReqResellerId()
+    public function reqResellerId(): bool
     {
         return $this->reqResellerId;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isReqApiAppName()
+    public function reqApiAppName(): bool
     {
         return $this->reqApiAppName;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isReqApiKey()
+    public function reqApiKey(): bool
     {
         return $this->reqApiKey;
     }
 
-    /**
-     * @return string
-     */
-    public function isReqApiSecret()
+    public function reqApiSecret(): bool
     {
         return $this->reqApiSecret;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isReqIpAddress()
+    public function reqIpAddress(): bool
     {
         return $this->reqIpAddress;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isListsDomains()
+    public function listsDomains(): bool
     {
         return $this->listsDomains;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isRetExpiryDate()
+    public function retExpiryDate(): bool
     {
         return $this->retExpiryDate;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isRetDnsServers()
+    public function retDnsServers(): bool
     {
         return $this->retDnsServers;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isRetPrivacyStatus()
+    public function retPrivacyStatus(): bool
     {
         return $this->retPrivacyStatus;
     }
 
-    /**
-     * @return Ambigous <string, boolean>
-     */
-    public function isRetAutorenewalStatus()
+    public function retAutorenewalStatus(): bool
     {
         return $this->retAutorenewalStatus;
     }

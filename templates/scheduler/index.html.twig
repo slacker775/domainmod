@@ -55,7 +55,9 @@ Current Timestamp: <strong>{{ "now"|date('r') }}</strong><BR>
                 <BR>
                 <form name="edit_task_form" method="post" action="update.php">
                     <select name="new_hour" title="Task Time">
-                        <option value='03'>03:00</option>
+                        {% for i in 0..23 %}
+                        <option value='{{ "%02d"|format(i) }}'>{{ "%02d"|format(i) }}:00</option>
+                        {% endfor %}
                     </select><br><br>
                     <input type="hidden" name="id" value="{{ s.id }}">
                     <input type="hidden" name="a" value="u">

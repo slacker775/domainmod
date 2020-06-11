@@ -1,20 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DomainMOD :: {% block title %}Welcome!{% endblock %}</title>
+<title>DomainMOD :: {% block title %}{% endblock %}</title>
 
 <link rel="icon" type="image/ico"
 	href="/images/favicon.ico" />
-<style type="text/css">
+<style>
 html {
 	overflow-y: scroll;
 }
 </style>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title></title>
 <!-- Tell the browser to be responsive to screen width -->
 <meta
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
@@ -67,15 +64,15 @@ html {
     <a href="{{ path('home') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">
-          <img src="/images/logo-mini.png">
+          <img src="/images/logo-mini.png" alt="Small Logo">
       </span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg" >
-          <img src="/images/logo.png">
+          <img src="/images/logo.png" alt="DomainMOD Logo">
       </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
       <span class="hidden-md hidden-lg">
          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -93,34 +90,20 @@ html {
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs"><?php echo $_SESSION['s_first_name'] . " "; ?><?php echo $_SESSION['s_last_name']; ?></span>&nbsp;
+              <span class="hidden-xs">{{ app.user.firstname ~ ' ' ~ app.user.lastname }}</span>&nbsp;
               <i class="fa fa-user"></i>
             </a>
 
               <ul class="dropdown-menu">
               <!-- User image -->
-              <li class="user-header">
-                <!img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
-                <p>
-                {#
-                    <?php echo $_SESSION['s_first_name'] . " "; ?> <?php echo $_SESSION['s_last_name']; ?><BR>
-                    <?php echo $_SESSION['s_email_address']; ?><BR><BR>
-                    <small>
-                        Currency: <?php echo $_SESSION['s_default_currency']; ?><BR>
-                        Time Zone: <?php echo $_SESSION['s_default_timezone']; ?><BR>
-                        Expiration Emails: <?php
-                        if ($_SESSION['s_expiration_emails'] == '1') {
-                            echo "Yes";
-                        } else {
-                            echo "No";
-                        } ?>
-                    </small>
-                    #}
-                </p>
-              </li>
-
-              <li class="user-footer">
+								<li class="user-header">
+									<p>
+										{{ app.user.firstname ~ ' ' ~ app.user.lastname }}<BR>{{ app.user.emailaddress }}<BR>
+										<BR> <small> Currency: {{ app.user.settings.defaultCurrency }}<BR> Time Zone:
+											{{ app.user.settings.defaultTimezone }}<BR> Expiration Emails: {{ app.user.settings.getExpirationEmails ? "Yes" : "No" }}
+										</small>
+									</p></li>
+								<li class="user-footer">
                 <div class="pull-left">
                   <a href="/settings/profile/" class="btn btn-default btn-flat">User Profile</a>&nbsp;&nbsp;
                 </div>
