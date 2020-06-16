@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Reporting
+{% endblock %}
+
+{% block body %}
+
+<script type="text/javascript">
+<!--
+	function MM_jumpMenu(targ, selObj, restore) { //v3.0
+		eval(targ + ".location='" + selObj.options[selObj.selectedIndex].value
+				+ "'");
+		if (restore)
+			selObj.selectedIndex = 0;
+	}
+//-->
+</script>
+
+Before running any reports you should
+<a href="/maintenance/update-conversions.php">update the conversion
+	rates</a>
+.
+
+<h3>Domain Reports</h3>
+<form method="post">
+	<div class="form-group">
+		<div class="form-group">
+			<label class="control-label"> </label> <select class="form-control"
+				name="jumpMenu" id="jumpMenu"
+				onChange="MM_jumpMenu('parent',this,0)">
+				<option value="{{ path('reporting_index') }}">Click to
+					select a Domain Report</option>
+				<option value="{{ path('reporting_index') }}">Cost by
+					Category</option>
+				<option value="{{ path('reporting_index') }}">Cost by DNS
+					Profile</option>
+				<option value="{{ path('reporting_index') }}">Cost by IP
+					Address</option>
+				<option value="{{ path('reporting_index') }}">Cost by Month</option>
+				<option value="{{ path('reporting_index') }}">Cost by Owner</option>
+				<option value="{{ path('reporting_index') }}">Cost by
+					Registrar</option>
+				<option value="{{ path('reporting_index') }}">Cost by TLD</option>
+				<option value="{{ path('reporting_index') }}">Cost by Web
+					Host</option>
+				<option value="{{ path('reporting_index') }}">Registrar
+					Fees</option>
+			</select>
+		</div>
+	</div>
+</form>
+
+<h3>SSL Certificate Reports</h3>
+<form method="post">
+	<div class="form-group">
+		<div class="form-group">
+			<label class="control-label"> </label> <select class="form-control"
+				name="jumpMenu" id="jumpMenu"
+				onChange="MM_jumpMenu('parent',this,0)">
+				<option value="{{ path('reporting_index') }}">Click to
+					select a SSL Report</option>
+				<option value="{{ path('reporting_index') }}">Cost by
+					Category</option>
+				<option value="{{ path('reporting_index') }}">Cost by Domain</option>
+				<option value="{{ path('reporting_index') }}">Cost by IP
+					Address</option>
+				<option value="{{ path('reporting_index') }}">Cost by Month</option>
+				<option value="{{ path('reporting_index') }}">Cost by Owner</option>
+				<option value="{{ path('reporting_index') }}">Cost by
+					Provider</option>
+				<option value="{{ path('reporting_index') }}">Cost by Type</option>
+				<option value="{{ path('reporting_index') }}">Provider
+					Fees</option>
+			</select>
+		</div>
+	</div>
+</form>
+
+<h3>Data Warehouse Reports</h3>
+<form method="post">
+	<div class="form-group">
+		<div class="form-group">
+			<label class="control-label"> </label> <select class="form-control"
+				name="jumpMenu" id="jumpMenu"
+				onChange="MM_jumpMenu('parent',this,0)">
+				<option value="{{ path('reporting_index') }}">Click to
+					select a DW Report</option>
+				<option value="{{ path('reporting_index') }}">Potential Problems</option>				
+			</select>
+		</div>
+	</div>
+</form>
+
+{% endblock %}

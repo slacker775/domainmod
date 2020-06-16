@@ -1,37 +1,44 @@
 <?php
 namespace App\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\DomainQueueList;
-use App\Repository\DomainQueueListRepository;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use App\Service\ApiRegistrar\GoDaddy;
-use App\Entity\Domain;
-use App\Entity\DomainQueue as DomainQueueEntity;
 use App\Entity\Category;
 use App\Entity\Dns;
-use App\Entity\IpAddress;
-use App\Entity\Hosting;
+use App\Entity\Domain;
+use App\Entity\DomainQueue as DomainQueueEntity;
+use App\Entity\DomainQueueList;
 use App\Entity\DomainQueueListHistory;
+use App\Entity\Hosting;
+use App\Entity\IpAddress;
+use App\Repository\DomainQueueListRepository;
+use App\Repository\DomainQueueRepository;
+use App\Service\ApiRegistrar\GoDaddy;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use App\Service\ApiRegistrar\ApiRegistrarInterface;
+use App\Entity\RegistrarAccount;
 
 class DomainQueue implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     private EntityManagerInterface $entityManager;
+    
+    private DomainQueueRepository $domainQueueRepository;
 
     private DomainQueueListRepository $domainQueueListRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, DomainQueueListRepository $domainQueueListRepository)
+    public function __construct(EntityManagerInterface $entityManager, DomainQueueRepository $domainQueueRepository, DomainQueueListRepository $domainQueueListRepository)
     {
         $this->entityManager = $entityManager;
+        $this->domainQueueRepository = $domainQueueRepository;
         $this->domainQueueListRepository = $domainQueueListRepository;
     }
 
     public function run()
     {
         $this->processDomainQueueList();
+        $this->processDomainQueue();
     }
 
     private function processDomainQueueList()
@@ -45,43 +52,78 @@ class DomainQueue implements LoggerAwareInterface
         $this->logger->notice('[START] Processing Domain Queue Lists');
 
         $this->domainQueueListRepository->markProcessingList();
-
         foreach ($queue as $q) {
-            $this->logger->info(sprintf('Processing: %s', $q->getAccount()));
+            $this->logger->info(sprintf('Processing domain from list %s', $q->getAccount()));
 
-            if (strtolower($q->getRegistrar()) == 'godaddy') {
-                $service = new GoDaddy();
-                $service->setCredentials([
-                    'apiKey' => $q->getAccount()
-                        ->getApiKey(),
-                    'apiSecret' => $q->getAccount()
-                        ->getApiSecret()
-                ]);
-                $domains = $service->listDomains();
-                $domainCount = count($domains);
+            $service = $this->getApiRegistrarService($q->getAccount());
+            $domains = $service->listDomains();
+            $domainCount = count($domains);
 
-                if ($domainCount > 0) {
-                    $q->setDomainCount($q->getDomainCount() + $domainCount);
-                    $this->domainQueueListRepository->save($q);
-
-                    foreach ($domains as $domain) {
-                        $this->importToDomainQueue($domain, $q);
-                    }
-
-                    $q->setProcessing(false)
-                        ->setReadyToImport(true)
-                        ->setFinished(true);
-                } else {
-                    $q->setProcessing(false);
-                }
+            if ($domainCount > 0) {
+                $q->setDomainCount($q->getDomainCount() + $domainCount);
                 $this->domainQueueListRepository->save($q);
+
+                foreach ($domains as $domain) {
+                    $this->importToDomainQueue($domain, $q);
+                }
+
+                $q->setProcessing(false)
+                    ->setReadyToImport(true)
+                    ->setFinished(true);
+            } else {
+                $q->setProcessing(false);
             }
+            $this->domainQueueListRepository->save($q);
         }
         $this->logger->notice('[END] Processing Domain Queue Lists');
 
         $this->copyToHistoryList();
 
         $this->entityManager->flush();
+    }
+
+    private function getApiRegistrarService(RegistrarAccount $account): ApiRegistrarInterface
+    {
+        if (strtolower($account->getRegistrar()
+            ->getApiRegistrar()
+            ->getName()) == 'godaddy') {
+            $service = new GoDaddy();
+            $service->setCredentials([
+                'apiKey' => $account->getApiKey(),
+                'apiSecret' => $account->getApiSecret()
+            ]);
+            return $service;
+        }
+    }
+    
+    private function processDomainQueue()
+    {
+        $queue = $this->domainQueueRepository->getAllReadyToProcess();
+        
+        $this->domainQueueRepository->markProcessingQueue();
+        
+        if($queue !== null) {
+            $this->logger->notice('[START] Processing domains in the Domain Queue');
+            
+            foreach($queue as $q) {
+                $this->logger->info(sprintf('Processing domain %s', $q->getDomainName()));
+                
+                $this->logger->debug(sprintf('Using API Registrar: %s', $q->getApiRegistrar()));
+                
+                $service = $this->getApiRegistrarService($q->getAccount());
+                
+                $details = $service->getDomain($q->getDomainName());
+                
+                dump($details);
+            }
+            $this->logger->notice('[END] Processing domains in the Domain Queue');
+        } else {
+            $this->logger->info('No domains in the Domain Queue to process');
+        }
+        
+        $this->copyToHistoryDomain();
+        
+        //$this->entityManager->flush();
     }
 
     private function importToDomainQueue(string $domain, DomainQueueList $ql)
@@ -183,6 +225,11 @@ class DomainQueue implements LoggerAwareInterface
         } else {
             $this->log->info('No Domain Queue List results to copy to history table');
         }
+    }
+    
+    private function copyToHistoryDomain()
+    {
+        
     }
 
     private function domainInMainTable(string $domain): bool

@@ -34,8 +34,22 @@ class GoDaddy implements ApiRegistrarInterface
      */
     public function getDomain(string $domain): array
     {
+        $errorStatus = ['EXPIRED_REASSIGNED'];
+        
         $result = $this->getInstance()->get($domain);
-        return $result;
+        
+        $status = null;
+        if(in_array($result->getStatus(), $errorStatus) === true) {
+            $status = 'invalid';
+        }
+            
+        return [
+            'expirationDate' => $result->getExpires(),
+            'dnsServers' => $result->getNameServers(),
+            'privacyStatus' => $result->getPrivacy(),
+            'autorenewStatus' => $result->getRenewAuto(),
+            'domainStatus' => $status,
+        ];
     }
 
     /**

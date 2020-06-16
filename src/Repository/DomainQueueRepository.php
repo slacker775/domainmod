@@ -13,13 +13,27 @@ class DomainQueueRepository extends ServiceEntityRepository
         parent::__construct($registry, DomainQueue::class);
     }
     
-    public function save(DomainQueue $q)
+    public function save(DomainQueue $q): void
     {
         $this->getEntityManager()->persist($q);
     }
     
-    public function remove(DomainQueue $q)
+    public function remove(DomainQueue $q): void
     {
         $this->getEntityManager()->remove($q);
+    }
+    
+    public function markProcessingQueue(): void
+    {
+        $query = $this->getEntityManager()->createQuery('UPDATE App\Entity\DomainQueue q SET q.processing=true WHERE ' . 
+            'q.processing=false AND q.readyToImport=false AND q.finished=false AND q.copiedToHistory=false AND q.alreadyInDomains=false');
+        $query->getResult();
+    }    
+    
+    public function getAllReadyToProcess(): array
+    {
+        $query = $this->getEntityManager()->createQuery('SELECT q FROM App\Entity\DomainQueue q WHERE ' . 
+            'q.processing=false AND q.readyToImport=false AND q.finished=false AND q.copiedToHistory=false AND q.alreadyInDomains=false AND q.alreadyInQueue=false');
+        return $query->getResult();
     }
 }

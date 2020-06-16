@@ -30,6 +30,14 @@ class SslCertController extends AbstractController
     }
 
     /**
+     * @Route("/export", name="ssl_cert_export")
+     */
+    public function export()
+    {
+        return $this->redirectToRoute('ssl_cert_index');
+    }
+    
+    /**
      * @Route("/new", name="ssl_cert_new", methods={"GET","POST"})
      */
     public function new(Request $request, SslCertRepository $repository): Response
@@ -39,6 +47,7 @@ class SslCertController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $sslCert->setCreatedBy($this->getUser());
             $repository->save($sslCert);
 
             return $this->redirectToRoute('ssl_cert_index');

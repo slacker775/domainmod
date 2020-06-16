@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SslCert index{% endblock %}
+{% block title %}SSL Certificates{% endblock %}
 
 {% block body %}
-    <h1>SslCert index</h1>
 
+<a href="{{ path('ssl_cert_new') }}">{{ _self.showButton('button','Add SSL Cert') }}</a>
+    <a target="_blank" href="raw.php">{{ _self.showButton('button','Raw List') }}</a>
+    <a href="{{ path('ssl_cert_export') }}">{{ _self.showButton('button','Export') }}</a>
+
+    <BR><BR><strong>Total Cost:</strong> $0.00 USD <BR>
+    <strong>Number of SSL Certs:</strong> {{ ssl_certs|length }}<BR><BR>
+    
     <table class="table">
         <thead>
             <tr>

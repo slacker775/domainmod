@@ -26,9 +26,6 @@ class SslCertRepository extends ServiceEntityRepository
         $cert->setCreationType($this->getEntityManager()
             ->getRepository(CreationType::class)
             ->findOneByName('Manual'));
-        $cert->setCreatedBy($this->getEntityManager()
-            ->getRepository(User::class)
-            ->findOneByUsername('admin'));
         $this->getEntityManager()->persist($cert);
     }
 

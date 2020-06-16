@@ -113,6 +113,13 @@ class User implements UserInterface
 
     /**
      *
+     * @ORM\OneToOne(targetEntity="App\Entity\UserSetting", mappedBy="user")
+     * @var UserSetting
+     */
+    private $settings;
+
+    /**
+     *
      * @var CreationType
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
@@ -309,12 +316,16 @@ class User implements UserInterface
     {
         return $this->username;
     }
-    
+
     public function getRoles()
     {
-        return [ 'ROLE_USER' ];
+        $roles = ['ROLE_USER'];
+        if($this->isAdmin() === true) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+        return $roles;
     }
-    
+
     public function getSalt()
     {
         return null;
@@ -323,5 +334,16 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         return;
+    }
+
+    public function getSettings(): UserSetting
+    {
+        return $this->settings;
+    }
+
+    public function setSettings(UserSetting $settings): self
+    {
+        $this->settings = $settings;
+        return $this;
     }
 }

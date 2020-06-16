@@ -24,11 +24,12 @@ class UserSetting
 
     /**
      *
-     * @var int
+     * @var User
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="settings")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userId;
+    private $user;
 
     /**
      *
@@ -360,7 +361,79 @@ class UserSetting
 
     public function __construct()
     {
+        $this->$defaultCurrency = 'USD';
+        $this->$defaultTimezone = '\'America/New_York\'';
+        $this->$defaultCategoryDomains = null;
+        $this->$defaultCategorySsl = null;
+        $this->$defaultDns = null;
+        $this->$defaultHost = null;
+        $this->$defaultIpAddressDomains = null;
+        $this->$defaultIpAddressSsl = null;
+        $this->$defaultOwnerDomains = null;
+        $this->$defaultOwnerSsl = null;
+        $this->$defaultRegistrar = null;
+        $this->$defaultRegistrarAccount = null;
+        $this->$defaultSslProviderAccount = null;
+        $this->$defaultSslType = null;
+        $this->$defaultSslProvider = null;
+        $this->$expirationEmails = false;
+        $this->$numberOfDomains = '50';
+        $this->$numberOfSslCerts = '50';
+        $this->$displayDomainOwner = false;
+        $this->$displayDomainRegistrar = false;
+        $this->$displayDomainAccount = true;
+        $this->$displayDomainExpiryDate = true;
+        $this->$displayDomainCategory = true;
+        $this->$displayDomainDns = true;
+        $this->$displayDomainHost = false;
+        $this->$displayDomainIp = false;
+        $this->$displayDomainTld = true;
+        $this->$displayDomainFee = true;
+        $this->$displaySslOwner = true;
+        $this->$displaySslProvider = false;
+        $this->$displaySslAccount = true;
+        $this->$displaySslDomain = true;
+        $this->$displaySslType = true;
+        $this->$displaySslExpiryDate = true;
+        $this->$displaySslIp = false;
+        $this->$displaySslCategory = false;
+        $this->$displaySslFee = false;
+        $this->$displayInactiveAssets = true;
+        $this->$displayDwIntroPage = true;
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
+    }
+
+    public function getExpirationEmails(): bool
+    {
+        return $this->expirationEmails;
+    }
+
+    public function getDefaultCurrency(): string
+    {
+        return $this->defaultCurrency;
+    }
+
+    public function getDefaultTimezone(): string
+    {
+        return $this->defaultTimezone;
+    }
+
+    public function setDefaultCurrency(string $defaultCurrency): self
+    {
+        $this->defaultCurrency = $defaultCurrency;
+        return $this;
+    }
+
+    public function setDefaultTimezone(string $defaultTimezone): self
+    {
+        $this->defaultTimezone = $defaultTimezone;
+        return $this;
+    }
+    
+    public function setExpirationEmails(bool $expirationEmails = true): self
+    {
+        $this->expirationEmails = $expirationEmails;
+        return $this;
     }
 }

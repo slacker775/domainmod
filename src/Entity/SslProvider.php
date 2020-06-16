@@ -208,5 +208,6 @@ class SslProvider
         /* Want to remove this when we fix the DB schema */
         $this->url = $this->url ?? '';
         $this->notes = $this->notes ?? '';
+        $this->updated = new \DateTime();
     }
 }

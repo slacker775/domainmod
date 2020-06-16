@@ -31,7 +31,7 @@
 	</li>
 	<!-- End -->
 
-	<li><a href="/reporting/"><i
+	<li><a href="{{ path('reporting_index') }}"><i
 			class="fa fa-bar-chart"></i> <span>Reporting</span></a>
 	</li>
 	
@@ -47,19 +47,19 @@
 	</a>
 		<ul class="treeview-menu">
 			<li><a
-				href="/settings/display/"><i class="fa"></i>Display
+				href="{{ path('settings_display') }}"><i class="fa"></i>Display
 					Settings</a>
 			</li>
 			<li><a
-				href="/settings/defaults/"><i class="fa"></i>User
+				href="{{ path('settings_defaults') }}"><i class="fa"></i>User
 					Defaults</a>
 			</li>
 			<li><a
-				href="/settings/profile/"><i class="fa"></i>User
+				href="{{ path('settings_profile') }}"><i class="fa"></i>User
 					Profile</a>
 			</li>
 			<li><a
-				href="/settings/password/"><i class="fa"></i>Change
+				href="{{ path('settings_password') }}"><i class="fa"></i>Change
 					Password</a>
 			</li>
 		</ul>

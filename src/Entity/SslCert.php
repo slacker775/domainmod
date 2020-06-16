@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="ssl_certs")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class SslCert
 {
@@ -388,5 +389,15 @@ class SslCert
     {
         $this->createdBy = $createdBy;
         return $this;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function prePersist()
+    {
+        /* Want to remove this when we fix the DB schema */
+        $this->notes = $this->notes ?? '';
     }
 }

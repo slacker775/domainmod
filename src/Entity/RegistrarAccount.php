@@ -5,15 +5,18 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Doctrine\CleanAssociationsTrait;
 
 /**
  * RegistrarAccounts
  *
  * @ORM\Table(name="registrar_accounts", indexes={@ORM\Index(name="registrar_id", columns={"registrar_id"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class RegistrarAccount
 {
+    use CleanAssociationsTrait;
 
     /**
      *
@@ -325,7 +328,7 @@ class RegistrarAccount
         return $this;
     }
 
-    public function setApiIp(IpAddress $ip): self
+    public function setApiIp(?IpAddress $ip): self
     {
         $this->apiIp = $ip;
         return $this;
@@ -353,4 +356,5 @@ class RegistrarAccount
     {
         return sprintf("%s, %s (%s)", $this->registrar->getName(), $this->owner->getName(), $this->username);
     }
+
 }
