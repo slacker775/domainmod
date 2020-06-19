@@ -48,6 +48,7 @@ class OwnerController extends AbstractController
             $entityManager->persist($owner);
             $entityManager->flush();
 
+            $this->addFlash('success',sprintf('Owner %s Added', $owner->getName()));
             return $this->redirectToRoute('owner_index');
         }
 

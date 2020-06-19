@@ -2,7 +2,9 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Account Owners{% endblock %}
+{% block title %}
+Account Owners
+{% endblock %}
 
 {% block breadcrumbs %}
 <li><a href="{{ path('asset') }}">Assets</a></li>
@@ -10,76 +12,73 @@
 {% endblock %}
 
 {% block body %}
-Below is a list of all the Account Owners that are stored in DomainMOD.<BR><BR>
+Below is a list of all the Account Owners that are stored in DomainMOD.
+<BR>
+<BR>
 <a href="{{ path('owner_new') }}">{{ _self.showButton('button','Add Owner') }}</a>
-<a href="{{ path('owner_export') }}">{{ _self.showButton('button','Export') }}</a><BR><BR>
+<a href="{{ path('owner_export') }}">{{ _self.showButton('button','Export') }}</a>
+<BR>
+<BR>
 
 {% if owners %}
-    <table id="assets-owners" class="table table-striped dt-responsive cell-border compact">
-        <thead>
-            <tr>
-            <th width="20px"></th>
-            <th>Owners</th>
-            <th>Registrar Accounts</th>
-            <th>Domains</th>
-            <th>SSL Accounts</th>
-            <th>SSL Certs</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for owner in owners %}
-            <tr>
-                            <td></td>            
-                <td><a href="{{ path('owner_edit', {'id': owner.id}) }}">{{ owner.name }}</a></td>
-                <td>{{ owner.registrarAccounts|length ?: '-' }}</td>
-                <td>{{ owner.domains|length ?: '-' }}</td>
-                <td>{{ owner.sslAccounts|length ?: '-' }}</td>
-                <td>{{ owner.sslCerts|length ?: '-' }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-        <strong>*</strong> = Default Domain Owner &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>^</strong> = Default SSL Owner (<a href="{{ path('settings_defaults') }}">set defaults</a>)<BR><BR>
-    
+<table id="assets-owners"
+	class="table table-striped dt-responsive cell-border compact">
+	<thead>
+		<tr>
+			<th width="20px"></th>
+			<th>Owners</th>
+			<th>Registrar Accounts</th>
+			<th>Domains</th>
+			<th>SSL Accounts</th>
+			<th>SSL Certs</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for owner in owners %}
+		<tr>
+			<td></td>
+			<td><a href="{{ path('owner_edit', {'id': owner.id}) }}">{{ owner.name }}</a>
+				{% if owner.id == app.user.settings.defaultOwnerDomains.id %} * {% endif %}
+				{% if owner.id == app.user.settings.defaultOwnerSsl.id %} ^ {% endif %}
+			</td>
+			<td>{{ owner.registrarAccounts|length ?: '-' }}</td>
+			<td>{{ owner.domains|length ?: '-' }}</td>
+			<td>{{ owner.sslAccounts|length ?: '-' }}</td>
+			<td>{{ owner.sslCerts|length ?: '-' }}</td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="6">no records found</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<strong>*</strong>
+= Default Domain Owner &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<strong>^</strong>
+= Default SSL Owner (
+<a href="{{ path('settings_defaults') }}">set defaults</a>
+)
+<BR>
+<BR>
+
 {% else %}
-    <BR>You don't currently have any Owners. <a href="{{ path('owner_new') }}">Click here to add one</a>.
+<BR>
+You don't currently have any Owners.
+<a href="{{ path('owner_new') }}">Click here to add one</a>
+.
 {% endif %}
 {% endblock %}
 
 {% block datatable_options %}
-var oldStart = 0;
-$('#assets-owners').DataTable({
-    "paging": true,
-    "lengthChange": true,
-    "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50, 75, 100, "All"] ],
-    "searching": true,
-    "info": true,
-    "autoWidth": true,
-    "bAutoWidth": false,
-    "responsive": {
-         details: {
-                   type: "column"
-                  }
-                  },
-    "columnDefs": [ {
-                     className: "control",
-                     orderable: false,
-                     targets:   0
-                     } ],
-    "ordering": true,
-    "order": [[ 1, "asc" ]],
-    "bSortClasses": false,
-    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
-    "fnDrawCallback": function (o) {
-      if ( o._iDisplayStart != oldStart ) {
-          var targetOffset = $("#assets-owners").offset().top;
-          $("html,body").animate({scrollTop: targetOffset}, 0);
-          oldStart = o._iDisplayStart;
-      }
-    }
-});
+var oldStart = 0; $('#assets-owners').DataTable({ "paging": true,
+"lengthChange": true, "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50,
+75, 100, "All"] ], "searching": true, "info": true, "autoWidth": true,
+"bAutoWidth": false, "responsive": { details: { type: "column" } },
+"columnDefs": [ { className: "control", orderable: false, targets: 0 }
+], "ordering": true, "order": [[ 1, "asc" ]], "bSortClasses": false,
+"dom": '<"top"lif>rt<"bottom"ip><"clear">', "fnDrawCallback": function
+(o) { if ( o._iDisplayStart != oldStart ) { var targetOffset =
+$("#assets-owners").offset().top; $("html,body").animate({scrollTop:
+targetOffset}, 0); oldStart = o._iDisplayStart; } } });
 {% endblock %}
