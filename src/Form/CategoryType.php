@@ -14,15 +14,24 @@ class CategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class, [
-            'label' => 'Category Name (150)'
+            'label' => 'Category Name (150)',
+            'attr' => [
+                'placeholder' => 'Category Name (150)'
+            ]
         ])
             ->add('stakeholder', TextType::class, [
             'label' => 'Stakeholder (100)',
-            'required' => false
+            'required' => false,
+            'attr' => [
+                'placeholder' => 'Stakeholder (100)'
+            ]
         ])
             ->add('notes', TextareaType::class, [
             'label' => 'Notes',
-            'required' => false
+            'required' => false,
+            'attr' => [
+                'placeholder' => 'Notes'
+            ]
         ]);
     }
 
