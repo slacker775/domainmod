@@ -1,7 +1,13 @@
+{% set softwareSectionLogo = 'fa-dashboard' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}
 Dashboard
+{% endblock %}
+
+{% block breadcrumbs %}
+<li>Dashboard</li>
 {% endblock %}
 
 {% block body %}
@@ -37,11 +43,17 @@ Dashboard
 <div class="row">
 	<h3 style="padding-left: 20px;">Domain Queue</h3>
 
-	{{ _self.displayPanel('Pending', 0, 'yellow', 'clock', path('queue')) }}
+    {% if queuePending %}
+	{{ _self.displayPanel('Pending', queuePending, 'yellow', 'clock', path('queue')) }}
+    {% endif %}
 
-	{{ _self.displayPanel('Processing', 0, 'yellow', 'clock', path('queue')) }}
-
-	{{ _self.displayPanel('Finished', 0, 'green', 'checkmark-circled', path('queue')) }}
+    {% if queueProcessing %}
+	{{ _self.displayPanel('Processing', queueProcessing, 'yellow', 'clock', path('queue')) }}
+    {% endif %}
+    
+    {% if queueFinished %}
+	{{ _self.displayPanel('Finished', queueFinished, 'green', 'checkmark-circled', path('queue')) }}
+    {% endif %}
 
 </div>
 {% endif %}

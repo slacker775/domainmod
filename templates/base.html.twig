@@ -153,9 +153,7 @@ html {
 
 
           <span class="visible-sm visible-md visible-lg">
-              {{ _self.breadcrumb('section','left') }}
-              {% block breadcrumbs %}
-              {% endblock %}
+              {{ _self.breadcrumb('section','left', block('breadcrumbs')) }}
           </span>
 
           <span class="visible-xs">
@@ -192,9 +190,9 @@ html {
       <div class="box box-solid box-danger">
         <div class="box-header with-border">
             <h3 class="box-title">{{ block('title') }}</h3>
-            <?php if ($software_section_logo != '') { ?>
-                <span class="pull-right"><i class="fa <?php echo $software_section_logo; ?>"></i></span>
-            <?php } ?>
+            {% if softwareSectionLogo|default(false) %}
+                <span class="pull-right"><i class="fa {{ softwareSectionLogo }}"></i></span>
+            {% endif %}
         </div>
         <div class="box-body">
         
@@ -292,13 +290,15 @@ html {
 </body>
 </html>
 
-{% macro breadcrumb(section, position) %}
+{% macro breadcrumb(section, position, data) %}
       <ol class="breadcrumb pull-{{ position }}">
-          {% if section == 'dashboard' %}
+          {% if data == "<li>Dashboard</li>\n" %}
               <li><i class="fa fa-dashboard"></i></li>
           {% else %}
               <li><a href="{{ path('home') }}"><i class="fa fa-dashboard"></i></a></li>
           {% endif %}
+          
+          {{ data|raw }}
       </ol>
 {% endmacro %}
 
