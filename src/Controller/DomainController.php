@@ -124,7 +124,7 @@ class DomainController extends AbstractController
             $this->getDoctrine()
                 ->getManager()
                 ->flush();
-
+            $this->addFlash('success', sprintf('Domain %s updated', $domain->getDomain()));
             return $this->redirectToRoute('domain_index');
         }
 

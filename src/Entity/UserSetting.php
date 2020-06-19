@@ -49,107 +49,119 @@ class UserSetting
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_category_domains", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Category
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\JoinColumn(name="default_category_domains", referencedColumnName="id")
      */
-    private $defaultCategoryDomains = '0';
+    private $defaultCategoryDomains;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_category_ssl", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Category
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\JoinColumn(name="default_category_ssl", referencedColumnName="id")
      */
-    private $defaultCategorySsl = '0';
+    private $defaultCategorySsl;
 
     /**
      *
-     * @var int
+     * @var Dns
      *
-     * @ORM\Column(name="default_dns", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Dns")
+     * @ORM\JoinColumn(name="default_dns", referencedColumnName="id")
      */
-    private $defaultDns = '0';
+    private $defaultDns;
 
     /**
      *
-     * @var int
+     * @var Hosting
      *
-     * @ORM\Column(name="default_host", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hosting")
+     * @ORM\JoinColumn(name="default_host", referencedColumnName="id")
      */
-    private $defaultHost = '0';
+    private $defaultHost;
 
     /**
      *
-     * @var int
+     * @var IpAddress
      *
-     * @ORM\Column(name="default_ip_address_domains", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
+     * @ORM\JoinColumn(name="default_ip_address_domains", referencedColumnName="id")
      */
-    private $defaultIpAddressDomains = '0';
+    private $defaultIpAddressDomains;
 
     /**
      *
-     * @var int
+     * @var IpAddress
      *
-     * @ORM\Column(name="default_ip_address_ssl", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
+     * @ORM\JoinColumn(name="default_ip_address_ssl", referencedColumnName="id")
      */
-    private $defaultIpAddressSsl = '0';
+    private $defaultIpAddressSsl;
 
     /**
      *
-     * @var int
+     * @var Owner
      *
-     * @ORM\Column(name="default_owner_domains", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\JoinColumn(name="default_owner_domains", referencedColumnName="id")
      */
-    private $defaultOwnerDomains = '0';
+    private $defaultOwnerDomains;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_owner_ssl", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Owner
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\JoinColumn(name="default_owner_ssl", referencedColumnName="id")
      */
-    private $defaultOwnerSsl = '0';
+    private $defaultOwnerSsl;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_registrar", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Registrar
+     * @ORM\ManyToOne(targetEntity="App\Entity\Registrar")
+     * @ORM\JoinColumn(name="default_registrar", referencedColumnName="id")
      */
-    private $defaultRegistrar = '0';
+    private $defaultRegistrar;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_registrar_account", type="integer", nullable=false, options={"unsigned"=true})
+     * @var RegistrarAccount
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
+     * @ORM\JoinColumn(name="default_registrar_account", referencedColumnName="id")
      */
-    private $defaultRegistrarAccount = '0';
+    private $defaultRegistrarAccount;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_ssl_provider_account", type="integer", nullable=false, options={"unsigned"=true})
+     * @var SslAccount
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslAccount")
+     * @ORM\JoinColumn(name="default_ssl_provider_account", referencedColumnName="id")
      */
-    private $defaultSslProviderAccount = '0';
+    private $defaultSslProviderAccount;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_ssl_type", type="integer", nullable=false, options={"unsigned"=true})
+     * @var SslCertType
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslCertType")
+     * @ORM\JoinColumn(name="default_ssl_type", referencedColumnName="id")
      */
-    private $defaultSslType = '0';
+    private $defaultSslType;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="default_ssl_provider", type="integer", nullable=false, options={"unsigned"=true})
+     * @var SslProvider
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslProvider")
+     * @ORM\JoinColumn(name="default_ssl_provider", referencedColumnName="id")
      */
-    private $defaultSslProvider = '0';
+    private $defaultSslProvider;
 
     /**
      *
@@ -404,6 +416,17 @@ class UserSetting
         $this->updated = new \DateTime();
     }
 
+    public function getDefaultRegistrar(): ?Registrar
+    {
+        return $this->defaultRegistrar;
+    }
+
+    public function setDefaultRegistrar(Registrar $defaultRegistrar): self
+    {
+        $this->defaultRegistrar = $defaultRegistrar;
+        return $this;
+    }
+
     public function getExpirationEmails(): bool
     {
         return $this->expirationEmails;
@@ -436,4 +459,142 @@ class UserSetting
         $this->expirationEmails = $expirationEmails;
         return $this;
     }
+    
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+    
+    public function getDefaultCategoryDomains(): Category
+    {
+        return $this->defaultCategoryDomains;
+    }
+    
+    public function getDefaultCategorySsl(): Category
+    {
+        return $this->defaultCategorySsl;
+    }
+    
+    public function getDefaultDns(): Dns
+    {
+        return $this->defaultDns;
+    }
+    
+    public function getDefaultHost(): Hosting
+    {
+        return $this->defaultHost;
+    }
+    
+    public function getDefaultIpAddressDomains(): IpAddress
+    {
+        return $this->defaultIpAddressDomains;
+    }
+    
+    public function getDefaultIpAddressSsl(): IpAddress
+    {
+        return $this->defaultIpAddressSsl;
+    }
+    
+    public function getDefaultOwnerDomains(): Owner
+    {
+        return $this->defaultOwnerDomains;
+    }
+    
+    public function getDefaultOwnerSsl(): Owner
+    {
+        return $this->defaultOwnerSsl;
+    }
+    
+    public function getDefaultRegistrarAccount(): RegistrarAccount
+    {
+        return $this->defaultRegistrarAccount;
+    }
+    
+    public function getDefaultSslProviderAccount(): SslAccount
+    {
+        return $this->defaultSslProviderAccount;
+    }
+    
+    public function getDefaultSslType(): SslCertType
+    {
+        return $this->defaultSslType;
+    }
+    
+    public function getDefaultSslProvider(): SslProvider
+    {
+        return $this->defaultSslProvider;
+    }
+    
+    public function setDefaultCategoryDomains(Category $defaultCategoryDomains): self
+    {
+        $this->defaultCategoryDomains = $defaultCategoryDomains;
+        return $this;
+    }
+    
+    public function setDefaultCategorySsl(Category $defaultCategorySsl): self
+    {
+        $this->defaultCategorySsl = $defaultCategorySsl;
+        return $this;
+    }
+    
+    public function setDefaultDns(Dns $defaultDns): self
+    {
+        $this->defaultDns = $defaultDns;
+        return $this;
+    }
+    
+    public function setDefaultHost(Hosting $defaultHost): self
+    {
+        $this->defaultHost = $defaultHost;
+        return $this;
+    }
+    
+    public function setDefaultIpAddressDomains(IpAddress $defaultIpAddressDomains): self
+    {
+        $this->defaultIpAddressDomains = $defaultIpAddressDomains;
+        return $this;
+    }
+    
+    public function setDefaultIpAddressSsl(IpAddress $defaultIpAddressSsl): self
+    {
+        $this->defaultIpAddressSsl = $defaultIpAddressSsl;
+        return $this;
+    }
+    
+    public function setDefaultOwnerDomains(Owner $defaultOwnerDomains): self
+    {
+        $this->defaultOwnerDomains = $defaultOwnerDomains;
+        return $this;
+    }
+    
+    public function setDefaultOwnerSsl(Owner $defaultOwnerSsl): self
+    {
+        $this->defaultOwnerSsl = $defaultOwnerSsl;
+        return $this;
+    }
+    
+    public function setDefaultRegistrarAccount(RegistrarAccount $defaultRegistrarAccount): self
+    {
+        $this->defaultRegistrarAccount = $defaultRegistrarAccount;
+        return $this;
+    }
+    
+    public function setDefaultSslProviderAccount(SslAccount $defaultSslProviderAccount): self
+    {
+        $this->defaultSslProviderAccount = $defaultSslProviderAccount;
+        return $this;
+    }
+    
+    public function setDefaultSslType(SslCertType $defaultSslType): self
+    {
+        $this->defaultSslType = $defaultSslType;
+        return $this;
+    }
+    
+    public function setDefaultSslProvider(SslProvider $defaultSslProvider): self
+    {
+        $this->defaultSslProvider = $defaultSslProvider;
+        return $this;
+    }
+    
 }

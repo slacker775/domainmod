@@ -32,7 +32,7 @@ class RegistrarAccount
      *
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="registrarAccounts")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
     private $owner;

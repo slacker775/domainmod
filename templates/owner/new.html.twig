@@ -2,6 +2,12 @@
 
 {% block title %}Add Owner{% endblock %}
 
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('owner_index') }}">Owners</a></li>
+<li class='active'>Add</li>
+{% endblock %}
+
 {% block body %}
     {{ include('owner/_form.html.twig') }}
 {% endblock %}

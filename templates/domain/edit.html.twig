@@ -2,8 +2,12 @@
 
 {% block title %}Edit Domain{% endblock %}
 
-{% block body %}
+{% block breadcrumbs %}
+<li><a href="{{ path('domain_index') }}">Domains</a></li>
+<li class='active'>Edit</li>
+{% endblock %}
 
+{% block body %}
 <strong>Domain</strong><br>
 {{ domain.domain|e('html') }}<br><br>
     {{ include('domain/_form.html.twig', {'button_label': 'Save'}) }}

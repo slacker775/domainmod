@@ -161,7 +161,38 @@ html {
               {{ block('breadcrumbs') }}
           </span>
           <BR>
-{#
+
+				{% for message in app.flashes('danger') %}
+				<BR>
+				<div class="alert alert-danger alert-dismissible">
+					<h4>
+						<i class="icon fa fa-exclamation-circle"></i> Alert!
+					</h4>
+					{{ message }}
+				</div>
+				{% endfor %}
+
+				{% for message in app.flashes('success') %}
+				<BR>
+				<div class="alert alert-success alert-dismissible">
+					<h4>
+						<i class="icon fa fa-check"></i> Success
+					</h4>
+					{{ message }}
+				</div>
+				{% endfor %}
+
+				{% for message in app.flashes('info') %}
+				<BR>
+				<div class="alert alert-info alert-dismissible">
+					<h4>
+						<i class="icon fa fa-info"></i> Info
+					</h4>
+
+					{{ message }}
+				</div>
+				{% endfor %}
+				{#
         <?php
         if ($_SESSION['s_message_danger'] != "") {
             echo $system->showMessageDanger($_SESSION['s_message_danger']);

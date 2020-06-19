@@ -37,7 +37,7 @@ class SslCert
      *
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="sslCerts")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
     private $owner;

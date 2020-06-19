@@ -42,7 +42,7 @@ class Domain
      *
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="domains")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      *
      */
@@ -138,7 +138,7 @@ class Domain
      *
      * @var Hosting
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hosting")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hosting", inversedBy="domains")
      * @ORM\JoinColumn(name="hosting_id", referencedColumnName="id")
      */
     private $hostingProvider;

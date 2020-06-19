@@ -26,7 +26,7 @@ class SslAccount
      *
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="sslAccounts")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
     private $owner;
