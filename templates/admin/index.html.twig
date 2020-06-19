@@ -1,23 +1,22 @@
+{% set softwareSectionLogo = 'fa-wrench' %}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}System Administration{% endblock %}
+
 {% block breadcrumbs %}
-<li class='active'>Admin</li>
+<li class='active'>Administration</li>
 {% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/dhollis/eclipse-workspace/domainmod/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/dhollis/eclipse-workspace/domainmod/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
-    </ul>
-</div>
+<a href="">System Settings</a><BR><BR>
+<a href="{{ path('admin_defaults') }}">System Defaults</a><BR><BR>
+<a href="">Users</a><BR><BR>
+<a href="">Custom Domain Fields</a><BR><BR>
+<a href="">Custom SSL Fields</a><BR><BR>
+<a href="">Task Scheduler</a><BR><BR>
+<a href="">Maintenance</a><BR><BR>
+<a href="">Backup & Restore</a><BR><BR>
+<a href="">Debug Log</a><BR><BR>
+<a href="">System Information</a><BR>
 {% endblock %}
