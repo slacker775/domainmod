@@ -56,6 +56,15 @@ class RegistrarAccountController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+    
+    /**
+     *
+     * @Route("/export", name="registrar_account_export")
+     */
+    public function export(Request $request): Response
+    {
+        return $this->redirectToRoute('registrar_account_index');
+    }
 
     /**
      *
@@ -104,15 +113,6 @@ class RegistrarAccountController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('registrar_account_index');
-    }
-
-    /**
-     *
-     * @Route("/export", name="registrar_account_export")
-     */
-    public function export(Request $request): Response
-    {
         return $this->redirectToRoute('registrar_account_index');
     }
 }

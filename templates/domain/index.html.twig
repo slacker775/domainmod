@@ -12,9 +12,9 @@ Domains
 {% block body %}
 
 <a href="{{ path('domain_new') }}">{{ _self.showButton('button','Add Domain') }}</a>
-<a href="/queue/intro.php">{{ _self.showButton('button','Add Domains to Queue') }}</a>
-<a target="_blank" href="/raw.php">{{ _self.showButton('button','Raw List') }}</a>
-<a href="index.php?&export_data=1">{{ _self.showButton('button','Export') }}</a>
+<a href="{{ path('queue_intro') }}">{{ _self.showButton('button','Add Domains to Queue') }}</a>
+<a target="_blank" href="{{ path('domain_raw') }}">{{ _self.showButton('button','Raw List') }}</a>
+<a href="{{ path('domain_export') }}">{{ _self.showButton('button','Export') }}</a>
 
 <br>
 <br>

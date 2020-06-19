@@ -1,6 +1,14 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Add Registrar Account{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('registrar_account_index') }}">Registrar Accounts</a></li>
+<li class='active'>Add</li>
+{% endblock %}
 
 {% block body %}
 

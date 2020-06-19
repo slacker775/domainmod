@@ -1,6 +1,14 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit DNS Profile{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('dns_index') }}">DNS</a></li>
+<li class='active'>Edit</li>
+{% endblock %}
 
 {% block body %}
 

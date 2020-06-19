@@ -67,7 +67,7 @@ class DomainController extends AbstractController
                 ->setFee($registrarRepository->getFeeByTld($domain->getAccount()
                 ->getRegistrar(), $domain->getTld()))
                 ->setCreationType($creationTypeRepository->findByName('Manual'))
-                ->setCreatedBy($userRepository->findByName('admin'));
+                ->setCreatedBy($this->getUser());
             $repository->save($domain);
             $entityManager->flush();
 
@@ -78,6 +78,26 @@ class DomainController extends AbstractController
             'domain' => $domain,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     *
+     * @Route("/raw", name="domain_raw")
+     */
+    public function raw(DomainRepository $repository)
+    {
+        return $this->render('domain/raw.html.twig', [
+            'domains' => $repository->findAll()
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/export", name="domain_export")
+     */
+    public function export()
+    {
+        return $this->redirectToRoute('domain_index');
     }
 
     /**
@@ -131,10 +151,4 @@ class DomainController extends AbstractController
         return $this->redirectToRoute('domain_index');
     }
 
-    public function raw(DomainRepository $repository)
-    {
-        return $this->render('domain/raw.html.twig', [
-            'domains' => $repository->getDomains()
-        ]);
-    }
 }

@@ -1,7 +1,14 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}
 Domain Registrars
+{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li class='active'>Registrars</li>
 {% endblock %}
 
 {% block body %}
@@ -10,7 +17,7 @@ DomainMOD.
 <br>
 <br>
 <a href="{{ path('registrar_new') }}">{{ _self.showButton('button','Add Registrar') }}</a>
-<a href="registrars.php?export_data=1">{{ _self.showButton('button','Export') }}</a>
+<a href="{{ path('registrar_export') }}">{{ _self.showButton('button','Export') }}</a>
 <br>
 <br>
 

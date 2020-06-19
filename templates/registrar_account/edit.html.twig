@@ -1,11 +1,17 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit RegistrarAccount{% endblock %}
+{% block title %}Edit Registrar Account{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('registrar_account_index') }}">Registrar Accounts</a></li>
+<li class='active'>Edit</li>
+{% endblock %}
 
 {% block body %}
-    <h1>Edit RegistrarAccount</h1>
-
-    {{ include('registrar_account/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('registrar_account/_form.html.twig', {'button_label': 'Save'}) }}
 
     {{ include('registrar_account/_delete_form.html.twig') }}
 {% endblock %}

@@ -1,11 +1,17 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}
 Domain Registrar Accounts
 {% endblock %}
 
-{% block body %}
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li class='active'>Registrar Accounts</li>
+{% endblock %}
 
+{% block body %}
 Below is a list of all the Domain Registrar Accounts that are stored in
 DomainMOD.
 <br>

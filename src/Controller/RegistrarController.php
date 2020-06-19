@@ -56,6 +56,14 @@ class RegistrarController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+    
+    /**
+     * @Route("/export", name="registrar_export")
+     */
+    public function export()
+    {
+        return $this->redirectToRoute('registrar_index');
+    }
 
     /**
      *

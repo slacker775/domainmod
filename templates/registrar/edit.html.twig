@@ -1,6 +1,14 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Domain Registrar{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('registrar_index') }}">Registrars</a></li>
+<li class='active'>Edit</li>
+{% endblock %}
 
 {% block body %}
     <h1>Edit Registrar</h1>

@@ -1,6 +1,13 @@
+{% set softwareSectionLogo = 'fa-sitemap' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Add Domain{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('domain_index') }}">Domains</a></li>
+<li class='active'>Add</li>
+{% endblock %}
 
 {% block body %}
 

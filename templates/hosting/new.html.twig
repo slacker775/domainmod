@@ -1,11 +1,15 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}New Hosting{% endblock %}
+{% block title %}Add Web Host{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('hosting_index') }}">Web Hosts</a></li>
+<li>Add</li>
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Hosting</h1>
-
     {{ include('hosting/_form.html.twig') }}
-
-    <a href="{{ path('hosting_index') }}">back to list</a>
 {% endblock %}

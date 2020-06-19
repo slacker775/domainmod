@@ -1,7 +1,14 @@
+{% set softwareSectionLogo = 'fa-hourglass-2' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}
 Domain Queue Information
+{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('queue') }}">Queue</a></li>
+<li class='active'>Information</li>
 {% endblock %}
 
 {% block body %}

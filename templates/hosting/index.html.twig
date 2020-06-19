@@ -1,39 +1,99 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Hosting index{% endblock %}
+{% block title %}
+Web Hosting Providers
+{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li class='active'>Hosting</li>
+{% endblock %}
 
 {% block body %}
-    <h1>Hosting index</h1>
+Below is a list of all the Web Hosting Providers that are stored in
+DomainMOD.
+<BR>
+<BR>
+<a href="{{ path('hosting_new') }}">{{ _self.showButton('button','Add Hosting Provider') }}</a>
+<a href="{{ path('hosting_export') }}">{{ _self.showButton('button','Export') }}</a>
+<BR>
+<BR>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Url</th>
-                <th>Notes</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for hosting in hostings %}
-            <tr>
-                <td>{{ hosting.id }}</td>
-                <td>{{ hosting.name }}</td>
-                <td>{{ hosting.url }}</td>
-                <td>{{ hosting.notes }}</td>
-                <td>
-                    <a href="{{ path('hosting_show', {'id': hosting.id}) }}">show</a>
-                    <a href="{{ path('hosting_edit', {'id': hosting.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% if hostings %}
+<table id="assets-hosting"
+	class="table table-striped dt-responsive cell-border compact">
+	<thead>
+		<tr>
+			<th width="20px"></th>
+			<th>Host</th>
+			<th>Domains</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for hosting in hostings %}
+		<tr>
+			<td></td>
+			<td><a href="{{ path('hosting_edit',{ id: hosting.id }) }}">{{ hosting.name }}</a></td>
+			<td>{{ hosting.domains|length ?: '-' }}</td>
+			<td><a target="_blank" href="{{ hosting.url }}">www</a></td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="7">no records found</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<strong>*</strong>
+= Default (
+<a href="{{ path('settings_defaults') }}">set defaults</a>
+)
+<BR>
+<BR>
+{% else %}
+<BR>
+You don't currently have any Web Hosts.
+<a href="{{ path('hosting_new') }}">Click here to add one</a>
+.
+{% endif %}
 
-    <a href="{{ path('hosting_new') }}">Create new</a>
+{% endblock %}
+
+{% block datatable_options %}
+	var oldStart = 0;
+	$('#assets-hosting').DataTable({
+		"paging" : true,
+		"lengthChange" : true,
+		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
+		"searching" : true,
+		"info" : true,
+		"autoWidth" : true,
+		"bAutoWidth" : false,
+		"responsive" : {
+			details : {
+				type : "column"
+			}
+		},
+		"columnDefs" : [ {
+			className : "control",
+			orderable : false,
+			targets : 0
+		} ],
+		"ordering" : true,
+		"order" : [ [ 1, "asc" ] ],
+		"bSortClasses" : false,
+		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+		"fnDrawCallback" : function(o) {
+			if (o._iDisplayStart != oldStart) {
+				var targetOffset = $("#assets-hosting").offset().top;
+				$("html,body").animate({
+					scrollTop : targetOffset
+				}, 0);
+				oldStart = o._iDisplayStart;
+			}
+		}
+	});
 {% endblock %}

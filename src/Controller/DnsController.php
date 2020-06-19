@@ -50,6 +50,14 @@ class DnsController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
+    /**
+     * @Route("/export", name="dns_export")
+     */
+    public function export()
+    {
+        return $this->redirectToRoute('dns_index');
+    }
 
     /**
      * @Route("/{id}", name="dns_show", methods={"GET"})

@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Hosting
@@ -48,6 +50,14 @@ class Hosting
 
     /**
      *
+     * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="hostingProvider")
+     *
+     * @var Collection
+     */
+    private $domains;
+
+    /**
+     *
      * @var CreationType
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
@@ -82,6 +92,7 @@ class Hosting
 
     public function __construct()
     {
+        $this->domains = new ArrayCollection();
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
@@ -96,7 +107,7 @@ class Hosting
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -148,6 +159,17 @@ class Hosting
     public function setCreatedBy(User $createdBy): self
     {
         $this->createdBy = $createdBy;
+        return $this;
+    }
+
+    public function getDomains(): Collection
+    {
+        return $this->domains;
+    }
+
+    public function setDomains(Collection $domains): self
+    {
+        $this->domains = $domains;
         return $this;
     }
 }
