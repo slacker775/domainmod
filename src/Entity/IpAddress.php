@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * IpAddresses
@@ -56,6 +58,22 @@ class IpAddress
 
     /**
      *
+     * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="ip")
+     *
+     * @var Collection
+     */
+    private $domains;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\SslCert", mappedBy="ip")
+     *
+     * @var Collection
+     */
+    private $sslCerts;
+
+    /**
+     *
      * @var CreationType
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
@@ -90,13 +108,15 @@ class IpAddress
 
     public function __construct()
     {
+        $this->domains = new ArrayCollection();
+        $this->sslCerts = new ArrayCollection();
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
 
     public function getId(): int
     {
-        if(is_string($this->id) === true){
+        if (is_string($this->id) === true) {
             $this->id = intval($this->id);
         }
         return $this->id;
@@ -171,5 +191,27 @@ class IpAddress
     public function __toString()
     {
         return sprintf("%s (%s)", $this->name, $this->ip);
+    }
+
+    public function getDomains(): Collection
+    {
+        return $this->domains;
+    }
+
+    public function setDomains(Collection $domains): self
+    {
+        $this->domains = $domains;
+        return $this;
+    }
+
+    public function getSslCerts(): Collection
+    {
+        return $this->sslCerts;
+    }
+
+    public function setSslCerts(Collection $sslCerts): self
+    {
+        $this->sslCerts = $sslCerts;
+        return $this;
     }
 }
