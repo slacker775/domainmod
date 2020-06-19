@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Categories
@@ -34,7 +36,7 @@ class Category
      *
      * @var string
      *
-     * @ORM\Column(name="stakeholder", type="string", length=100, nullable=false)
+     * @ORM\Column(name="stakeholder", type="string", length=100, nullable=true)
      */
     private $stakeholder;
 
@@ -45,6 +47,20 @@ class Category
      * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="category")
+     * @var Collection
+     */
+    private $domains;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\SslCert", mappedBy="category")
+     * @var Collection
+     */
+    private $sslCerts;
 
     /**
      *
@@ -82,10 +98,12 @@ class Category
 
     public function __construct()
     {
+        $this->domains = new ArrayCollection();
+        $this->sslCerts = new ArrayCollection();
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
-    
+
     public static function create(string $name, string $stakeholder): self
     {
         $obj = new self();
@@ -133,14 +151,14 @@ class Category
         return $this->updated;
     }
 
-    public function setStakeholder(string $stakeholder): self
+    public function setStakeholder(?string $stakeholder): self
     {
         $stakeholder = $stakeholder ?? '';
         $this->stakeholder = $stakeholder;
         return $this;
     }
 
-    public function setNotes(string $notes): self
+    public function setNotes(?string $notes): self
     {
         $notes = $notes ?? '';
         $this->notes = $notes;
@@ -168,5 +186,27 @@ class Category
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getDomains(): Collection
+    {
+        return $this->domains;
+    }
+
+    public function getSslCerts(): Collection
+    {
+        return $this->sslCerts;
+    }
+
+    public function setDomains(Collection $domains): self
+    {
+        $this->domains = $domains;
+        return $this;
+    }
+
+    public function setSslCerts(Collection $sslCerts): self
+    {
+        $this->sslCerts = $sslCerts;
+        return $this;
     }
 }

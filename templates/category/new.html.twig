@@ -2,6 +2,12 @@
 
 {% block title %}Add Category{% endblock %}
 
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('category_index') }}">Categories</a></li>
+<li class='active'>Add</li>
+{% endblock %}
+
 {% block body %}
 
     {{ include('category/_form.html.twig') }}

@@ -92,7 +92,7 @@ class Domain
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="domains")
      * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
      *
      * @var Category

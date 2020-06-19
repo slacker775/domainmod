@@ -91,7 +91,7 @@ class SslCert
      *
      * @var Category
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="sslCerts")
      * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
      */
     private $category;

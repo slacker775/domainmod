@@ -2,6 +2,12 @@
 
 {% block title %}Edit Category{% endblock %}
 
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('category_index') }}">Categories</a></li>
+<li class='active'>Edit</li>
+{% endblock %}
+
 {% block body %}
     <h1>Edit Category</h1>
 

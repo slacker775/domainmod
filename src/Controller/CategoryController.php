@@ -41,10 +41,11 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $category->setCreationType($creationTypeRespository->findByName('Manual'))->setCreatedBy($userRepository->findByName('admin'));
+            $category->setCreationType($creationTypeRespository->findByName('Manual'))->setCreatedBy($this->getUser());
             $entityManager->persist($category);
             $entityManager->flush();
 
+            $this->addFlash('success', sprintf('Category %s Added', $category->getName()));
             return $this->redirectToRoute('category_index');
         }
 
@@ -52,6 +53,14 @@ class CategoryController extends AbstractController
             'category' => $category,
             'form' => $form->createView(),
         ]);
+    }
+    
+    /**
+     * @Route("/export", name="category_export")
+     */
+    public function export(): Response
+    {
+        return $this->redirectToRoute('category_index');
     }
 
     /**
@@ -93,6 +102,8 @@ class CategoryController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();
+            
+            $this->addFlash('success',sprintf('Category %s Deleted', $category->getName()));
         }
 
         return $this->redirectToRoute('category_index');
