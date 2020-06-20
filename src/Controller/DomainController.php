@@ -33,15 +33,15 @@ class DomainController extends AbstractController
             ]),
             'systemLargeMode' => false,
             'systemDisplayDomainExpiryDate' => true,
-            'systemDisplayDomainOwner' => true,
-            'systemDisplayDomainFee' => false,
+            'systemDisplayDomainOwner' => false,
+            'systemDisplayDomainFee' => true,
             'systemDisplayDomainTld' => true,
-            'systemDisplayDomainRegistrar' => true,
+            'systemDisplayDomainRegistrar' => false,
             'systemDisplayDomainAccount' => true,
             'systemDisplayDomainDns' => true,
             'systemDisplayDomainIp' => false,
             'systemDisplayDomainHost' => false,
-            'systemDisplayDomainCategory' => false,
+            'systemDisplayDomainCategory' => true,
             'sortBy' => 'dn_a'
         ]);
     }

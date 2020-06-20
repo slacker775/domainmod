@@ -29,3 +29,5 @@ services:
         arguments:
             - '%kernel.project_dir%'
         tags: [routing.loader]
+        
+    Twig\Extra\Intl\IntlExtension: ~

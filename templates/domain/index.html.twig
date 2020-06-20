@@ -20,7 +20,7 @@ Domains
 <br>
 <br>
 <strong>Total Cost:</strong>
-$X,437.00 USD
+{{ 461.32|format_currency(app.user.settings.defaultCurrency) }} {{ app.user.settings.defaultCurrency }}
 <br>
 <strong>Number of Domains:</strong>
 {{ domains|length }}
@@ -41,179 +41,75 @@ Your search returned zero results.
 			{% endif %}
 
 			<th class="all">{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                        ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                        echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date); ?>&segid=<?php
-                        echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active); ?>&result_limit=<?php
-                        echo urlencode($result_limit); ?>&sort_by=<?php
-                        if ($sort_by == "dn_a") {
-                            echo "dn_d";
-                        } else {
-                            echo "dn_a";
-                        } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">Domain</a> {% else %} Domain {% endif %}</th>
 			{% if systemDisplayDomainExpiryDate %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php
-                            echo $dnsid; ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid;
-                            ?>&raid=<?php echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php
-                            echo urlencode($new_end_date); ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php
-                            echo urlencode($is_active); ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "ed_a") {
-                                echo "ed_d";
-                            } else {
-                                echo "ed_a";
-                            }
-                            ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">Expiry</a> {% else %} Expiry {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainFee %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php
-                            echo $dnsid; ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid;
-                            ?>&raid=<?php echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php
-                            echo urlencode($new_end_date); ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php
-                            echo urlencode($is_active); ?>&result_limit=<?php echo urlencode($result_limit);
-                            ?>&sort_by=<?php
-                            if ($sort_by == "df_a") {
-                                echo "df_d";
-                            } else {
-                                echo "df_a";
-                            }
-                            ?>&from_dropdown=1"
-					style="color:#000000;">Fee (<?php echo
-					$_SESSION['s_default_currency']; ?>)</a> {% else %} Fee (<?php echo
-				$_SESSION['s_default_currency']; ?>) {% endif %}
+				href=""
+					style="color:#000000;">Fee ({{ app.user.settings.defaultCurrency }})</a> {% else %} Fee ({{ app.user.settings.defaultCurrency }}) {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainTld %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                        ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                        echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php
-                        echo urlencode($new_end_date); ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php
-                        echo urlencode($is_active); ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                        if ($sort_by == "tld_a") {
-                            echo "tld_d";
-                        } else {
-                            echo "tld_a";
-                        } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">TLD</a> {% else %} TLD {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainRegistrar %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
-                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
-                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "r_a") {
-                                echo "r_d";
-                            } else {
-                                echo "r_a";
-                            } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">Registrar</a> {% else %} Registrar {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainAccount %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
-                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
-                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "ra_a") {
-                                echo "ra_d";
-                            } else {
-                                echo "ra_a";
-                            } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">Account</a> {% else %} Account {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainDns %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
-                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
-                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "dns_a") {
-                                echo "dns_d";
-                            } else {
-                                echo "dns_a";
-                            } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">DNS</a> {% else %} DNS {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainIp %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
-                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
-                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "ip_a") {
-                                echo "ip_d";
-                            } else {
-                                echo "ip_a";
-                            } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">IP</a> {% else %} IP {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainHost %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
-                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
-                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "wh_a") {
-                                echo "wh_d";
-                            } else {
-                                echo "wh_a";
-                            } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">Host</a> {% else %} Host {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainCategory %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
-                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
-                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "pc_a") {
-                                echo "pc_d";
-                            } else {
-                                echo "pc_a";
-                            } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">Category</a> {% else %} Category {% endif %}
 			</th>
 			{% endif %}
 			{% if systemDisplayDomainOwner %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
-				href="index.php?pcid=<?php echo $pcid; ?>&oid=<?php echo $oid; ?>&dnsid=<?php echo $dnsid;
-                            ?>&ipid=<?php echo $ipid; ?>&whid=<?php echo $whid; ?>&rid=<?php echo $rid; ?>&raid=<?php
-                            echo $raid; ?>&start_date=<?php echo urlencode($new_start_date); ?>&end_date=<?php echo urlencode($new_end_date);
-                            ?>&segid=<?php echo $segid; ?>&tld=<?php echo urlencode($tld); ?>&is_active=<?php echo urlencode($is_active);
-                            ?>&result_limit=<?php echo urlencode($result_limit); ?>&sort_by=<?php
-                            if ($sort_by == "o_a") {
-                                echo "o_d";
-                            } else {
-                                echo "o_a";
-                            } ?>&from_dropdown=1"
+				href=""
 					style="color:#000000;">Owner</a> {% else %} Owner {% endif %}
 			</th>
 			{% endif %}
@@ -232,7 +128,6 @@ Your search returned zero results.
 	<tbody>
 		{% for domain in domains %}
 		<tr>
-
 			{% if not systemLargeMode %}
 			<td></td>
 			{% endif %}
@@ -254,64 +149,57 @@ Your search returned zero results.
 			{% if systemDisplayDomainFee %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
-				href="../assets/edit/registrar-fee.php?rid=<?php echo $row->r_id; ?>&fee_id=<?php echo $row->f_id; ?>">
-					<?php $converted_total_cost = $row->total_cost * $row->conversion;
-					$temp_output_amount = $currency->format($converted_total_cost,
-					$_SESSION['s_default_currency_symbol'],
-					$_SESSION['s_default_currency_symbol_order'],
-					$_SESSION['s_default_currency_symbol_space']); echo
-					htmlentities($temp_output_amount, ENT_QUOTES, 'UTF-8'); ?> </a>
+				href="">
+					{{ 17.99|format_currency(app.user.settings.defaultCurrency) }}</a>
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainTld %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
-				href="../assets/edit/registrar-fee.php?rid=<?php echo $row->r_id; ?>&fee_id=<?php echo $row->f_id; ?>">.{{ domain.tld }}</a>
+				href="">.{{ domain.tld }}</a>
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainRegistrar %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a href="../assets/edit/registrar.php?rid=<?php echo $row->r_id; ?>"
+				<a href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">
 				{{ domain.registrar.name }}</a>
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainAccount %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a href="../assets/edit/registrar.php?rid=<?php echo $row->r_id; ?>">{{ domain.registrar.name }}</a>,
+				<a href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">{{ domain.registrar.name }}</a>,
 				<a
-				href="../assets/edit/account-owner.php?oid=<?php echo $row->o_id; ?>">{{ domain.owner }}</a>
+				href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner }}</a>
 				(<a
-				href="../assets/edit/registrar-account.php?raid=<?php echo $row->ra_id; ?>">{{ domain.account.username }}</a>)
+				href="{{ path('registrar_account_edit', { id: domain.account.id }) }}">{{ domain.account.username }}</a>)
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainDns %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a href="../assets/edit/dns.php?dnsid=<?php echo $row->dnsid; ?>">{{ domain.dns.name }}</a>
+				<a href="{{ path('dns_edit', { id: domain.dns.id }) }}">{{ domain.dns.name }}</a>
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainIp %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
-				href="../assets/edit/ip-address.php?ipid=<?php echo $row->ipid; ?>">{{ domain.ip.name }}
-					(<?php echo $row->ip; ?>)</a>
+				href="{{ path('ip_address_edit', { id: domain.ip.id }) }}">{{ domain.ip }}
+					</a>
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainHost %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a href="../assets/edit/host.php?whid=<?php echo $row->whid; ?>"><?php
-					echo $row->wh_name; ?></a>
+				<a href="{{ path('hosting_edit', { id: domain.hosting.id }) }}">{{ domain.hosting }}</a>
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainCategory %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a href="../assets/edit/category.php?pcid=<?php echo $row->pcid; ?>"><?php
-					echo $row->category_name; ?></a>
+				<a href="{{ path('category_edit', { id: domain.category.id }) }}">{{ domain.category }}</a>
 			</td>
 			{% endif %}
 			{% if systemDisplayDomainOwner %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
-				href="../assets/edit/account-owner.php?oid=<?php echo $row->o_id; ?>">{{ domain.owner.name }}</a>
+				href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner.name }}</a>
 			</td>
 			{% endif %}
 
@@ -414,3 +302,4 @@ true, "bAutoWidth": false, "responsive": { details: { type: "column" }
 $("#domains-main").offset().top; $("html,body").animate({scrollTop:
 targetOffset}, 0); oldStart = o._iDisplayStart; } } });
 {% endblock %}
+

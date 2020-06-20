@@ -49,7 +49,7 @@ DomainMOD.
 			<td><a href="edit/account-owner.php?oid=1">{{ registrar_account.owner }}</a></td>
 
 			<td>{% if registrar_account.getActiveDomainCount > 0 %} <a
-				href="{{ path('domain_index') }}">{{ registrar_account.getActiveDomainCount }}</a>
+				href="{{ path('domain_index', { accountId: registrar_account.id }) }}">{{ registrar_account.getActiveDomainCount }}</a>
 				{% else %} - {% endif %}</td>
 		</tr>
 		{% endfor %}
