@@ -50,6 +50,14 @@ class SslCertTypeController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
+    /**
+     * @Route("/export", name="ssl_cert_type_export")
+     */
+    public function export(): Response
+    {
+        return $this->redirectToRoute('ssl_cert_type_index');
+    }
 
     /**
      * @Route("/{id}", name="ssl_cert_type_show", methods={"GET"})

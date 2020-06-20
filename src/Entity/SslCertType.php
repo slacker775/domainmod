@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * SslCertTypes
@@ -40,6 +42,13 @@ class SslCertType
 
     /**
      *
+     * @ORM\OneToMany(targetEntity="App\Entity\SslCert", mappedBy="type")
+     * @var Collection
+     */
+    private $sslCerts;
+
+    /**
+     *
      * @var CreationType
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
@@ -75,6 +84,7 @@ class SslCertType
     public function __construct(string $name = null)
     {
         $this->type = $name;
+        $this->sslCerts = new ArrayCollection();
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
@@ -136,6 +146,17 @@ class SslCertType
     public function getUpdated(): \DateTimeInterface
     {
         return $this->updated;
+    }
+
+    public function getSslCerts(): Collection
+    {
+        return $this->sslCerts;
+    }
+
+    public function setSslCerts(Collection $sslCerts): self
+    {
+        $this->sslCerts = $sslCerts;
+        return $this;
     }
 
     public function __toString()

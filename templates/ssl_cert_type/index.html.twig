@@ -10,31 +10,75 @@
 {% endblock %}
 
 {% block body %}
-    <table class="table">
+Below is a list of all the SSL Certificates Types that are stored in DomainMOD.<BR><BR>
+<a href="{{ path('ssl_cert_type_new') }}">{{ _self.showButton('button','Add SSL Type') }}</a>
+<a href="{{ path('ssl_cert_type_export') }}">{{ _self.showButton('button','Export') }}</a><BR><BR>
+
+{% if ssl_cert_types %}
+    <table id="assets-ssl-types" class="table table-striped dt-responsive cell-border compact">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Type</th>
-                <th>Notes</th>
-                <th>actions</th>
+            <th width="20px"></th>
+            <th>Type</th>
+            <th>SSL Certs</th>
             </tr>
         </thead>
         <tbody>
         {% for ssl_cert_type in ssl_cert_types %}
             <tr>
-                <td>{{ ssl_cert_type.id }}</td>
-                <td>{{ ssl_cert_type.type }}</td>
-                <td>{{ ssl_cert_type.notes }}</td>
-                <td>
-                    <a href="{{ path('ssl_cert_type_show', {'id': ssl_cert_type.id}) }}">show</a>
-                    <a href="{{ path('ssl_cert_type_edit', {'id': ssl_cert_type.id}) }}">edit</a>
+                <td></td>
+                <td><a href="{{ path('ssl_cert_type_edit', { id: ssl_cert_type.id }) }}">{{ ssl_cert_type.type }}</a>
+                {% if ssl_cert_type.id == app.user.settings.defaultSslType.id %}*{% endif %}
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
+                <td>{{ ssl_cert_type.sslCerts|length ?: '-' }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+        <strong>*</strong> = Default (<a href="{{ path('settings_defaults') }}">set defaults</a>)<BR><BR>    
+{% else %}
+    <BR>You don't currently have any SSL Types. <a href="{{ path('ssl_cert_type_new') }}">Click here to add one</a>.
+{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+#assets-ssl-types thead th { padding: 2px 0px 2px 6px; border: 0; white-space: nowrap; }
+#assets-ssl-types tbody tr:hover { background-color: #dddddd; }
+#assets-ssl-types tbody td { padding: 2px 0px 2px 6px; border: 0; white-space: nowrap; }
+</style>
+{% endblock %}
+
+{% block datatable_options %}
+var oldStart = 0;
+$('#assets-ssl-types').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50, 75, 100, "All"] ],
+    "searching": true,
+    "info": true,
+    "autoWidth": true,
+    "bAutoWidth": false,
+    "responsive": {
+         details: {
+                   type: "column"
+                  }
+                  },
+    "columnDefs": [ {
+                     className: "control",
+                     orderable: false,
+                     targets:   0
+                     } ],
+    "ordering": true,
+    "order": [[ 1, "asc" ]],
+    "bSortClasses": false,
+    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
+    "fnDrawCallback": function (o) {
+      if ( o._iDisplayStart != oldStart ) {
+          var targetOffset = $("#assets-ssl-types").offset().top;
+          $("html,body").animate({scrollTop: targetOffset}, 0);
+          oldStart = o._iDisplayStart;
+      }
+    }
+});
 {% endblock %}
