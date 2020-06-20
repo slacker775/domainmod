@@ -134,12 +134,12 @@ class SslAccount
         return $this->id;
     }
 
-    public function getOwner(): Owner
+    public function getOwner(): ?Owner
     {
         return $this->owner;
     }
 
-    public function getSslProvider(): SslProvider
+    public function getSslProvider(): ?SslProvider
     {
         return $this->sslProvider;
     }

@@ -1,10 +1,15 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}SslCertType index{% endblock %}
+{% block title %}SSL Certificate Types{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li class='active'>SSL Types</li>
+{% endblock %}
 
 {% block body %}
-    <h1>SslCertType index</h1>
-
     <table class="table">
         <thead>
             <tr>
@@ -32,6 +37,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('ssl_cert_type_new') }}">Create new</a>
 {% endblock %}

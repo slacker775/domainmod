@@ -1,11 +1,15 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}New SslAccount{% endblock %}
+{% block title %}New SSL Account{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li><a href="{{ path('ssl_account_index') }}">SSL Accounts</a></li>
+<li class='active'>Add</li>
+{% endblock %}
 
 {% block body %}
-    <h1>Create new SslAccount</h1>
-
     {{ include('ssl_account/_form.html.twig') }}
-
-    <a href="{{ path('ssl_account_index') }}">back to list</a>
 {% endblock %}

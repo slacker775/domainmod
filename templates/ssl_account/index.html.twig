@@ -1,10 +1,17 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}SslAccount index{% endblock %}
 
-{% block body %}
-    <h1>SslAccount index</h1>
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li class='active'>SSL Accounts</li>
+{% endblock %}
 
+{% block body %}
+
+{% if ssl_accounts %}
     <table class="table">
         <thead>
             <tr>
@@ -44,6 +51,7 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('ssl_account_new') }}">Create new</a>
+{% else %}
+<BR>You don't currently have any SSL Provider Accounts. <a href="{{ path('ssl_account_new') }}">Click here to add one</a>.<BR>
+{% endif %}
 {% endblock %}

@@ -1,11 +1,17 @@
+{% set softwareSectionLogo = 'fa-cubes' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}
 SSL Providers
 {% endblock %}
 
-{% block body %}
+{% block breadcrumbs %}
+<li><a href="{{ path('asset') }}">Assets</a></li>
+<li class='active'>SSL Providers</li>
+{% endblock %}
 
+{% block body %}
 Below is a list of all the SSL Certificate Providers that are stored in
 DomainMOD.
 <br>
@@ -15,6 +21,7 @@ DomainMOD.
 <br>
 <br>
 
+{% if ssl_providers %}
 <table id="assets-ssl-providers"
 	class="table table-striped dt-responsive cell-border compact">
 	<thead>
@@ -32,18 +39,17 @@ DomainMOD.
 			<td></td>
 			<td><a
 				href="{{ path('ssl_provider_edit', { id: ssl_provider.id }) }}">{{ ssl_provider }}</a></td>
-			<td><a href="">{{ ssl_provider.accounts|length }}</a></td>
-			<td>{{ ssl_provider.certs|length }}</td>
-			<td><a href="ssl-provider-fees.php?sslpid=1">fees</a>&nbsp;&nbsp;
-				<a target="_blank" href="{{ ssl_provider.url }}">www</a></td>
-		</tr>
-		{% else %}
-		<tr>
-			<td colspan="9">no records found</td>
+			<td><a href="{{ path('ssl_account_index', { providerId: ssl_provider.id }) }}">{{ ssl_provider.accounts|length ?: '-' }}</a></td>
+			<td>{{ ssl_provider.certs|length ?: '-' }}</td>
+			<td><a href="{{ path('ssl_provider_fees', { id: ssl_provider.id }) }}">fees</a>&nbsp;&nbsp;
+				{% if ssl_provider.url %}<a target="_blank" href="{{ ssl_provider.url }}">www</a>{% endif %}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
+{% else %}
+<BR>You don't currently have any SSL Providers. <a href="{{ path('ssl_provider_new') }}">Click here to add one</a>.
+{% endif %}
 
 {% endblock %}
 
