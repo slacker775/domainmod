@@ -19,15 +19,67 @@
 		</h3>
 	</div>
 	<div class="box-body">
+
+		{% if registrar_account.registrar %}
+		<strong>API Requirements</strong><BR>
+		{{ registrar_account.registrar.apiRegistrar.name }}
+		requires the following credentials in order to use their API.
+
+		<ul>
+			{% if registrar_account.registrar.apiRegistrar.reqAccountUsername %}
+			<li>Registrar Account Username {% if registrar_account.username %}
+				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
+				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
+			{% if registrar_account.registrar.apiRegistrar.reqAccountPassword %}
+			<li>Registrar Account Password {% if registrar_account.password %}
+				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
+				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
+			{% if registrar_account.registrar.apiRegistrar.reqResellerId %}
+			<li>Reseller ID {% if registrar_account.resellerId %}
+				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
+				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
+			{% if registrar_account.registrar.apiRegistrar.reqApiAppName %}
+			<li>API Application Name {% if registrar_account.apiAppName %}
+				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
+				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
+			{% if registrar_account.registrar.apiRegistrar.reqApiKey %}
+			<li>API Key {% if registrar_account.apiKey %}
+				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
+				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
+			{% if registrar_account.registrar.apiRegistrar.reqApiSecret %}
+			<li>API Secret {% if registrar_account.apiSecret %}
+				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
+				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
+			{% if registrar_account.registrar.apiRegistrar.reqIpAddress %}
+			<li>Connecting IP Address {% if registrar_account.apiIp %}
+				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
+				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
+		</ul>
+		{% endif %}
+
 		{{ form_row(form.apiAppName) }}
 		{{ form_row(form.apiKey) }}
 		{{ form_row(form.apiSecret) }}
 		{{ form_row(form.apiIp) }}
 	</div>
+</div>
+{{ form_row(form.notes) }}
 
-	{{ form_row(form.notes) }}
-
-	<button style="margin-top: 5px" class="btn btn-primary btn-danger">
-		{{ button_label|default('Add Registrar Account') }}
-	</button>
-	{{ form_end(form) }}
+<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+	{{ button_label|default('Add Registrar Account') }}
+</button>
+{{ form_end(form) }}

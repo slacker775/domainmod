@@ -86,7 +86,6 @@ class RegistrarAccountController extends AbstractController
      */
     public function edit(Request $request, RegistrarAccount $registrarAccount): Response
     {
-        dump($registrarAccount);
         $form = $this->createForm(RegistrarAccountType::class, $registrarAccount);
         $form->handleRequest($request);
 
@@ -95,7 +94,8 @@ class RegistrarAccountController extends AbstractController
                 ->getManager()
                 ->flush();
 
-            return $this->redirectToRoute('registrar_account_index');
+                $this->addFlash('success', sprintf('Registrar Account %s Updated', $registrarAccount->getUsername()));
+                return $this->redirectToRoute('registrar_account_index');
         }
 
         return $this->render('registrar_account/edit.html.twig', [
@@ -114,6 +114,7 @@ class RegistrarAccountController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($registrarAccount);
             $entityManager->flush();
+            $this->addFlash('success', sprintf('Registrar Account %s Deleted', $registrarAccount->getUsername()));
         }
 
         return $this->redirectToRoute('registrar_account_index');
