@@ -127,9 +127,9 @@ class Domain
 
     /**
      *
-     * @var int
+     * @var IpAddress
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress", inversedBy="domains")
      * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
     private $ip;

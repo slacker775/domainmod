@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CreationTypeRepository;
 
 /**
  * @Route("/dns")
@@ -31,22 +32,25 @@ class DnsController extends AbstractController
     /**
      * @Route("/new", name="dns_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CreationTypeRepository $creationTypeRespository): Response
     {
-        $dn = new Dns();
-        $form = $this->createForm(DnsType::class, $dn);
+        $dns = new Dns();
+        $form = $this->createForm(DnsType::class, $dns);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $dns->setCreationType($creationTypeRespository->findByName('Manual'))->setCreatedBy($this->getUser());
+            
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($dn);
+            $entityManager->persist($dns);
             $entityManager->flush();
 
+            $this->addFlash('success', sprintf('DNS Profile %s Added', $dns->getName()));            
             return $this->redirectToRoute('dns_index');
         }
 
         return $this->render('dns/new.html.twig', [
-            'dn' => $dn,
+            'dn' => $dns,
             'form' => $form->createView(),
         ]);
     }
@@ -80,6 +84,7 @@ class DnsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', sprintf('DNS Profile %s Updated', $dn->getName()));
             return $this->redirectToRoute('dns_index');
         }
 
@@ -98,6 +103,7 @@ class DnsController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($dn);
             $entityManager->flush();
+            $this->addFlash('success', sprintf('DNS Profile %s Deleted', $dn->getName()));           
         }
 
         return $this->redirectToRoute('dns_index');

@@ -17,6 +17,8 @@ use App\Entity\ApiRegistrar;
 use App\Entity\Scheduler;
 use Symfony\Component\Intl\Timezones;
 use App\Entity\Timezone;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Entity\UserSetting;
 
 class AppFixtures extends Fixture
 {
@@ -26,6 +28,13 @@ class AppFixtures extends Fixture
     public const ADMIN_USER_REF = 'admin-user';
 
     public const DEFAULT_OWNER_REF = 'default-owner';
+
+    private UserPasswordEncoderInterface $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -77,7 +86,9 @@ class AppFixtures extends Fixture
             ->setAdmin()
             ->setReadOnly(false)
             ->setCreationType($this->getReference(self::CREATION_TYPE_INSTALL_REF))
-            ->setPassword('password');
+            ->setPassword($this->encoder->encodePassword($obj, 'password'));
+        $settings = new UserSetting();
+        $obj->setSettings($settings);
         $manager->persist($obj);
         $this->addReference(self::ADMIN_USER_REF, $obj);
     }
@@ -115,7 +126,7 @@ class AppFixtures extends Fixture
     private function loadTimezones(ObjectManager $manager)
     {
         $timezones = Timezones::getNames();
-        foreach($timezones as $tz => $local) {
+        foreach ($timezones as $tz => $local) {
             $obj = new Timezone();
             $obj->setTimezone($tz);
             $manager->persist($obj);
@@ -531,7 +542,7 @@ class AppFixtures extends Fixture
             ->setDbVersion('5.0.0')
             ->setDefaultOwnerDomains($this->getReference(self::DEFAULT_OWNER_REF))
             ->setDefaultOwnerSsl($this->getReference(self::DEFAULT_OWNER_REF));
-            
+
         $manager->persist($obj);
     }
 }

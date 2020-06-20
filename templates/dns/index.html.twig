@@ -35,7 +35,9 @@ Below is a list of all the DNS Profiles that are stored in DomainMOD.
 		{% for dn in dns %}
 		<tr>
 			<td></td>
-			<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.name }}</a></td>
+			<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.name }}</a>
+			{% if dn.id == app.user.settings.defaultDns.id|default(false) %}*{% endif %}
+			</td>
 			<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.numberOfServers }}</a></td>
 			<td><a href="{{ path('domain_index', {'dns': dn.id}) }}">{{ dn.getActiveDomains|length }}</a></td>
 		</tr>

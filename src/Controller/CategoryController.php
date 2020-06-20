@@ -33,7 +33,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/new", name="category_new", methods={"GET","POST"})
      */
-    public function new(Request $request, CreationTypeRepository $creationTypeRespository, UserRepository $userRepository): Response
+    public function new(Request $request, CreationTypeRepository $creationTypeRespository): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);

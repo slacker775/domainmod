@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CreationTypeRepository;
 
 /**
  *
@@ -37,17 +38,19 @@ class RegistrarAccountController extends AbstractController
      *
      * @Route("/new", name="registrar_account_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CreationTypeRepository $creationTypeRepository): Response
     {
         $registrarAccount = new RegistrarAccount();
         $form = $this->createForm(RegistrarAccountType::class, $registrarAccount);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $registrarAccount->setCreationType($creationTypeRepository->findByName('Manual'))->setCreatedBy($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($registrarAccount);
             $entityManager->flush();
 
+            $this->addFlash('success', sprintf('Registrar Account %s Added', $registrarAccount->getUsername()));
             return $this->redirectToRoute('registrar_account_index');
         }
 

@@ -82,7 +82,7 @@ class SslCert
      *
      * @var IpAddress
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress", inversedBy="sslCerts")
      * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
     private $ip;

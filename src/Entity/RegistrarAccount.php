@@ -16,7 +16,7 @@ use App\Doctrine\CleanAssociationsTrait;
  */
 class RegistrarAccount
 {
-    use CleanAssociationsTrait;
+    //use CleanAssociationsTrait;
 
     /**
      *

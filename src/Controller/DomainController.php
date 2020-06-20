@@ -50,7 +50,7 @@ class DomainController extends AbstractController
      *
      * @Route("/new", name="domain_new", methods={"GET","POST"})
      */
-    public function new(Request $request, DomainRepository $repository, RegistrarRepository $registrarRepository, CreationTypeRepository $creationTypeRepository, UserRepository $userRepository): Response
+    public function new(Request $request, DomainRepository $repository, RegistrarRepository $registrarRepository, CreationTypeRepository $creationTypeRepository): Response
     {
         $domain = new Domain();
         $form = $this->createForm(DomainType::class, $domain);
@@ -70,7 +70,8 @@ class DomainController extends AbstractController
                 ->setCreatedBy($this->getUser());
             $repository->save($domain);
             $entityManager->flush();
-
+            
+            $this->addFlash('success', sprintf('Domain %s Added', $domain->getDomain()));          
             return $this->redirectToRoute('domain_index');
         }
 
@@ -124,7 +125,7 @@ class DomainController extends AbstractController
             $this->getDoctrine()
                 ->getManager()
                 ->flush();
-            $this->addFlash('success', sprintf('Domain %s updated', $domain->getDomain()));
+            $this->addFlash('success', sprintf('Domain %s Updated', $domain->getDomain()));
             return $this->redirectToRoute('domain_index');
         }
 
@@ -146,6 +147,7 @@ class DomainController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($domain);
             $entityManager->flush();
+            $this->addFlash('success', sprintf('Domain %s Deleted', $domain->getDomain()));           
         }
 
         return $this->redirectToRoute('domain_index');

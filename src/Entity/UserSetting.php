@@ -50,7 +50,7 @@ class UserSetting
     /**
      *
      * @var Category
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      * @ORM\JoinColumn(name="default_category_domains", referencedColumnName="id")
      */
@@ -59,7 +59,7 @@ class UserSetting
     /**
      *
      * @var Category
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      * @ORM\JoinColumn(name="default_category_ssl", referencedColumnName="id")
      */
@@ -113,7 +113,7 @@ class UserSetting
     /**
      *
      * @var Owner
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
      * @ORM\JoinColumn(name="default_owner_ssl", referencedColumnName="id")
      */
@@ -130,7 +130,7 @@ class UserSetting
     /**
      *
      * @var RegistrarAccount
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
      * @ORM\JoinColumn(name="default_registrar_account", referencedColumnName="id")
      */
@@ -139,7 +139,7 @@ class UserSetting
     /**
      *
      * @var SslAccount
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\SslAccount")
      * @ORM\JoinColumn(name="default_ssl_provider_account", referencedColumnName="id")
      */
@@ -148,7 +148,7 @@ class UserSetting
     /**
      *
      * @var SslCertType
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\SslCertType")
      * @ORM\JoinColumn(name="default_ssl_type", referencedColumnName="id")
      */
@@ -157,7 +157,7 @@ class UserSetting
     /**
      *
      * @var SslProvider
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\SslProvider")
      * @ORM\JoinColumn(name="default_ssl_provider", referencedColumnName="id")
      */
@@ -373,45 +373,45 @@ class UserSetting
 
     public function __construct()
     {
-        $this->$defaultCurrency = 'USD';
-        $this->$defaultTimezone = '\'America/New_York\'';
-        $this->$defaultCategoryDomains = null;
-        $this->$defaultCategorySsl = null;
-        $this->$defaultDns = null;
-        $this->$defaultHost = null;
-        $this->$defaultIpAddressDomains = null;
-        $this->$defaultIpAddressSsl = null;
-        $this->$defaultOwnerDomains = null;
-        $this->$defaultOwnerSsl = null;
-        $this->$defaultRegistrar = null;
-        $this->$defaultRegistrarAccount = null;
-        $this->$defaultSslProviderAccount = null;
-        $this->$defaultSslType = null;
-        $this->$defaultSslProvider = null;
-        $this->$expirationEmails = false;
-        $this->$numberOfDomains = '50';
-        $this->$numberOfSslCerts = '50';
-        $this->$displayDomainOwner = false;
-        $this->$displayDomainRegistrar = false;
-        $this->$displayDomainAccount = true;
-        $this->$displayDomainExpiryDate = true;
-        $this->$displayDomainCategory = true;
-        $this->$displayDomainDns = true;
-        $this->$displayDomainHost = false;
-        $this->$displayDomainIp = false;
-        $this->$displayDomainTld = true;
-        $this->$displayDomainFee = true;
-        $this->$displaySslOwner = true;
-        $this->$displaySslProvider = false;
-        $this->$displaySslAccount = true;
-        $this->$displaySslDomain = true;
-        $this->$displaySslType = true;
-        $this->$displaySslExpiryDate = true;
-        $this->$displaySslIp = false;
-        $this->$displaySslCategory = false;
-        $this->$displaySslFee = false;
-        $this->$displayInactiveAssets = true;
-        $this->$displayDwIntroPage = true;
+        $this->defaultCurrency = 'USD';
+        $this->defaultTimezone = '\'America/New_York\'';
+        $this->defaultCategoryDomains = null;
+        $this->defaultCategorySsl = null;
+        $this->defaultDns = null;
+        $this->defaultHost = null;
+        $this->defaultIpAddressDomains = null;
+        $this->defaultIpAddressSsl = null;
+        $this->defaultOwnerDomains = null;
+        $this->defaultOwnerSsl = null;
+        $this->defaultRegistrar = null;
+        $this->defaultRegistrarAccount = null;
+        $this->defaultSslProviderAccount = null;
+        $this->defaultSslType = null;
+        $this->defaultSslProvider = null;
+        $this->expirationEmails = false;
+        $this->numberOfDomains = '50';
+        $this->numberOfSslCerts = '50';
+        $this->displayDomainOwner = false;
+        $this->displayDomainRegistrar = false;
+        $this->displayDomainAccount = true;
+        $this->displayDomainExpiryDate = true;
+        $this->displayDomainCategory = true;
+        $this->displayDomainDns = true;
+        $this->displayDomainHost = false;
+        $this->displayDomainIp = false;
+        $this->displayDomainTld = true;
+        $this->displayDomainFee = true;
+        $this->displaySslOwner = true;
+        $this->displaySslProvider = false;
+        $this->displaySslAccount = true;
+        $this->displaySslDomain = true;
+        $this->displaySslType = true;
+        $this->displaySslExpiryDate = true;
+        $this->displaySslIp = false;
+        $this->displaySslCategory = false;
+        $this->displaySslFee = false;
+        $this->displayInactiveAssets = true;
+        $this->displayDwIntroPage = true;
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
@@ -453,148 +453,153 @@ class UserSetting
         $this->defaultTimezone = $defaultTimezone;
         return $this;
     }
-    
+
     public function setExpirationEmails(bool $expirationEmails = true): self
     {
         $this->expirationEmails = $expirationEmails;
         return $this;
     }
-    
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
     public function getUser(): User
     {
         return $this->user;
     }
-    
-    public function getDefaultCategoryDomains(): Category
+
+    public function getDefaultCategoryDomains(): ?Category
     {
         return $this->defaultCategoryDomains;
     }
-    
-    public function getDefaultCategorySsl(): Category
+
+    public function getDefaultCategorySsl(): ?Category
     {
         return $this->defaultCategorySsl;
     }
-    
-    public function getDefaultDns(): Dns
+
+    public function getDefaultDns(): ?Dns
     {
         return $this->defaultDns;
     }
-    
-    public function getDefaultHost(): Hosting
+
+    public function getDefaultHost(): ?Hosting
     {
         return $this->defaultHost;
     }
-    
-    public function getDefaultIpAddressDomains(): IpAddress
+
+    public function getDefaultIpAddressDomains(): ?IpAddress
     {
         return $this->defaultIpAddressDomains;
     }
-    
-    public function getDefaultIpAddressSsl(): IpAddress
+
+    public function getDefaultIpAddressSsl(): ?IpAddress
     {
         return $this->defaultIpAddressSsl;
     }
-    
-    public function getDefaultOwnerDomains(): Owner
+
+    public function getDefaultOwnerDomains(): ?Owner
     {
         return $this->defaultOwnerDomains;
     }
-    
-    public function getDefaultOwnerSsl(): Owner
+
+    public function getDefaultOwnerSsl(): ?Owner
     {
         return $this->defaultOwnerSsl;
     }
-    
-    public function getDefaultRegistrarAccount(): RegistrarAccount
+
+    public function getDefaultRegistrarAccount(): ?RegistrarAccount
     {
         return $this->defaultRegistrarAccount;
     }
-    
-    public function getDefaultSslProviderAccount(): SslAccount
+
+    public function getDefaultSslProviderAccount(): ?SslAccount
     {
         return $this->defaultSslProviderAccount;
     }
-    
-    public function getDefaultSslType(): SslCertType
+
+    public function getDefaultSslType(): ?SslCertType
     {
         return $this->defaultSslType;
     }
-    
-    public function getDefaultSslProvider(): SslProvider
+
+    public function getDefaultSslProvider(): ?SslProvider
     {
         return $this->defaultSslProvider;
     }
-    
+
     public function setDefaultCategoryDomains(Category $defaultCategoryDomains): self
     {
         $this->defaultCategoryDomains = $defaultCategoryDomains;
         return $this;
     }
-    
+
     public function setDefaultCategorySsl(Category $defaultCategorySsl): self
     {
         $this->defaultCategorySsl = $defaultCategorySsl;
         return $this;
     }
-    
+
     public function setDefaultDns(Dns $defaultDns): self
     {
         $this->defaultDns = $defaultDns;
         return $this;
     }
-    
+
     public function setDefaultHost(Hosting $defaultHost): self
     {
         $this->defaultHost = $defaultHost;
         return $this;
     }
-    
+
     public function setDefaultIpAddressDomains(IpAddress $defaultIpAddressDomains): self
     {
         $this->defaultIpAddressDomains = $defaultIpAddressDomains;
         return $this;
     }
-    
+
     public function setDefaultIpAddressSsl(IpAddress $defaultIpAddressSsl): self
     {
         $this->defaultIpAddressSsl = $defaultIpAddressSsl;
         return $this;
     }
-    
+
     public function setDefaultOwnerDomains(Owner $defaultOwnerDomains): self
     {
         $this->defaultOwnerDomains = $defaultOwnerDomains;
         return $this;
     }
-    
+
     public function setDefaultOwnerSsl(Owner $defaultOwnerSsl): self
     {
         $this->defaultOwnerSsl = $defaultOwnerSsl;
         return $this;
     }
-    
+
     public function setDefaultRegistrarAccount(RegistrarAccount $defaultRegistrarAccount): self
     {
         $this->defaultRegistrarAccount = $defaultRegistrarAccount;
         return $this;
     }
-    
+
     public function setDefaultSslProviderAccount(SslAccount $defaultSslProviderAccount): self
     {
         $this->defaultSslProviderAccount = $defaultSslProviderAccount;
         return $this;
     }
-    
+
     public function setDefaultSslType(SslCertType $defaultSslType): self
     {
         $this->defaultSslType = $defaultSslType;
         return $this;
     }
-    
+
     public function setDefaultSslProvider(SslProvider $defaultSslProvider): self
     {
         $this->defaultSslProvider = $defaultSslProvider;
         return $this;
     }
-    
 }

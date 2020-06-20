@@ -113,7 +113,7 @@ class User implements UserInterface
 
     /**
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\UserSetting", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="App\Entity\UserSetting", mappedBy="user", cascade={"persist"})
      * @var UserSetting
      */
     private $settings;
@@ -343,6 +343,7 @@ class User implements UserInterface
 
     public function setSettings(UserSetting $settings): self
     {
+        $settings->setUser($this);
         $this->settings = $settings;
         return $this;
     }

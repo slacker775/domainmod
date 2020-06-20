@@ -38,8 +38,8 @@ Below is a list of all the Account Owners that are stored in DomainMOD.
 		<tr>
 			<td></td>
 			<td><a href="{{ path('owner_edit', {'id': owner.id}) }}">{{ owner.name }}</a>
-				{% if owner.id == app.user.settings.defaultOwnerDomains.id %} * {% endif %}
-				{% if owner.id == app.user.settings.defaultOwnerSsl.id %} ^ {% endif %}
+				{% if owner.id == app.user.settings.defaultOwnerDomains.id|default(false) %} * {% endif %}
+				{% if owner.id == app.user.settings.defaultOwnerSsl.id|default(false) %} ^ {% endif %}
 			</td>
 			<td>{{ owner.registrarAccounts|length ?: '-' }}</td>
 			<td>{{ owner.domains|length ?: '-' }}</td>
