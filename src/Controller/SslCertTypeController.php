@@ -42,6 +42,7 @@ class SslCertTypeController extends AbstractController
             $entityManager->persist($sslCertType);
             $entityManager->flush();
 
+            $this->addFlash('success', sprintf('SSL Type %s Added', $sslCertType->getType()));
             return $this->redirectToRoute('ssl_cert_type_index');
         }
 
@@ -80,6 +81,7 @@ class SslCertTypeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', sprintf('SSL Type %s Updated', $sslCertType->getType()));
             return $this->redirectToRoute('ssl_cert_type_index');
         }
 
@@ -98,6 +100,7 @@ class SslCertTypeController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($sslCertType);
             $entityManager->flush();
+            $this->addFlash('success', sprintf('SSL Type %s Deleted', $sslCertType->getType()));
         }
 
         return $this->redirectToRoute('ssl_cert_type_index');

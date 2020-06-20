@@ -73,7 +73,7 @@ class SslCert
      *
      * @var SslCertType
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\SslCertType")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslCertType", inversedBy="sslCerts")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private $type;
