@@ -1,0 +1,16 @@
+{% set softwareSectionLogo = 'fa-wrench' %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}System Defaults{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('admin_index') }}">Admin</a></li>
+<li class='active'>Systems Settings</li>
+{% endblock %}
+
+{% block body %}
+
+    {{ include('admin/settings_form.html.twig') }}
+
+{% endblock %}

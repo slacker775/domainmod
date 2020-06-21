@@ -541,7 +541,9 @@ class AppFixtures extends Fixture
             ->setEmailAddress('domainmod@example.com')
             ->setDbVersion('5.0.0')
             ->setDefaultOwnerDomains($this->getReference(self::DEFAULT_OWNER_REF))
-            ->setDefaultOwnerSsl($this->getReference(self::DEFAULT_OWNER_REF));
+            ->setDefaultOwnerSsl($this->getReference(self::DEFAULT_OWNER_REF))
+            ->setEmailSignature($this->getReference(self::ADMIN_USER_REF))
+            ->setSmtpPort(587)->setUseSmtp(false);
 
         $manager->persist($obj);
     }

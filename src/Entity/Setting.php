@@ -189,9 +189,9 @@ class Setting
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="email_signature", type="integer", nullable=false, options={"default"="1","unsigned"=true})
+     * @var User
+     * @ORM\OneToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="email_signature", referencedColumnName="id")
      */
     private $emailSignature;
 
@@ -315,6 +315,138 @@ class Setting
     public function getFullUrl(): string
     {
         return $this->fullUrl;
+    }
+
+    public function isLargeMode(): bool
+    {
+        return $this->largeMode;
+    }
+
+    public function getEmailSignature(): User
+    {
+        return $this->emailSignature;
+    }
+
+    public function getCurrencyConverter(): string
+    {
+        return $this->currencyConverter;
+    }
+
+    public function isUseSmtp(): bool
+    {
+        return $this->useSmtp;
+    }
+
+    public function getSmtpServer(): ?string
+    {
+        return $this->smtpServer;
+    }
+
+    public function getSmtpProtocol(): ?string
+    {
+        return $this->smtpProtocol;
+    }
+
+    public function getSmtpPort(): ?string
+    {
+        return $this->smtpPort;
+    }
+
+    public function getSmtpEmailAddress(): ?string
+    {
+        return $this->smtpEmailAddress;
+    }
+
+    public function getSmtpUsername(): ?string
+    {
+        return $this->smtpUsername;
+    }
+
+    public function getSmtpPassword(): ?string
+    {
+        return $this->smtpPassword;
+    }
+
+    public function isDebugMode(): bool
+    {
+        return $this->debugMode;
+    }
+
+    public function isLocalPhpLog(): bool
+    {
+        return $this->localPhpLog;
+    }
+
+    public function setLargeMode(bool $largeMode): self
+    {
+        $this->largeMode = $largeMode;
+        return $this;
+    }
+
+    public function setEmailSignature(User $emailSignature): self
+    {
+        $this->emailSignature = $emailSignature;
+        return $this;
+    }
+
+    public function setCurrencyConverter(string $currencyConverter): self
+    {
+        $this->currencyConverter = $currencyConverter;
+        return $this;
+    }
+
+    public function setUseSmtp(bool $useSmtp): self
+    {
+        $this->useSmtp = $useSmtp;
+        return $this;
+    }
+
+    public function setSmtpServer(string $smtpServer): self
+    {
+        $this->smtpServer = $smtpServer;
+        return $this;
+    }
+
+    public function setSmtpProtocol(string $smtpProtocol): self
+    {
+        $this->smtpProtocol = $smtpProtocol;
+        return $this;
+    }
+
+    public function setSmtpPort(string $smtpPort): self
+    {
+        $this->smtpPort = $smtpPort;
+        return $this;
+    }
+
+    public function setSmtpEmailAddress(string $smtpEmailAddress): self
+    {
+        $this->smtpEmailAddress = $smtpEmailAddress;
+        return $this;
+    }
+
+    public function setSmtpUsername(string $smtpUsername): self
+    {
+        $this->smtpUsername = $smtpUsername;
+        return $this;
+    }
+
+    public function setSmtpPassword(string $smtpPassword): self
+    {
+        $this->smtpPassword = $smtpPassword;
+        return $this;
+    }
+
+    public function setDebugMode(bool $debugMode): self
+    {
+        $this->debugMode = $debugMode;
+        return $this;
+    }
+
+    public function setLocalPhpLog(bool $localPhpLog): self
+    {
+        $this->localPhpLog = $localPhpLog;
+        return $this;
     }
 
     public function getDbVersion(): string

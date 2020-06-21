@@ -53,6 +53,14 @@ class DomainController extends AbstractController
     public function new(Request $request, DomainRepository $repository, RegistrarRepository $registrarRepository, CreationTypeRepository $creationTypeRepository): Response
     {
         $domain = new Domain();
+        
+        $settings = $this->getUser()->getSettings();
+        $domain->setRegistrar($settings->getDefaultRegistrar())
+            ->setAccount($settings->getDefaultRegistrarAccount())
+            ->setCategory($settings->getDefaultCategoryDomains())
+            ->setDns($settings->getDefaultDns())
+            ->setIp($settings->getDefaultIpAddressDomains())
+            ->setHostingProvider($settings->getDefaultHost());
         $form = $this->createForm(DomainType::class, $domain);
         $form->handleRequest($request);
 

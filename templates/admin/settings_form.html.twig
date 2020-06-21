@@ -1,0 +1,37 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{{ form_start(form) }}
+{{ form_row(form.fullUrl) }}
+{{ form_row(form.emailAddress) }}
+{{ form_row(form.expirationDays) }}
+{{ form_row(form.emailSignature) }}
+{{ form_row(form.currencyConverter) }}
+{{ form_row(form.largeMode) }}
+{{ form_row(form.debugMode) }}
+{{ form_row(form.localPhpLog) }}
+
+<div class="box box-default collapsed-box box-solid">
+	<div class="box-header with-border">
+		<h3 class="box-title" style="padding-top: 3px;">
+			<button type="button" class="btn btn-box-tool" data-widget="collapse">
+				<i class="fa fa-plus"></i>
+			</button>
+			&nbsp;SMTP Server Settings
+		</h3>
+	</div>
+	<div class="box-body">
+		{{ form_row(form.useSmtp) }}
+		{{ form_row(form.smtpServer) }}
+		{{ form_row(form.smtpProtocol) }}
+		{{ form_row(form.smtpPort) }}
+		{{ form_row(form.smtpEmailAddress) }}
+		{{ form_row(form.smtpUsername) }}
+		{{ form_row(form.smtpPassword) }}
+	</div>
+</div>
+<br>
+
+<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+	{{ button_label|default('Update System Settings') }}
+</button>
+{{ form_end(form) }}

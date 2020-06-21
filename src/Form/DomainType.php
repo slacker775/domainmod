@@ -27,18 +27,24 @@ class DomainType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $domain = $event->getData();
             $form = $event->getForm();
-            
+
             if (! $domain || null == $domain->getId()) {
-                
+
                 $form->add('domain', TextType::class, [
-                    'label' => 'Domain (255)'
+                    'label' => 'Domain (255)',
+                    'attr' => [
+                        'placeholder' => 'Domain (255)'
+                    ]
                 ]);
             }
         });
-        
+
         $builder->add('function', TextType::class, [
             'label' => 'Function (255)',
-            'required' => false
+            'required' => false,
+            'attr' => [
+                'placeholder' => 'Function (255)'
+            ]
         ])
             ->add('expiryDate', DateType::class, [
             'label' => 'Expiry Date (YYYY-MM-DD)',
@@ -86,7 +92,10 @@ class DomainType extends AbstractType
         ])
             ->add('notes', TextareaType::class, [
             'label' => 'Notes',
-            'required' => false
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Notes'
+                ]
         ]);
     }
 
