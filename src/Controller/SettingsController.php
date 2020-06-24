@@ -16,13 +16,14 @@ class SettingsController extends AbstractController
 {
 
     /**
+     *
      * @Route("/", name="settings_index")
      */
     public function index()
     {
         return $this->render('settings/index.html.twig');
     }
-    
+
     /**
      *
      * @Route("/defaults", name="settings_defaults")

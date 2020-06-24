@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\SslCert;
@@ -11,11 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ *
  * @Route("/ssl/cert")
  */
 class SslCertController extends AbstractController
 {
+
     /**
+     *
      * @Route("/", name="ssl_cert_index", methods={"GET"})
      */
     public function index(): Response
@@ -25,23 +27,27 @@ class SslCertController extends AbstractController
             ->findAll();
 
         return $this->render('ssl_cert/index.html.twig', [
-            'ssl_certs' => $sslCerts,
+            'ssl_certs' => $sslCerts
         ]);
     }
 
     /**
+     *
      * @Route("/export", name="ssl_cert_export")
      */
     public function export()
     {
         return $this->redirectToRoute('ssl_cert_index');
     }
-    
+
     /**
+     *
      * @Route("/new", name="ssl_cert_new", methods={"GET","POST"})
      */
     public function new(Request $request, SslCertRepository $repository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $sslCert = new SslCert();
         $form = $this->createForm(SslCertType::class, $sslCert);
         $form->handleRequest($request);
@@ -55,46 +61,44 @@ class SslCertController extends AbstractController
 
         return $this->render('ssl_cert/new.html.twig', [
             'ssl_cert' => $sslCert,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/{id}", name="ssl_cert_show", methods={"GET"})
-     */
-    public function show(SslCert $sslCert): Response
-    {
-        return $this->render('ssl_cert/show.html.twig', [
-            'ssl_cert' => $sslCert,
-        ]);
-    }
-
-    /**
+     *
      * @Route("/{id}/edit", name="ssl_cert_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, SslCert $sslCert): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(SslCertType::class, $sslCert);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
             return $this->redirectToRoute('ssl_cert_index');
         }
 
         return $this->render('ssl_cert/edit.html.twig', [
             'ssl_cert' => $sslCert,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
     /**
+     *
      * @Route("/{id}", name="ssl_cert_delete", methods={"DELETE"})
      */
     public function delete(Request $request, SslCert $sslCert, SslCertRepository $repository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$sslCert->getId(), $request->request->get('_token'))) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if ($this->isCsrfTokenValid('delete' . $sslCert->getId(), $request->request->get('_token'))) {
             $repository->remove($sslCert);
         }
 

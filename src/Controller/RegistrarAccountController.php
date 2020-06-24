@@ -40,12 +40,15 @@ class RegistrarAccountController extends AbstractController
      */
     public function new(Request $request, CreationTypeRepository $creationTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $registrarAccount = new RegistrarAccount();
         $form = $this->createForm(RegistrarAccountType::class, $registrarAccount);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $registrarAccount->setCreationType($creationTypeRepository->findByName('Manual'))->setCreatedBy($this->getUser());
+            $registrarAccount->setCreationType($creationTypeRepository->findByName('Manual'))
+                ->setCreatedBy($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($registrarAccount);
             $entityManager->flush();
@@ -59,7 +62,7 @@ class RegistrarAccountController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    
+
     /**
      *
      * @Route("/export", name="registrar_account_export")
@@ -71,21 +74,12 @@ class RegistrarAccountController extends AbstractController
 
     /**
      *
-     * @Route("/{id}", name="registrar_account_show", methods={"GET"})
-     */
-    public function show(RegistrarAccount $registrarAccount): Response
-    {
-        return $this->render('registrar_account/show.html.twig', [
-            'registrar_account' => $registrarAccount
-        ]);
-    }
-
-    /**
-     *
      * @Route("/{id}/edit", name="registrar_account_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, RegistrarAccount $registrarAccount): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(RegistrarAccountType::class, $registrarAccount);
         $form->handleRequest($request);
 
@@ -94,8 +88,8 @@ class RegistrarAccountController extends AbstractController
                 ->getManager()
                 ->flush();
 
-                $this->addFlash('success', sprintf('Registrar Account %s Updated', $registrarAccount->getUsername()));
-                return $this->redirectToRoute('registrar_account_index');
+            $this->addFlash('success', sprintf('Registrar Account %s Updated', $registrarAccount->getUsername()));
+            return $this->redirectToRoute('registrar_account_index');
         }
 
         return $this->render('registrar_account/edit.html.twig', [
@@ -110,6 +104,8 @@ class RegistrarAccountController extends AbstractController
      */
     public function delete(Request $request, RegistrarAccount $registrarAccount): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $registrarAccount->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($registrarAccount);

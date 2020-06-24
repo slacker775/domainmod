@@ -37,6 +37,8 @@ class HostingController extends AbstractController
      */
     public function new(Request $request, CreationTypeRepository $creationTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $hosting = new Hosting();
         $form = $this->createForm(HostingType::class, $hosting);
         $form->handleRequest($request);
@@ -68,21 +70,12 @@ class HostingController extends AbstractController
 
     /**
      *
-     * @Route("/{id}", name="hosting_show", methods={"GET"})
-     */
-    public function show(Hosting $hosting): Response
-    {
-        return $this->render('hosting/show.html.twig', [
-            'hosting' => $hosting
-        ]);
-    }
-
-    /**
-     *
      * @Route("/{id}/edit", name="hosting_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Hosting $hosting): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(HostingType::class, $hosting);
         $form->handleRequest($request);
 
@@ -106,6 +99,8 @@ class HostingController extends AbstractController
      */
     public function delete(Request $request, Hosting $hosting): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $hosting->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($hosting);

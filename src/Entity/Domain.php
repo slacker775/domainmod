@@ -349,13 +349,13 @@ class Domain
         return $this;
     }
 
-    public function setRegistrar(Registrar $registrar): self
+    public function setRegistrar(?Registrar $registrar): self
     {
         $this->registrar = $registrar;
         return $this;
     }
 
-    public function setAccount(RegistrarAccount $account): self
+    public function setAccount(?RegistrarAccount $account): self
     {
         $this->account = $account;
         return $this;
@@ -382,7 +382,7 @@ class Domain
         return $this;
     }
 
-    public function setCategory(Category $category): self
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
         return $this;
@@ -400,19 +400,19 @@ class Domain
         return $this;
     }
 
-    public function setDns(Dns $dns): self
+    public function setDns(?Dns $dns): self
     {
         $this->dns = $dns;
         return $this;
     }
 
-    public function setIp(IpAddress $ip): self
+    public function setIp(?IpAddress $ip): self
     {
         $this->ip = $ip;
         return $this;
     }
 
-    public function setHostingProvider(Hosting $hostingProvider): self
+    public function setHostingProvider(?Hosting $hostingProvider): self
     {
         $this->hostingProvider = $hostingProvider;
         return $this;

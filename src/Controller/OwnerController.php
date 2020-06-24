@@ -37,6 +37,8 @@ class OwnerController extends AbstractController
      */
     public function new(Request $request, CreationTypeRepository $creationTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $owner = new Owner();
         $form = $this->createForm(OwnerType::class, $owner);
         $form->handleRequest($request);
@@ -48,7 +50,7 @@ class OwnerController extends AbstractController
             $entityManager->persist($owner);
             $entityManager->flush();
 
-            $this->addFlash('success',sprintf('Owner %s Added', $owner->getName()));
+            $this->addFlash('success', sprintf('Owner %s Added', $owner->getName()));
             return $this->redirectToRoute('owner_index');
         }
 
@@ -69,21 +71,12 @@ class OwnerController extends AbstractController
 
     /**
      *
-     * @Route("/{id}", name="owner_show", methods={"GET"})
-     */
-    public function show(Owner $owner): Response
-    {
-        return $this->render('owner/show.html.twig', [
-            'owner' => $owner
-        ]);
-    }
-
-    /**
-     *
      * @Route("/{id}/edit", name="owner_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Owner $owner): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(OwnerType::class, $owner);
         $form->handleRequest($request);
 
@@ -107,6 +100,8 @@ class OwnerController extends AbstractController
      */
     public function delete(Request $request, Owner $owner): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $owner->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($owner);

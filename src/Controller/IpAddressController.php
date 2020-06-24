@@ -37,6 +37,8 @@ class IpAddressController extends AbstractController
      */
     public function new(Request $request, CreationTypeRepository $creationTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $ipAddress = new IpAddress();
         $form = $this->createForm(IpAddressType::class, $ipAddress);
         $form->handleRequest($request);
@@ -48,7 +50,7 @@ class IpAddressController extends AbstractController
             $entityManager->persist($ipAddress);
             $entityManager->flush();
 
-            $this->addFlash('success',sprintf('IP Address %s (%s) Added', $ipAddress->getName(),$ipAddress->getIp()));
+            $this->addFlash('success', sprintf('IP Address %s (%s) Added', $ipAddress->getName(), $ipAddress->getIp()));
             return $this->redirectToRoute('ip_address_index');
         }
 
@@ -69,21 +71,12 @@ class IpAddressController extends AbstractController
 
     /**
      *
-     * @Route("/{id}", name="ip_address_show", methods={"GET"})
-     */
-    public function show(IpAddress $ipAddress): Response
-    {
-        return $this->render('ip_address/show.html.twig', [
-            'ip_address' => $ipAddress
-        ]);
-    }
-
-    /**
-     *
      * @Route("/{id}/edit", name="ip_address_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, IpAddress $ipAddress): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(IpAddressType::class, $ipAddress);
         $form->handleRequest($request);
 
@@ -92,7 +85,7 @@ class IpAddressController extends AbstractController
                 ->getManager()
                 ->flush();
 
-            $this->addFlash('success',sprintf('IP Address %s (%s) Updated', $ipAddress->getName(),$ipAddress->getIp()));               
+            $this->addFlash('success', sprintf('IP Address %s (%s) Updated', $ipAddress->getName(), $ipAddress->getIp()));
             return $this->redirectToRoute('ip_address_index');
         }
 
@@ -108,11 +101,13 @@ class IpAddressController extends AbstractController
      */
     public function delete(Request $request, IpAddress $ipAddress): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $ipAddress->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ipAddress);
             $entityManager->flush();
-            $this->addFlash('success',sprintf('IP Address %s (%s) Deleted', $ipAddress->getName(),$ipAddress->getIp()));           
+            $this->addFlash('success', sprintf('IP Address %s (%s) Deleted', $ipAddress->getName(), $ipAddress->getIp()));
         }
 
         return $this->redirectToRoute('ip_address_index');

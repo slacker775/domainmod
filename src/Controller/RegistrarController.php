@@ -39,6 +39,8 @@ class RegistrarController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $registrar = new Registrar();
         $form = $this->createForm(RegistrarType::class, $registrar);
         $form->handleRequest($request);
@@ -56,8 +58,9 @@ class RegistrarController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    
+
     /**
+     *
      * @Route("/export", name="registrar_export")
      */
     public function export()
@@ -67,21 +70,12 @@ class RegistrarController extends AbstractController
 
     /**
      *
-     * @Route("/{id}", name="registrar_show", methods={"GET"})
-     */
-    public function show(Registrar $registrar): Response
-    {
-        return $this->render('registrar/show.html.twig', [
-            'registrar' => $registrar
-        ]);
-    }
-
-    /**
-     *
      * @Route("/{id}/edit", name="registrar_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Registrar $registrar): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(RegistrarType::class, $registrar);
         $form->handleRequest($request);
 
@@ -105,6 +99,8 @@ class RegistrarController extends AbstractController
      */
     public function delete(Request $request, Registrar $registrar): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $registrar->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($registrar);
@@ -115,12 +111,13 @@ class RegistrarController extends AbstractController
     }
 
     /**
+     *
      * @Route("/missing/fees", name="registrar_missing_fees", methods={"GET"})
      */
     public function missingFees(RegistrarRepository $repository)
     {
         return $this->render('registrar/missing-fees.html.twig', [
-            'fees' => $repository->getMissingFees(),
+            'fees' => $repository->getMissingFees()
         ]);
     }
 }

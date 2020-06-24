@@ -4,6 +4,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * IpAddresses
@@ -37,6 +38,7 @@ class IpAddress
      * @var string
      *
      * @ORM\Column(name="ip", type="string", length=45, nullable=false)
+     * @Assert\Ip
      */
     private $ip;
 
@@ -45,6 +47,7 @@ class IpAddress
      * @var string
      *
      * @ORM\Column(name="rdns", type="string", length=255, nullable=true)
+     * @Assert\Hostname
      */
     private $rdns;
 

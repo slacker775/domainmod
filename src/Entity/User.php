@@ -160,6 +160,8 @@ class User implements UserInterface
         $this->active = true;
         $this->numberOfLogins = 0;
         $this->lastLogin = null;
+        $this->settings = new UserSetting();
+        $this->settings->setUser($this);
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
@@ -169,27 +171,27 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -219,7 +221,7 @@ class User implements UserInterface
         return $this->numberOfLogins;
     }
 
-    public function getLastLogin(): \DateTime
+    public function getLastLogin(): ?\DateTime
     {
         return $this->lastLogin;
     }
@@ -322,6 +324,9 @@ class User implements UserInterface
         $roles = ['ROLE_USER'];
         if($this->isAdmin() === true) {
             $roles[] = 'ROLE_ADMIN';
+        }
+        if($this->isReadOnly() === true) {
+            $roles[] = 'ROLE_READ_ONLY';
         }
         return $roles;
     }

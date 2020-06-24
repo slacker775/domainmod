@@ -22,9 +22,9 @@ class QueueController extends AbstractController
 {
 
     private RegistrarAccountRepository $accountRepository;
-    
+
     private DomainQueueListRepository $domainQueueListRepository;
-    
+
     private DomainQueueRepository $domainQueueRepository;
 
     public function __construct(RegistrarAccountRepository $accountRepository, DomainQueueRepository $domainQueueRepository, DomainQueueListRepository $domainQueueListRepository)
@@ -41,8 +41,12 @@ class QueueController extends AbstractController
     public function index()
     {
         return $this->render('queue/index.html.twig', [
-            'domainsInQueue' => $this->domainQueueRepository->findBy([],['created' => 'DESC']),
-            'domainsInListQueue' => $this->domainQueueListRepository->findBy([],['created' => 'ASC']),
+            'domainsInQueue' => $this->domainQueueRepository->findBy([], [
+                'created' => 'DESC'
+            ]),
+            'domainsInListQueue' => $this->domainQueueListRepository->findBy([], [
+                'created' => 'ASC'
+            ])
         ]);
     }
 
@@ -65,6 +69,8 @@ class QueueController extends AbstractController
      */
     public function add(Request $request, RegistrarAccount $account = null)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($request->isMethod('POST') === true) {
             if ($account === null) {
                 throw new \InvalidArgumentException('Registrar Account must be specified!');
@@ -87,17 +93,21 @@ class QueueController extends AbstractController
             'account' => $account
         ]);
     }
-    
+
     /**
+     *
      * @Route("/run")
      */
     public function run(DomainQueue $service)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $service->run();
         return $this->redirectToRoute('queue');
     }
-    
+
     /**
+     *
      * @Route("/list/export", name="queue_export_lists")
      *
      */
@@ -105,18 +115,22 @@ class QueueController extends AbstractController
     {
         return $this->redirectToRoute('queue');
     }
-    
+
     /**
+     *
      * @Route("/list/{id}/delete", name="queue_delete_list")
      *
      */
     public function deleteList(DomainQueueList $list)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $this->domainQueueListRepository->remove($list);
         return $this->redirectToRoute('queue');
     }
 
     /**
+     *
      * @Route("/domain/export", name="queue_export_domains")
      *
      */
@@ -124,13 +138,16 @@ class QueueController extends AbstractController
     {
         return $this->redirectToRoute('queue');
     }
-    
+
     /**
+     *
      * @Route("/domain/{id}/delete", name="queue_delete_domain")
      *
      */
     public function deleteDomain(DomainQueueEntity $queue)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->redirectToRoute('queue');
     }
 }

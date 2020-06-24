@@ -374,7 +374,7 @@ class UserSetting
     public function __construct()
     {
         $this->defaultCurrency = 'USD';
-        $this->defaultTimezone = '\'America/New_York\'';
+        $this->defaultTimezone = 'America/New_York';
         $this->defaultCategoryDomains = null;
         $this->defaultCategorySsl = null;
         $this->defaultDns = null;

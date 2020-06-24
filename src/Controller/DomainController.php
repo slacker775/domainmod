@@ -20,15 +20,22 @@ use App\Repository\UserRepository;
 class DomainController extends AbstractController
 {
 
+    private DomainRepository $repository;
+
+    public function __construct(DomainRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="domain_index")
      */
-    public function index(DomainRepository $repository)
+    public function index()
     {
         return $this->render('domain/index.html.twig', [
             'controller_name' => 'DomainController',
-            'domains' => $repository->findBy([], [
+            'domains' => $this->repository->findBy([], [
                 'domain' => 'ASC'
             ]),
             'systemLargeMode' => false,
@@ -50,10 +57,12 @@ class DomainController extends AbstractController
      *
      * @Route("/new", name="domain_new", methods={"GET","POST"})
      */
-    public function new(Request $request, DomainRepository $repository, RegistrarRepository $registrarRepository, CreationTypeRepository $creationTypeRepository): Response
+    public function new(Request $request, RegistrarRepository $registrarRepository, CreationTypeRepository $creationTypeRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $domain = new Domain();
-        
+
         $settings = $this->getUser()->getSettings();
         $domain->setRegistrar($settings->getDefaultRegistrar())
             ->setAccount($settings->getDefaultRegistrarAccount())
@@ -65,8 +74,6 @@ class DomainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
             $domain->setTld()
                 ->setOwner($domain->getAccount()
                 ->getOwner())
@@ -76,10 +83,9 @@ class DomainController extends AbstractController
                 ->getRegistrar(), $domain->getTld()))
                 ->setCreationType($creationTypeRepository->findByName('Manual'))
                 ->setCreatedBy($this->getUser());
-            $repository->save($domain);
-            $entityManager->flush();
-            
-            $this->addFlash('success', sprintf('Domain %s Added', $domain->getDomain()));          
+            $this->repository->save($domain);
+
+            $this->addFlash('success', sprintf('Domain %s Added', $domain->getDomain()));
             return $this->redirectToRoute('domain_index');
         }
 
@@ -111,28 +117,16 @@ class DomainController extends AbstractController
 
     /**
      *
-     * @Route("/{id}", name="domain_show", methods={"GET"})
-     */
-    public function show(Domain $domain): Response
-    {
-        return $this->render('domain/show.html.twig', [
-            'domain' => $domain
-        ]);
-    }
-
-    /**
-     *
      * @Route("/{id}/edit", name="domain_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Domain $domain): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(DomainType::class, $domain);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
             $this->addFlash('success', sprintf('Domain %s Updated', $domain->getDomain()));
             return $this->redirectToRoute('domain_index');
         }
@@ -151,14 +145,13 @@ class DomainController extends AbstractController
      */
     public function delete(Request $request, Domain $domain): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $domain->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($domain);
-            $entityManager->flush();
-            $this->addFlash('success', sprintf('Domain %s Deleted', $domain->getDomain()));           
+            $this->repository->remove($domain);
+            $this->addFlash('success', sprintf('Domain %s Deleted', $domain->getDomain()));
         }
 
         return $this->redirectToRoute('domain_index');
     }
-
 }

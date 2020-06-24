@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SslProviderController extends AbstractController
 {
+
     /**
      *
      * @Route("/", name="ssl_provider_index", methods={"GET"})
@@ -45,6 +46,8 @@ class SslProviderController extends AbstractController
      */
     public function new(Request $request, SslProviderRepository $repository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $sslProvider = new SslProvider();
         $form = $this->createForm(SslProviderType::class, $sslProvider);
         $form->handleRequest($request);
@@ -64,21 +67,12 @@ class SslProviderController extends AbstractController
 
     /**
      *
-     * @Route("/{id}", name="ssl_provider_show", methods={"GET"})
-     */
-    public function show(SslProvider $sslProvider): Response
-    {
-        return $this->render('ssl_provider/show.html.twig', [
-            'ssl_provider' => $sslProvider
-        ]);
-    }
-
-    /**
-     *
      * @Route("/{id}/edit", name="ssl_provider_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, SslProvider $sslProvider): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $form = $this->createForm(SslProviderType::class, $sslProvider);
         $form->handleRequest($request);
 
@@ -109,6 +103,8 @@ class SslProviderController extends AbstractController
      */
     public function delete(Request $request, SslProvider $sslProvider, SslProviderRepository $repository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $sslProvider->getId(), $request->request->get('_token'))) {
             $repository->remove($sslProvider);
             $this->addFlash('success', sprintf('SSL Provider %s Deleted', $sslProvider->getName()));
