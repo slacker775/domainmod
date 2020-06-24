@@ -1,0 +1,15 @@
+{% set softwareSectionLogo = 'fa-wrench' %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Add User{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ path('admin_index') }}">Admin</a></li>
+<li><a href="{{ path('user_index') }}">Users</a></li>
+<li class='active'>Add</li>
+{% endblock %}
+
+{% block body %}
+    {{ include('user/_form.html.twig') }}
+{% endblock %}

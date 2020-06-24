@@ -39,8 +39,8 @@ Below is a list of all the IP Addresses that are stored in DomainMOD.
 			<td></td>
 			<td><a
 				href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.name }}</a>
-				{% if ip_address.id == app.user.settings.defaultIpAddressDomains.id %}*{% endif %}
-				{% if ip_address.id == app.user.settings.defaultIpAddressSsl.id %}^{% endif %}
+				{% if ip_address.id == app.user.settings.defaultIpAddressDomains.id|default(false) %}*{% endif %}
+				{% if ip_address.id == app.user.settings.defaultIpAddressSsl.id|default(false) %}^{% endif %}
 				</td>
 			<td><a
 				href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.ip }}</a></td>

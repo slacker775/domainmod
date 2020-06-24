@@ -11,10 +11,10 @@
 {% block body %}
 <a href="{{ path('admin_settings') }}">System Settings</a><BR><BR>
 <a href="{{ path('admin_defaults') }}">System Defaults</a><BR><BR>
-<a href="">Users</a><BR><BR>
+<a href="{{ path('user_index') }}">Users</a><BR><BR>
 <a href="">Custom Domain Fields</a><BR><BR>
 <a href="">Custom SSL Fields</a><BR><BR>
-<a href="">Task Scheduler</a><BR><BR>
+<a href="{{ path('scheduler_index') }}">Task Scheduler</a><BR><BR>
 <a href="">Maintenance</a><BR><BR>
 <a href="">Backup & Restore</a><BR><BR>
 <a href="">Debug Log</a><BR><BR>
