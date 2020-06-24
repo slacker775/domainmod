@@ -1,6 +1,7 @@
 {
 	"name" : "domainmod/domainmod",
 	"require" : {
+		"hackzilla/password-generator-bundle": "^4.0",
 		"ifsnop/mysqldump-php": "~2.9",
 		"league/csv": "^9.6",
 		"nyholm/psr7": "^1.3",
