@@ -123,7 +123,7 @@ class SslProvider
         return $this->accounts;
     }
 
-    public function getFee(): SslFee
+    public function getFee(): ?SslFee
     {
         return $this->fee;
     }

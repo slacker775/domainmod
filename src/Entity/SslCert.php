@@ -133,7 +133,7 @@ class SslCert
      *
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
 
@@ -349,7 +349,7 @@ class SslCert
         return $this;
     }
 
-    public function setFee(SslFee $fee): self
+    public function setFee(?SslFee $fee): self
     {
         $this->fee = $fee;
         return $this;
@@ -361,15 +361,15 @@ class SslCert
         return $this;
     }
 
-    public function setNotes(string $notes): self
+    public function setNotes(?string $notes): self
     {
-        $this->notes = $notes ?? '';
+        $this->notes = $notes;
         return $this;
     }
 
     public function setStatus(string $status): self
     {
-        $this->active = $active;
+        $this->status = $status;
         return $this;
     }
 
@@ -389,15 +389,5 @@ class SslCert
     {
         $this->createdBy = $createdBy;
         return $this;
-    }
-    
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function prePersist()
-    {
-        /* Want to remove this when we fix the DB schema */
-        $this->notes = $this->notes ?? '';
     }
 }

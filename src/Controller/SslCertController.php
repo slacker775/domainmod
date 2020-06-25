@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CreationTypeRepository;
 
 /**
  *
@@ -15,6 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SslCertController extends AbstractController
 {
+
+    private SslCertRepository $repository;
+
+    public function __construct(SslCertRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      *
@@ -44,7 +52,7 @@ class SslCertController extends AbstractController
      *
      * @Route("/new", name="ssl_cert_new", methods={"GET","POST"})
      */
-    public function new(Request $request, SslCertRepository $repository): Response
+    public function new(Request $request, CreationTypeRepository $creationTypeRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -53,9 +61,19 @@ class SslCertController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $sslCert->setCreatedBy($this->getUser());
-            $repository->save($sslCert);
+            $sslCert->setOwner($sslCert->getAccount()
+                ->getOwner())
+                ->setSslProvider($sslCert->getAccount()
+                ->getSslProvider())
+                ->setCreatedBy($this->getUser())
+                ->setCreationType($creationTypeRepository->findByName('Manual'));
 
+            $fees = $sslCert->getSslProvider()->getFee();
+            $sslCert->setFee($fees)->setTotalCost($fees !== null ? $fees->getInitialFee() : 0);
+
+            $this->repository->save($sslCert);
+
+            $this->addFlash('success', sprintf('SSL Certificate %s Added', $sslCert->getName()));
             return $this->redirectToRoute('ssl_cert_index');
         }
 
@@ -77,9 +95,7 @@ class SslCertController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
+            $this->addFlash('success', sprintf('SSL Certificate %s Updated', $sslCert->getName()));
 
             return $this->redirectToRoute('ssl_cert_index');
         }
@@ -100,6 +116,7 @@ class SslCertController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete' . $sslCert->getId(), $request->request->get('_token'))) {
             $repository->remove($sslCert);
+            $this->addFlash('success', sprintf('SSL Certificate %s Deleted', $sslCert->getName()));
         }
 
         return $this->redirectToRoute('ssl_cert_index');

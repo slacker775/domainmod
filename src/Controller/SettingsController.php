@@ -6,6 +6,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\UserDefaultsType;
+use App\Repository\SettingRepository;
+use App\Form\UserDisplayType;
 
 /**
  *
@@ -14,6 +16,13 @@ use App\Form\UserDefaultsType;
  */
 class SettingsController extends AbstractController
 {
+
+    private SettingRepository $repository;
+
+    public function __construct(SettingRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      *
@@ -35,9 +44,6 @@ class SettingsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
 
             $this->addFlash('success', 'Your Defaults were updated');
         }
@@ -51,10 +57,18 @@ class SettingsController extends AbstractController
      *
      * @Route("/display", name="settings_display")
      */
-    public function display()
+    public function display(Request $request): Response
     {
+        $form = $this->createForm(UserDisplayType::class, $this->getUser()
+            ->getSettings());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->addFlash('success', 'Your display preferences were updated');
+        }
         return $this->render('settings/display.html.twig', [
-            'controller_name' => 'SettingsController'
+            'form' => $form->createView()
         ]);
     }
 

@@ -43,70 +43,70 @@ Your search returned zero results.
 			<th class="all">{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">Domain</a> {% else %} Domain {% endif %}</th>
-			{% if systemDisplayDomainExpiryDate %}
+			{% if app.user.settings.displayDomainExpiryDate %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">Expiry</a> {% else %} Expiry {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainFee %}
+			{% if app.user.settings.displayDomainFee %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">Fee ({{ app.user.settings.defaultCurrency }})</a> {% else %} Fee ({{ app.user.settings.defaultCurrency }}) {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainTld %}
+			{% if app.user.settings.displayDomainTld %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">TLD</a> {% else %} TLD {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainRegistrar %}
+			{% if app.user.settings.displayDomainRegistrar %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">Registrar</a> {% else %} Registrar {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainAccount %}
+			{% if app.user.settings.displayDomainAccount %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">Account</a> {% else %} Account {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainDns %}
+			{% if app.user.settings.displayDomainDns %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">DNS</a> {% else %} DNS {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainIp %}
+			{% if app.user.settings.displayDomainIp %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">IP</a> {% else %} IP {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainHost %}
+			{% if app.user.settings.displayDomainHost %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">Host</a> {% else %} Host {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainCategory %}
+			{% if app.user.settings.displayDomainCategory %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
 					style="color:#000000;">Category</a> {% else %} Category {% endif %}
 			</th>
 			{% endif %}
-			{% if systemDisplayDomainOwner %}
+			{% if app.user.settings.displayDomainOwner %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				{% if systemLargeMode %} <a
 				href=""
@@ -141,31 +141,31 @@ Your search returned zero results.
 				{% endif %} <a href="{{ path('domain_edit',{id: domain.id}) }}">{{ domain.domain }}</a>
 				{% if domain.privacy %} &nbsp;<a title="Private WHOIS Registration"><strong>prv</strong></a>
 				{% endif %}</td>
-			{% if systemDisplayDomainExpiryDate %}
+			{% if app.user.settings.displayDomainExpiryDate %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a href="{{ path('domain_edit', { id: domain.id }) }}">{{ domain.getExpiryDate|date('Y-m-d') }}</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainFee %}
+			{% if app.user.settings.displayDomainFee %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
 				href="">
 					{{ 17.99|format_currency(app.user.settings.defaultCurrency) }}</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainTld %}
+			{% if app.user.settings.displayDomainTld %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
 				href="">.{{ domain.tld }}</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainRegistrar %}
+			{% if app.user.settings.displayDomainRegistrar %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">
 				{{ domain.registrar.name }}</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainAccount %}
+			{% if app.user.settings.displayDomainAccount %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">{{ domain.registrar.name }}</a>,
 				<a
@@ -174,29 +174,29 @@ Your search returned zero results.
 				href="{{ path('registrar_account_edit', { id: domain.account.id }) }}">{{ domain.account.username }}</a>)
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainDns %}
+			{% if app.user.settings.displayDomainDns %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a href="{{ path('dns_edit', { id: domain.dns.id }) }}">{{ domain.dns.name }}</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainIp %}
+			{% if app.user.settings.displayDomainIp %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
 				href="{{ path('ip_address_edit', { id: domain.ip.id }) }}">{{ domain.ip }}
 					</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainHost %}
+			{% if app.user.settings.displayDomainHost %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a href="{{ path('hosting_edit', { id: domain.hosting.id }) }}">{{ domain.hosting }}</a>
+				<a href="{{ path('hosting_edit', { id: domain.hostingProvider.id }) }}">{{ domain.hostingProvider }}</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainCategory %}
+			{% if app.user.settings.displayDomainCategory %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a href="{{ path('category_edit', { id: domain.category.id }) }}">{{ domain.category }}</a>
 			</td>
 			{% endif %}
-			{% if systemDisplayDomainOwner %}
+			{% if app.user.settings.displayDomainOwner %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a
 				href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner.name }}</a>

@@ -1,5 +1,5 @@
 <form method="post" action="{{ path('ssl_cert_delete', {'id': ssl_cert.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ssl_cert.id) }}">
-    <button class="btn">Delete</button>
+    <button style="margin-top:5px" class="btn btn-primary btn-danger">DELETE THIS SSL CERTIFICATE</button>
 </form>

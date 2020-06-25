@@ -17,15 +17,6 @@ class SslCertRepository extends ServiceEntityRepository
 
     public function save(SslCert $cert)
     {
-        $cert->setOwner($cert->getAccount()
-            ->getOwner())
-            ->setSslProvider($cert->getAccount()
-            ->getSslProvider());
-        $fees = $cert->getSslProvider()->getFee();
-        $cert->setFee($fees)->setTotalCost($fees->getInitialFee());
-        $cert->setCreationType($this->getEntityManager()
-            ->getRepository(CreationType::class)
-            ->findOneByName('Manual'));
         $this->getEntityManager()->persist($cert);
     }
 

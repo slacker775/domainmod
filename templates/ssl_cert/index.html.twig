@@ -1,5 +1,3 @@
-{% set softwareSectionLogo = 'fa-cubes' %}
-
 {% set softwareSectionLogo = 'fa-lock' %}
 
 {% extends 'base.html.twig' %}
@@ -19,43 +17,186 @@
     <BR><BR><strong>Total Cost:</strong> $0.00 USD <BR>
     <strong>Number of SSL Certs:</strong> {{ ssl_certs|length }}<BR><BR>
     
-    <table class="table">
+    {% if ssl_certs %}
+    <table id="ssl-main" class="table table-striped dt-responsive cell-border compact">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Ip</th>
-                <th>Name</th>
-                <th>ExpiryDate</th>
-                <th>TotalCost</th>
-                <th>Notes</th>
-                <th>Status</th>
-                <th>FeeFixed</th>
-                <th>actions</th>
+                <th width="20px"></th>
+                <th class="all">
+                    Name
+                </th>
+                {% if app.user.settings.displaySslExpiryDate %}
+                <th>
+                    Expiry
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslFee %}
+                <th>
+                    Fee
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslDomain %}
+                <th>
+                    Domain
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslProvider %}
+                <th>
+                    Provider
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslAccount %}
+                <th>
+                    Account
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslType %}
+                <th>
+                    Type
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslIp %}
+                <th>
+                    IP Address
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslCategory %}
+                <th>
+                    Category
+                </th>
+                {% endif %}
+                {% if app.user.settings.displaySslOwner %}
+                <th>
+                    Owner
+                </th>
+                {% endif %}
+{# 
+                <?php if ($_SESSION['s_csf_data']) {
+
+                    foreach ($_SESSION['s_csf_data'] as $field) {
+
+                        if ($field['value'] == 1 && $field['type_id'] != '3') { // Don't show column for Text Areas ?>
+
+                            <th>
+
+                                <?php echo $field['name']; ?>
+
+                            </th><?php
+
+                        }
+
+                    }
+
+                } ?>
+#}
             </tr>
         </thead>
-        <tbody>
-        {% for ssl_cert in ssl_certs %}
-            <tr>
-                <td>{{ ssl_cert.id }}</td>
-                <td>{{ ssl_cert.ip }}</td>
-                <td>{{ ssl_cert.name }}</td>
-                <td>{{ ssl_cert.expiryDate ? ssl_cert.expiryDate|date('Y-m-d') : '' }}</td>
-                <td>{{ ssl_cert.totalCost }}</td>
-                <td>{{ ssl_cert.notes }}</td>
-                <td>{{ ssl_cert.status }}</td>
-                <td>{{ ssl_cert.feeFixed ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('ssl_cert_show', {'id': ssl_cert.id}) }}">show</a>
-                    <a href="{{ path('ssl_cert_edit', {'id': ssl_cert.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<tbody>
+		{% for ssl_cert in ssl_certs %}
+		<tr>
+			<td></td>
+			<td>{% if ssl_cert.status == '0' %} <a title="Expired"><strong>x</strong></a>&nbsp;
+				{% elseif ssl_cert.status == '3' %} <a title="Pending (Renewal)"><strong>PRn</strong></a>&nbsp;
+				{% elseif ssl_cert.status == '4' %} <a title="Pending (Other)"><strong>PO</strong></a>&nbsp;
+				{% elseif ssl_cert.status == '5' %} <a
+				title="Pending (Registration)"><strong>PRg</strong></a>&nbsp; {% endif %}
+				<a href="{{ path('ssl_cert_edit', { id: ssl_cert.id }) }}">{{ ssl_cert.name }}</a>
+			</td>
+			{% if app.user.settings.displaySslExpiryDate %}
+			<td>{{ ssl_cert.expiryDate ? ssl_cert.expiryDate|date('Y-m-d') : '' }}</td>
+			{% endif %}
+			{% if app.user.settings.displaySslFee %}
+			<td>{{ ssl_cert.fee }}</td>
+			{% endif %}
+			{% if app.user.settings.displaySslDomain %}
+			<td><a
+				href="{{ path('domain_edit', { id: ssl_cert.domain.id }) }}">{{ ssl_cert.domain }}</a></td>
+			{% endif %}
+			{% if app.user.settings.displaySslProvider %}
+			<td><a
+				href="{{ path('ssl_provider_edit', { id: ssl_cert.sslProvider.id }) }}">{{ ssl_cert.sslProvider }}</a></td>
+			{% endif %}
+			{% if app.user.settings.displaySslAccount %}
+			<td><a
+				href="{{ path('ssl_account_edit', { id: ssl_cert.account.id }) }}">{{ ssl_cert.account }}</a></td>
+			{% endif %}
+			{% if app.user.settings.displaySslType %}
+			<td><a
+				href="{{ path('ssl_cert_type_edit', { id: ssl_cert.type.id }) }}">{{ ssl_cert.type }}</a></td>
+			{% endif %}
+			{% if app.user.settings.displaySslIp %}
+			<td><a
+				href="{{ path('ip_address_edit', { id: ssl_cert.ip.id }) }}">{{ ssl_cert.ip }}</a></td>
+			{% endif %}
+			{% if app.user.settings.displaySslCategory %}
+			<td><a
+				href="{{ path('category_edit', { id: ssl_cert.category.id }) }}">{{ ssl_cert.category }}</a></td>
+			{% endif %}
+			{% if app.user.settings.displaySslOwner %}
+			<td><a
+				href="{{ path('owner_edit', { id: ssl_cert.owner.id }) }}">{{ ssl_cert.owner }}</a></td>
+			{% endif %}
 
-    <a href="{{ path('ssl_cert_new') }}">Create new</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% else %}
+Your search returned zero results.
+{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+#ssl-main thead th {
+	padding: 2px 0px 2px 6px;
+	border: 0;
+	white-space: nowrap;
+}
+
+#ssl-main tbody tr:hover {
+	background-color: #dddddd;
+}
+
+#ssl-main tbody td {
+	padding: 2px 0px 2px 6px;
+	border: 0;
+	white-space: nowrap;
+}
+</style>
+{% endblock %}
+
+{% block datatable_options %}
+var oldStart = 0;
+$('#ssl-main').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "lengthMenu": [ [' . $_SESSION['s_number_of_ssl_certs'] . ', 50, 75, 100, -1], [' . $_SESSION['s_number_of_ssl_certs'] . ', 50, 75, 100, "All"] ],
+    "searching": true,
+    "info": true,
+    "autoWidth": true,
+    "bAutoWidth": false,
+    "responsive": {
+         details: {
+                   type: "column"
+                  }
+                  },
+    "columnDefs": [ {
+                     className: "control",
+                     orderable: false,
+                     targets:   0
+                     } ],
+    "ordering": true,
+    "order": [[ ' . $default_sort_by . ', "asc" ]],
+    "bSortClasses": false,
+    "dom": '<"top"lif>rt<"bottom"ip><"clear">'',
+    "fnDrawCallback": function (o) {
+      if ( o._iDisplayStart != oldStart ) {
+          var targetOffset = $("#ssl-main").offset().top;
+          $("html,body").animate({scrollTop: targetOffset}, 0);
+          oldStart = o._iDisplayStart;
+      }
+    }
+});
 {% endblock %}

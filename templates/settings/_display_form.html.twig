@@ -1,0 +1,38 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{{ form_start(form) }}
+<h3>Main Domain Page</h3>
+{{ form_row(form.numberOfDomains) }}
+{{ form_row(form.displayDomainRegistrar) }}
+{{ form_row(form.displayDomainOwner) }}
+{{ form_row(form.displayDomainAccount) }}
+{{ form_row(form.displayDomainExpiryDate) }}
+{{ form_row(form.displayDomainCategory) }}
+{{ form_row(form.displayDomainDns) }}
+{{ form_row(form.displayDomainIp) }}
+{{ form_row(form.displayDomainTld) }}
+{{ form_row(form.displayDomainHost) }}
+{{ form_row(form.displayDomainFee) }}
+
+<h3>Main SSL Certificate Page</h3>
+{{ form_row(form.numberOfSslCerts) }}
+{{ form_row(form.displaySslOwner) }}
+{{ form_row(form.displaySslProvider) }}
+{{ form_row(form.displaySslDomain) }}
+{{ form_row(form.displaySslAccount) }}
+{{ form_row(form.displaySslType) }}
+{{ form_row(form.displaySslExpiryDate) }}
+{{ form_row(form.displaySslIp) }}
+{{ form_row(form.displaySslCategory) }}
+{{ form_row(form.displaySslFee) }}
+
+<h3>Asset Management Pages</h3>
+{{ form_row(form.displayInactiveAssets) }}
+
+<h3>Data Warehouse</h3>
+{{ form_row(form.displayDwIntroPage) }}
+
+<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+	{{ button_label|default('Update Display Settings') }}
+</button>
+{{ form_end(form) }}

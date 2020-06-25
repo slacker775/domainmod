@@ -1,9 +1,14 @@
+{% set softwareSectionLogo = 'fa-lock' %}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Add SSL Certificate{% endblock %}
 
+{% block breadcrumbs %}
+<li><a href="{{ path('ssl_cert_index') }}">SSL Certs</a></li>
+<li class='active'>Add</li>
+{% endblock %}
+
 {% block body %}
-
     {{ include('ssl_cert/_form.html.twig') }}
-
 {% endblock %}

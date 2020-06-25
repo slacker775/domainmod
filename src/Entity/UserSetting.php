@@ -602,4 +602,257 @@ class UserSetting
         $this->defaultSslProvider = $defaultSslProvider;
         return $this;
     }
+
+    public function isDisplaySslOwner(): bool
+    {
+        return $this->displaySslOwner;
+    }
+
+    public function isDisplaySslProvider(): bool
+    {
+        return $this->displaySslProvider;
+    }
+
+    public function isDisplaySslAccount(): bool
+    {
+        return $this->displaySslAccount;
+    }
+
+    public function isDisplaySslDomain(): bool
+    {
+        return $this->displaySslDomain;
+    }
+
+    public function isDisplaySslType(): bool
+    {
+        return $this->displaySslType;
+    }
+
+    public function isDisplaySslExpiryDate(): bool
+    {
+        return $this->displaySslExpiryDate;
+    }
+
+    public function isDisplaySslIp(): bool
+    {
+        return $this->displaySslIp;
+    }
+
+    public function isDisplaySslCategory(): bool
+    {
+        return $this->displaySslCategory;
+    }
+
+    public function isDisplaySslFee(): bool
+    {
+        return $this->displaySslFee;
+    }
+
+    public function isDisplayInactiveAssets(): bool
+    {
+        return $this->displayInactiveAssets;
+    }
+
+    public function setDisplaySslOwner(bool $displaySslOwner): bool
+    {
+        $this->displaySslOwner = $displaySslOwner;
+        return $this;
+    }
+
+    public function setDisplaySslProvider(bool $displaySslProvider): self
+    {
+        $this->displaySslProvider = $displaySslProvider;
+        return $this;
+    }
+
+    public function setDisplaySslAccount(bool $displaySslAccount): self
+    {
+        $this->displaySslAccount = $displaySslAccount;
+        return $this;
+    }
+
+    public function setDisplaySslDomain(bool $displaySslDomain): self
+    {
+        $this->displaySslDomain = $displaySslDomain;
+        return $this;
+    }
+
+    public function setDisplaySslType(bool $displaySslType): self
+    {
+        $this->displaySslType = $displaySslType;
+        return $this;
+    }
+
+    public function setDisplaySslExpiryDate(bool $displaySslExpiryDate): self
+    {
+        $this->displaySslExpiryDate = $displaySslExpiryDate;
+        return $this;
+    }
+
+    public function setDisplaySslIp(bool $displaySslIp): self
+    {
+        $this->displaySslIp = $displaySslIp;
+        return $this;
+    }
+
+    public function setDisplaySslCategory(bool $displaySslCategory): self
+    {
+        $this->displaySslCategory = $displaySslCategory;
+        return $this;
+    }
+
+    public function setDisplaySslFee(bool $displaySslFee): self
+    {
+        $this->displaySslFee = $displaySslFee;
+        return $this;
+    }
+
+    public function setDisplayInactiveAssets(bool $displayInactiveAssets): self
+    {
+        $this->displayInactiveAssets = $displayInactiveAssets;
+        return $this;
+    }
+
+    public function getNumberOfDomains(): int
+    {
+        return $this->numberOfDomains;
+    }
+
+    public function getNumberOfSslCerts(): int
+    {
+        return $this->numberOfSslCerts;
+    }
+
+    public function setNumberOfDomains(int $numberOfDomains): self
+    {
+        $this->numberOfDomains = $numberOfDomains;
+        return $this;
+    }
+
+    public function setNumberOfSslCerts(int $numberOfSslCerts): self
+    {
+        $this->numberOfSslCerts = $numberOfSslCerts;
+        return $this;
+    }
+
+    public function isDisplayDomainOwner(): bool
+    {
+        return $this->displayDomainOwner;
+    }
+
+    public function isDisplayDomainRegistrar(): bool
+    {
+        return $this->displayDomainRegistrar;
+    }
+
+    public function isDisplayDomainAccount(): bool
+    {
+        return $this->displayDomainAccount;
+    }
+
+    public function isDisplayDomainExpiryDate(): bool
+    {
+        return $this->displayDomainExpiryDate;
+    }
+
+    public function isDisplayDomainCategory(): bool
+    {
+        return $this->displayDomainCategory;
+    }
+
+    public function isDisplayDomainDns(): bool
+    {
+        return $this->displayDomainDns;
+    }
+
+    public function isDisplayDomainHost(): bool
+    {
+        return $this->displayDomainHost;
+    }
+
+    public function isDisplayDomainIp(): bool
+    {
+        return $this->displayDomainIp;
+    }
+
+    public function isDisplayDomainTld(): bool
+    {
+        return $this->displayDomainTld;
+    }
+
+    public function isDisplayDomainFee(): bool
+    {
+        return $this->displayDomainFee;
+    }
+
+    public function isDisplayDwIntroPage(): bool
+    {
+        return $this->displayDwIntroPage;
+    }
+
+    public function setDisplayDomainOwner(bool $displayDomainOwner): self
+    {
+        $this->displayDomainOwner = $displayDomainOwner;
+        return $this;
+    }
+
+    public function setDisplayDomainRegistrar(bool $displayDomainRegistrar): self
+    {
+        $this->displayDomainRegistrar = $displayDomainRegistrar;
+        return $this;
+    }
+
+    public function setDisplayDomainAccount(bool $displayDomainAccount): self
+    {
+        $this->displayDomainAccount = $displayDomainAccount;
+        return $this;
+    }
+
+    public function setDisplayDomainExpiryDate(bool $displayDomainExpiryDate): self
+    {
+        $this->displayDomainExpiryDate = $displayDomainExpiryDate;
+        return $this;
+    }
+
+    public function setDisplayDomainCategory(bool $displayDomainCategory): self
+    {
+        $this->displayDomainCategory = $displayDomainCategory;
+        return $this;
+    }
+
+    public function setDisplayDomainDns(bool $displayDomainDns): self
+    {
+        $this->displayDomainDns = $displayDomainDns;
+        return $this;
+    }
+
+    public function setDisplayDomainHost(bool $displayDomainHost): self
+    {
+        $this->displayDomainHost = $displayDomainHost;
+        return $this;
+    }
+
+    public function setDisplayDomainIp(bool $displayDomainIp): self
+    {
+        $this->displayDomainIp = $displayDomainIp;
+        return $this;
+    }
+
+    public function setDisplayDomainTld(bool $displayDomainTld): self
+    {
+        $this->displayDomainTld = $displayDomainTld;
+        return $this;
+    }
+
+    public function setDisplayDomainFee(bool $displayDomainFee): self
+    {
+        $this->displayDomainFee = $displayDomainFee;
+        return $this;
+    }
+
+    public function setDisplayDwIntroPage(bool $displayDwIntroPage): self
+    {
+        $this->displayDwIntroPage = $displayDwIntroPage;
+        return $this;
+    }
 }
