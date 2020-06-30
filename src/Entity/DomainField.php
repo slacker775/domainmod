@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DomainField
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,6 +23,7 @@ class DomainField
     private $id;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=75, nullable=false)
@@ -29,6 +31,7 @@ class DomainField
     private $name;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="field_name", type="string", length=30, nullable=false)
@@ -36,13 +39,15 @@ class DomainField
     private $fieldName;
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="type_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var CustomFieldType
+     * @ORM\ManyToOne(targetEntity="App\Entity\CustomFieldType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
-    private $typeId;
+    private $type;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=false)
@@ -50,25 +55,30 @@ class DomainField
     private $description;
 
     /**
+     *
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
     private $notes;
 
     /**
-     * @var bool
      *
-     * @ORM\Column(name="creation_type_id", type="boolean", nullable=false, options={"default"="2"})
+     * @var CreationType
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
+     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
      */
-    private $creationTypeId = '2';
+    private $creationType;
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
-    private $createdBy = '0';
+    private $createdBy;
 
     /**
      *
@@ -77,7 +87,7 @@ class DomainField
      * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
     private $created;
-    
+
     /**
      *
      * @var \DateTimeInterface
@@ -85,12 +95,92 @@ class DomainField
      * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
     private $updated;
-    
+
     public function __construct()
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getFieldName(): string
+    {
+        return $this->fieldName;
+    }
+
+    public function getType(): CustomFieldType
+    {
+        return $this->type;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function getCreationType(): CreationType
+    {
+        return $this->creationType;
+    }
+
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function setFieldName(string $fieldName): self
+    {
+        $this->fieldName = $fieldName;
+        return $this;
+    }
+
+    public function setType(CustomFieldType $type): self
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function setNotes(string $notes): self
+    {
+        $this->notes = $notes;
+        return $this;
+    }
+
+    public function setCreationType(CreationType $creationType): self
+    {
+        $this->creationType = $creationType;
+        return $this;
+    }
+
+    public function setCreatedBy(User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+        return $this;
+    }
 }

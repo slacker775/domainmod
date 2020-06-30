@@ -17,4 +17,9 @@ class SettingRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($setting);
     }
+    
+    public function getSettings(): Setting
+    {
+        return $this->findOneBy([]);
+    }
 }

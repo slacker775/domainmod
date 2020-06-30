@@ -12,88 +12,102 @@ Dashboard
 
 {% block body %}
 <div class="row">
-	<h3 style="padding-left: 20px;">System Totals</h3>
-	{{ _self.displayPanel('Domains', activeDomainCount, 'green', 'checkmark-circled', path('domain_index', { is_active: 'LIVE'})) }}
 
-	{{ _self.displayPanel('SSL Certificates', activeCertCount, 'green', 'checkmark-circled', path('ssl_cert_index', { is_active: 'LIVE'})) }}
-	
-	{% if domainsSold > 0 %}
-	{{ _self.displayPanel('Sold Domains', 0, 'aqua', 'android-cart', path('domain_index', { is_active: '10'})) }}
-	{% endif %}
+	<div class="col-md-6">
+		<div class="card card-default">
+		<div class="card-header">
+		<h3 class="card-title"><i class="fas fa-exclamation-triangle"></i>Domain Details</h3></div>
+			<div class="card-body">
+				<div class="row">
+					{{ _self.displayPanel('Domains', activeDomainCount, 'green', 'checkmark-circled', path('domain_index', { is_active: 'LIVE'})) }}
+
+					{{ _self.displayPanel('SSL Certificates', activeCertCount, 'green', 'checkmark-circled', path('ssl_cert_index', { is_active: 'LIVE'})) }}
+
+					{% if domainsSold > 0 %}
+					{{ _self.displayPanel('Sold Domains', 0, 'aqua', 'android-cart', path('domain_index', { is_active: '10'})) }}
+					{% endif %}
+				</div>
+
+				<!--  Expiration Panels -->
+				{% if expiringDomains > 0 or expiringSslCerts > 0 %}
+				<div class="row">
+					<h3 style="padding-left: 20px;">Expiring in the next 30 days</h3>
+					{% if expiringDomains > 0 %}
+					{{ _self.displayPanel('Domains', expiringDomains, 'red', 'close-circled', path('domain_index', { daterange: '1234'})) }}
+					{% endif %}
+
+					{% if expiringSslCerts > 0 %}
+					{{ _self.displayPanel('SSL Certificates', expiringSslCerts, 'red', 'close-circled', path('ssl_cert_index', { daterange: '1234'})) }}
+					{% endif %}
+				</div>
+				<!--  /Expiration Panels -->
+				{% endif %}
+
+				<!-- Domain Queue -->
+				{% if queueProcessing > 0 or queuePending > 0 or queueFinished > 0 %}
+				<div class="row">
+					<h3 style="padding-left: 20px;">Domain Queue</h3>
+
+					{% if queuePending %}
+					{{ _self.displayPanel('Pending', queuePending, 'yellow', 'clock', path('queue')) }}
+					{% endif %}
+
+					{% if queueProcessing %}
+					{{ _self.displayPanel('Processing', queueProcessing, 'yellow', 'clock', path('queue')) }}
+					{% endif %}
+
+					{% if queueFinished %}
+					{{ _self.displayPanel('Finished', queueFinished, 'green', 'checkmark-circled', path('queue')) }}
+					{% endif %}
+
+				</div>
+				{% endif %}
+				<!-- /Domain Queue -->
+
+				<!-- Domain Panels -->
+				{% if domainsPendingRenewal + domainsPendingRegistration + domainsPendingTransfer + domainsPendingOther > 0 %}
+				<div class="row">
+					<h3 style="padding-left: 20px;">Pending (Domains)</h3>
+
+					{{ _self.displayPanel('Pending Renewals', domainsPendingRenewal, 'red', 'clock', path('app.legacy.domains__index', { is_active: '3'})) }}
+
+					{{ _self.displayPanel('Pending Registrations', domainsPendingRegistration, 'yellow', 'clock', path('app.legacy.domains__index', { is_active: '5'})) }}
+
+					{{ _self.displayPanel('Pending Transfers', domainsPendingTransfer, 'aqua', 'clock', path('app.legacy.domains__index', { is_active: '2'})) }}
+
+					{{ _self.displayPanel('Pending (Other)', domainsPendingOther, 'green', 'clock', path('app.legacy.domains__index', { is_active: '4'})) }}
+				</div>
+				<!-- /Domain Panels -->
+				{% endif %}
+
+				<!-- SSL Panels -->
+				{% if sslPendingRenewal > 0 or sslPendingRegistration > 0 or sslPendingOther > 0 %}
+				<div class="row">
+					<h3 style="padding-left: 20px;">Pending (SSL Certificates)</h3>
+
+					{% if sslPendingRenewal > 0 %}
+					{{ _self.displayPanel('Pending Renewals', 0, 'red', 'clock', path('ssl_cert_index', { is_active: '3'})) }}
+					{% endif %}
+
+					{% if sslPendingRegistration > 0 %}
+					{{ _self.displayPanel('Pending Registrations', 0, 'yellow', 'clock', path('ssl_cert_index', { is_active: '5'})) }}
+					{% endif %}
+
+					{% if sslPendingOther > 0 %}
+					{{ _self.displayPanel('Pending (Other)', 0, 'green', 'clock', path('ssl_cert_index', { is_active: '4'})) }}
+					{% endif %}
+				</div>
+				{% endif %}
+				<!-- /SSL Panels -->
+
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+	</div>
+	<!-- /.col-md-6 -->
 </div>
-
-<!--  Expiration Panels -->
-{% if expiringDomains > 0 or expiringSslCerts > 0 %}
-<div class="row">
-	<h3 style="padding-left: 20px;">Expiring in the next 30 days</h3>
-
-    {% if expiringDomains > 0 %}
-	{{ _self.displayPanel('Domains', expiringDomains, 'red', 'close-circled', path('domain_index', { daterange: '1234'})) }}
-    {% endif %}
-    
-    {% if expiringSslCerts > 0 %}
-	{{ _self.displayPanel('SSL Certificates', expiringSslCerts, 'red', 'close-circled', path('ssl_cert_index', { daterange: '1234'})) }}
-	{% endif %}
-</div>
-<!--  /Expiration Panels -->
-{% endif %}
-
-<!-- Domain Queue -->
-{% if queueProcessing > 0 or queuePending > 0 or queueFinished > 0 %}
-<div class="row">
-	<h3 style="padding-left: 20px;">Domain Queue</h3>
-
-    {% if queuePending %}
-	{{ _self.displayPanel('Pending', queuePending, 'yellow', 'clock', path('queue')) }}
-    {% endif %}
-
-    {% if queueProcessing %}
-	{{ _self.displayPanel('Processing', queueProcessing, 'yellow', 'clock', path('queue')) }}
-    {% endif %}
-    
-    {% if queueFinished %}
-	{{ _self.displayPanel('Finished', queueFinished, 'green', 'checkmark-circled', path('queue')) }}
-    {% endif %}
-
-</div>
-{% endif %}
-<!-- /Domain Queue -->
-
-<!-- Domain Panels -->
-{% if domainsPendingRenewal + domainsPendingRegistration + domainsPendingTransfer + domainsPendingOther > 0 %}
-<div class="row">
-	<h3 style="padding-left: 20px;">Pending (Domains)</h3>
-
-	{{ _self.displayPanel('Pending Renewals', domainsPendingRenewal, 'red', 'clock', path('app.legacy.domains__index', { is_active: '3'})) }}
-
-	{{ _self.displayPanel('Pending Registrations', domainsPendingRegistration, 'yellow', 'clock', path('app.legacy.domains__index', { is_active: '5'})) }}
-
-	{{ _self.displayPanel('Pending Transfers', domainsPendingTransfer, 'aqua', 'clock', path('app.legacy.domains__index', { is_active: '2'})) }}
-
-	{{ _self.displayPanel('Pending (Other)', domainsPendingOther, 'green', 'clock', path('app.legacy.domains__index', { is_active: '4'})) }}
-</div>
-<!-- /Domain Panels -->
-{% endif %}
-
-<!-- SSL Panels -->
-{% if sslPendingRenewal > 0 or sslPendingRegistration > 0 or sslPendingOther > 0 %}
-<div class="row">
-	<h3 style="padding-left: 20px;">Pending (SSL Certificates)</h3>
-
-    {% if sslPendingRenewal > 0 %}
-	    {{ _self.displayPanel('Pending Renewals', 0, 'red', 'clock', path('ssl_cert_index', { is_active: '3'})) }}
-	{% endif %}
-
-    {% if sslPendingRegistration > 0 %}
-	    {{ _self.displayPanel('Pending Registrations', 0, 'yellow', 'clock', path('ssl_cert_index', { is_active: '5'})) }}
-	{% endif %}
-
-    {% if sslPendingOther > 0 %}
-	    {{ _self.displayPanel('Pending (Other)', 0, 'green', 'clock', path('ssl_cert_index', { is_active: '4'})) }}
-    {% endif %}	
-</div>
-{% endif %}
-<!-- /SSL Panels -->
+<!-- /.row -->
 {% endblock %}
 
 {% macro displayPanel(title, count, color, icon, url) %}

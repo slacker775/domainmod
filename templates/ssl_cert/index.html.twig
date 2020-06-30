@@ -172,7 +172,7 @@ var oldStart = 0;
 $('#ssl-main').DataTable({
     "paging": true,
     "lengthChange": true,
-    "lengthMenu": [ [' . $_SESSION['s_number_of_ssl_certs'] . ', 50, 75, 100, -1], [' . $_SESSION['s_number_of_ssl_certs'] . ', 50, 75, 100, "All"] ],
+    "lengthMenu": [ [{{ app.user.settings.numberOfSslCerts }}, 50, 75, 100, -1], [{{ app.user.settings.numberOfSslCerts }}, 50, 75, 100, "All"] ],
     "searching": true,
     "info": true,
     "autoWidth": true,
@@ -188,9 +188,9 @@ $('#ssl-main').DataTable({
                      targets:   0
                      } ],
     "ordering": true,
-    "order": [[ ' . $default_sort_by . ', "asc" ]],
+    "order": [[ {{ app.user.settings.displaySslExpiryDate ? 2 : 1 }}, "asc" ]],
     "bSortClasses": false,
-    "dom": '<"top"lif>rt<"bottom"ip><"clear">'',
+    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
     "fnDrawCallback": function (o) {
       if ( o._iDisplayStart != oldStart ) {
           var targetOffset = $("#ssl-main").offset().top;

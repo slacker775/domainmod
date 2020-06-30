@@ -7,55 +7,54 @@ DNS Profiles
 {% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li class='active'>DNS</li>
+<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
+<li class='breadcrumb-item active'>DNS</li>
 {% endblock %}
 
 {% block body %}
-Below is a list of all the DNS Profiles that are stored in DomainMOD.
-<BR>
-<BR>
-<a href="{{ path('dns_new') }}">{{ _self.showButton('button','Add DNS Profile') }}</a>
-<a href="{{ path('dns_export') }}">{{ _self.showButton('button','Export') }}</a>
-<br>
-<br>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				Below is a list of all the DNS Profiles that are stored in
+				DomainMOD. <BR> <BR> <a href="{{ path('dns_new') }}">{{ _self.showButton('button','Add DNS Profile') }}</a>
+				<a href="{{ path('dns_export') }}">{{ _self.showButton('button','Export') }}</a>
+				<br> <br>
 
-{% if dns|length > 0 %}
-<table id='assets-dns'
-	class="table table-striped dt-responsive cell-border compact">
-	<thead>
-		<tr>
-			<th width="20px"></th>
-			<th>Name</th>
-			<th>Servers</th>
-			<th>Domains</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for dn in dns %}
-		<tr>
-			<td></td>
-			<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.name }}</a>
-			{% if dn.id == app.user.settings.defaultDns.id|default(false) %}*{% endif %}
-			</td>
-			<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.numberOfServers }}</a></td>
-			<td><a href="{{ path('domain_index', {'dns': dn.id}) }}">{{ dn.getActiveDomains|length }}</a></td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-<strong>*</strong>
-= Default (
-<a href="../settings/defaults/">set defaults</a>
-)
-<BR>
-<BR>
-{% else %}
-<br>
-You don't currently have any DNS Profiles.
-<a href="{{ path('dns_new') }}">Click here to add one</a>
-.
-{% endif %}
+				{% if dns|length > 0 %}
+				<table id='assets-dns'
+					class="table table-striped dt-responsive cell-border compact">
+					<thead>
+						<tr>
+							<th width="20px"></th>
+							<th>Name</th>
+							<th>Servers</th>
+							<th>Domains</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for dn in dns %}
+						<tr>
+							<td></td>
+							<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.name }}</a>
+								{% if dn.id == app.user.settings.defaultDns.id|default(false) %}*{% endif %}
+							</td>
+							<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.numberOfServers }}</a></td>
+							<td><a href="{{ path('domain_index', {'dns': dn.id}) }}">{{ dn.getActiveDomains|length }}</a></td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<strong>*</strong> = Default ( <a href="../settings/defaults/">set
+					defaults</a> ) <BR> <BR>
+				{% else %}
+				<br> You don't currently have any DNS Profiles. <a
+					href="{{ path('dns_new') }}">Click here to add one</a> .
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block datatable_options %}

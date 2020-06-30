@@ -38,17 +38,6 @@ class DomainController extends AbstractController
             'domains' => $this->repository->findBy([], [
                 'domain' => 'ASC'
             ]),
-            'systemLargeMode' => false,
-            'systemDisplayDomainExpiryDate' => true,
-            'systemDisplayDomainOwner' => false,
-            'systemDisplayDomainFee' => true,
-            'systemDisplayDomainTld' => true,
-            'systemDisplayDomainRegistrar' => false,
-            'systemDisplayDomainAccount' => true,
-            'systemDisplayDomainDns' => true,
-            'systemDisplayDomainIp' => false,
-            'systemDisplayDomainHost' => false,
-            'systemDisplayDomainCategory' => true,
             'sortBy' => 'dn_a'
         ]);
     }

@@ -1,4 +1,5 @@
 {% set softwareSectionLogo = 'fa-sitemap' %}
+{% set systemLargeMode = app.session.get('settings').largeMode %}
 
 {% extends 'base.html.twig' %}
 
@@ -7,11 +8,14 @@ Domains
 {% endblock %}
 
 {% block breadcrumbs %}
-<li class='active'>Domains</li>
+<li class='breadcrumb-item active'>Domains</li>
 {% endblock %}
 
 {% block body %}
-
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-body">
 <a href="{{ path('domain_new') }}">{{ _self.showButton('button','Add Domain') }}</a>
 <a href="{{ path('queue_intro') }}">{{ _self.showButton('button','Add Domains to Queue') }}</a>
 <a target="_blank" href="{{ path('domain_raw') }}">{{ _self.showButton('button','Raw List') }}</a>
@@ -20,12 +24,11 @@ Domains
 <br>
 <br>
 <strong>Total Cost:</strong>
-{{ 461.32|format_currency(app.user.settings.defaultCurrency) }} {{ app.user.settings.defaultCurrency }}
+{{ 461.32|format_currency(app.user.settings.defaultCurrency) }}
+{{ app.user.settings.defaultCurrency }}
 <br>
 <strong>Number of Domains:</strong>
 {{ domains|length }}
-<br>
-<br>
 <br>
 <br>
 
@@ -40,77 +43,67 @@ Your search returned zero results.
 			<th width="20px"></th>
 			{% endif %}
 
-			<th class="all">{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Domain</a> {% else %} Domain {% endif %}</th>
+			<th class="all">{% if systemLargeMode %} <a href=""
+				style="color: #000000;">Domain</a> {% else %} Domain {% endif %}</th>
 			{% if app.user.settings.displayDomainExpiryDate %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Expiry</a> {% else %} Expiry {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">Expiry</a>
+				{% else %} Expiry {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainFee %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Fee ({{ app.user.settings.defaultCurrency }})</a> {% else %} Fee ({{ app.user.settings.defaultCurrency }}) {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">Fee
+					({{ app.user.settings.defaultCurrency }})
+			</a> {% else %} Fee ({{ app.user.settings.defaultCurrency }}) {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainTld %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">TLD</a> {% else %} TLD {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">TLD</a>
+				{% else %} TLD {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainRegistrar %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Registrar</a> {% else %} Registrar {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">Registrar</a>
+				{% else %} Registrar {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainAccount %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Account</a> {% else %} Account {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">Account</a>
+				{% else %} Account {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainDns %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">DNS</a> {% else %} DNS {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">DNS</a>
+				{% else %} DNS {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainIp %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">IP</a> {% else %} IP {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">IP</a> {% else %}
+				IP {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainHost %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Host</a> {% else %} Host {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">Host</a>
+				{% else %} Host {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainCategory %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Category</a> {% else %} Category {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">Category</a>
+				{% else %} Category {% endif %}
 			</th>
 			{% endif %}
 			{% if app.user.settings.displayDomainOwner %}
 			<th {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				{% if systemLargeMode %} <a
-				href=""
-					style="color:#000000;">Owner</a> {% else %} Owner {% endif %}
+				{% if systemLargeMode %} <a href="" style="color: #000000;">Owner</a>
+				{% else %} Owner {% endif %}
 			</th>
 			{% endif %}
 			{#<?php if ($_SESSION['s_cdf_data']) { foreach
@@ -148,28 +141,25 @@ Your search returned zero results.
 			{% endif %}
 			{% if app.user.settings.displayDomainFee %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a
-				href="">
-					{{ 17.99|format_currency(app.user.settings.defaultCurrency) }}</a>
+				<a href=""> {{ 17.99|format_currency(app.user.settings.defaultCurrency) }}</a>
 			</td>
 			{% endif %}
 			{% if app.user.settings.displayDomainTld %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a
-				href="">.{{ domain.tld }}</a>
+				<a href="">.{{ domain.tld }}</a>
 			</td>
 			{% endif %}
 			{% if app.user.settings.displayDomainRegistrar %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">
-				{{ domain.registrar.name }}</a>
+					{{ domain.registrar.name }}
+			</a>
 			</td>
 			{% endif %}
 			{% if app.user.settings.displayDomainAccount %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
 				<a href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">{{ domain.registrar.name }}</a>,
-				<a
-				href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner }}</a>
+				<a href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner }}</a>
 				(<a
 				href="{{ path('registrar_account_edit', { id: domain.account.id }) }}">{{ domain.account.username }}</a>)
 			</td>
@@ -181,14 +171,14 @@ Your search returned zero results.
 			{% endif %}
 			{% if app.user.settings.displayDomainIp %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a
-				href="{{ path('ip_address_edit', { id: domain.ip.id }) }}">{{ domain.ip }}
-					</a>
+				<a href="{{ path('ip_address_edit', { id: domain.ip.id }) }}">{{ domain.ip }}
+			</a>
 			</td>
 			{% endif %}
 			{% if app.user.settings.displayDomainHost %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a href="{{ path('hosting_edit', { id: domain.hostingProvider.id }) }}">{{ domain.hostingProvider }}</a>
+				<a
+				href="{{ path('hosting_edit', { id: domain.hostingProvider.id }) }}">{{ domain.hostingProvider }}</a>
 			</td>
 			{% endif %}
 			{% if app.user.settings.displayDomainCategory %}
@@ -198,8 +188,7 @@ Your search returned zero results.
 			{% endif %}
 			{% if app.user.settings.displayDomainOwner %}
 			<td {% if systemLargeMode %} style="padding-left: 20px;" {% endif %}>
-				<a
-				href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner.name }}</a>
+				<a href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner.name }}</a>
 			</td>
 			{% endif %}
 
@@ -227,6 +216,10 @@ Your search returned zero results.
 	</tbody>
 </table>
 <br>
+								</div>
+							</div>
+						</div>
+					</div>
 {% endif %}
 {% endblock %}
 
@@ -286,7 +279,9 @@ Your search returned zero results.
 {% endblock %}
 
 {% block datatable_options %}
-var oldStart = 0; $('#domains-main').DataTable({ "paging": true,
+
+var oldStart = 0; 
+$('#domains-main').DataTable({ "paging": true,
 "lengthChange": true, "lengthMenu": [ [
 {{ domains|length }}
 , 50, 75, 100, -1], [
@@ -295,11 +290,12 @@ var oldStart = 0; $('#domains-main').DataTable({ "paging": true,
 true, "bAutoWidth": false, "responsive": { details: { type: "column" }
 }, "columnDefs": [ { className: "control", orderable: false, targets: 0
 } ], "ordering": true, "order": [[
-{{ systemDisplayDomainExpiryDate ? 2 : 1 }}
+{{ app.user.settings.displayDomainExpiryDate ? 2 : 1 }}
 , "asc" ]], "bSortClasses": false, "dom":
 '<"top"lif>rt<"bottom"ip><"clear">', "fnDrawCallback": function (o) { if
 ( o._iDisplayStart != oldStart ) { var targetOffset =
 $("#domains-main").offset().top; $("html,body").animate({scrollTop:
 targetOffset}, 0); oldStart = o._iDisplayStart; } } });
+
 {% endblock %}
 

@@ -24,23 +24,25 @@ class CurrencyConversion
 
     /**
      *
-     * @var int
+     * @var Currency
      *
-     * @ORM\Column(name="currency_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
+     * @ORM\Column(name="currency_id", referencedColumnName="id")
      */
-    private $currencyId;
+    private $currency;
 
     /**
      *
-     * @var int
+     * @var User
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userId;
+    private $user;
 
     /**
      *
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="conversion", type="decimal", precision=12, scale=4, nullable=false)
      */
@@ -66,5 +68,43 @@ class CurrencyConversion
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getCurrency(): Currency
+    {
+        return $this->currency;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getConversion(): float
+    {
+        return $this->conversion;
+    }
+
+    public function setCurrency(Currency $currency): self
+    {
+        $this->currency = $currency;
+        return $this;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function setConversion(float $conversion): self
+    {
+        $this->conversion = $conversion;
+        return $this;
     }
 }

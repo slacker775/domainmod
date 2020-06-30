@@ -4,6 +4,11 @@
 Add Domains to Queue
 {% endblock %}
 
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{{ path('queue') }}">Domain Queue</a></li>
+<li class='breadcrumb-item active'>Add</li>
+{% endblock %}
+
 {% block body %}
 <strong>Domain Queue & API Prerequisites</strong>
 <BR>
@@ -70,7 +75,6 @@ first do the following:
 		{% endif %}
 	</ul>
 	{% endif %}
-
 
 	{% if account %}
 

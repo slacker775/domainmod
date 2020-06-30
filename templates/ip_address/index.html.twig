@@ -7,81 +7,105 @@ IP Addresses
 {% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li class='active'>IPs</li>
+<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
+<li class='breadcrumb-item active'>IPs</li>
 {% endblock %}
 
 {% block body %}
-Below is a list of all the IP Addresses that are stored in DomainMOD.
-<BR>
-<BR>
-<a href="{{ path('ip_address_new') }}">{{ _self.showButton('button', 'Add IP Address') }}</a>
-<a href="{{ path('ip_address_export') }}">{{ _self.showButton('button', 'Export') }}</a>
-<BR>
-<BR>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				Below is a list of all the IP Addresses that are stored in
+				DomainMOD. <BR> <BR> <a
+					href="{{ path('ip_address_new') }}">{{ _self.showButton('button', 'Add IP Address') }}</a>
+				<a href="{{ path('ip_address_export') }}">{{ _self.showButton('button', 'Export') }}</a>
+				<BR> <BR>
 
-{% if ip_addresses %}
-<table id="assets-ip-addresses"
-	class="table table-striped dt-responsive cell-border compact">
-	<thead>
-		<tr>
-			<th width="20px"></th>
-			<th>Name</th>
-			<th>IP Address</th>
-			<th>rDNS</th>
-			<th>Domains</th>
-			<th>SSL Certs</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for ip_address in ip_addresses %}
-		<tr>
-			<td></td>
-			<td><a
-				href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.name }}</a>
-				{% if ip_address.id == app.user.settings.defaultIpAddressDomains.id|default(false) %}*{% endif %}
-				{% if ip_address.id == app.user.settings.defaultIpAddressSsl.id|default(false) %}^{% endif %}
-				</td>
-			<td><a
-				href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.ip }}</a></td>
-			<td><a
-				href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.rdns }}</a></td>
-			<td><a href="{{ path('domain_index', { ip: ip_address.id }) }}">{{ ip_address.domains|length ?: '-' }}</a></td>
-			<td><a
-				href="{{ path('ssl_cert_index', { ip: ip_address.id }) }}">{{ ip_address.sslCerts|length ?: '-' }}</a></td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+				{% if ip_addresses %}
+				<table id="assets-ip-addresses"
+					class="table table-striped dt-responsive cell-border compact">
+					<thead>
+						<tr>
+							<th width="20px"></th>
+							<th>Name</th>
+							<th>IP Address</th>
+							<th>rDNS</th>
+							<th>Domains</th>
+							<th>SSL Certs</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for ip_address in ip_addresses %}
+						<tr>
+							<td></td>
+							<td><a
+								href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.name }}</a>
+								{% if ip_address.id == app.user.settings.defaultIpAddressDomains.id|default(false) %}*{% endif %}
+								{% if ip_address.id == app.user.settings.defaultIpAddressSsl.id|default(false) %}^{% endif %}
+							</td>
+							<td><a
+								href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.ip }}</a></td>
+							<td><a
+								href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.rdns }}</a></td>
+							<td><a
+								href="{{ path('domain_index', { ip: ip_address.id }) }}">{{ ip_address.domains|length ?: '-' }}</a></td>
+							<td><a
+								href="{{ path('ssl_cert_index', { ip: ip_address.id }) }}">{{ ip_address.sslCerts|length ?: '-' }}</a></td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 
-<strong>*</strong>
-= Default Domain Owner &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<strong>^</strong>
-= Default SSL Owner (
-<a href="{{ path('settings_defaults') }}">set defaults</a>
-)
-<BR>
-<BR>
+				<strong>*</strong> = Default Domain Owner
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>^</strong> = Default SSL
+				Owner ( <a href="{{ path('settings_defaults') }}">set defaults</a> )
+				<BR> <BR>
 
-{% else %}
-<BR>
-You don't currently have any IP Addresses.
-<a href="{{ path('ip_address_new') }}">Click here to add one</a>
-.
-{% endif %}
-
+				{% else %}
+				<BR> You don't currently have any IP Addresses. <a
+					href="{{ path('ip_address_new') }}">Click here to add one</a> .
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block datatable_options %}
-var oldStart = 0; $('#assets-ip-addresses').DataTable({ "paging": true,
-"lengthChange": true, "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50,
-75, 100, "All"] ], "searching": true, "info": true, "autoWidth": true,
-"bAutoWidth": false, "responsive": { details: { type: "column" } },
-"columnDefs": [ { className: "control", orderable: false, targets: 0 }
-], "ordering": true, "order": [[ 1, "asc" ]], "bSortClasses": false,
-"dom": '<"top"lif>rt<"bottom"ip><"clear">', "fnDrawCallback": function
-(o) { if ( o._iDisplayStart != oldStart ) { var targetOffset =
-$("#assets-ip-addresses").offset().top;
-$("html,body").animate({scrollTop: targetOffset}, 0); oldStart =
-o._iDisplayStart; } } });
+
+	var oldStart = 0;
+	$('#assets-ip-addresses').DataTable({
+		"paging" : true,
+		"lengthChange" : true,
+		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
+		"searching" : true,
+		"info" : true,
+		"autoWidth" : true,
+		"bAutoWidth" : false,
+		"responsive" : {
+			details : {
+				type : "column"
+			}
+		},
+		"columnDefs" : [ {
+			className : "control",
+			orderable : false,
+			targets : 0
+		} ],
+		"ordering" : true,
+		"order" : [ [ 1, "asc" ] ],
+		"bSortClasses" : false,
+		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
+		"fnDrawCallback" : function(o) {
+			if (o._iDisplayStart != oldStart) {
+				var targetOffset = $("#assets-ip-addresses").offset().top;
+				$("html,body").animate({
+					scrollTop : targetOffset
+				}, 0);
+				oldStart = o._iDisplayStart;
+			}
+		}
+	});
+
 {% endblock %}

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DomainFieldData
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -22,11 +23,13 @@ class DomainFieldData
     private $id;
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="domain_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @var Domain
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Domain")
+     * @ORM\JoinColumn(name="domain_id", referencedColumnName="id")
      */
-    private $domainId;
+    private $domain;
 
     /**
      *
@@ -35,7 +38,7 @@ class DomainFieldData
      * @ORM\Column(name="insert_time", type="datetime", nullable=false)
      */
     private $created;
-    
+
     /**
      *
      * @var \DateTimeInterface
@@ -43,12 +46,26 @@ class DomainFieldData
      * @ORM\Column(name="update_time", type="datetime", nullable=false)
      */
     private $updated;
-    
+
     public function __construct()
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
+    public function getDomain(): Domain
+    {
+        return $this->domain;
+    }
+
+    public function setDomain(Domain $domain): self
+    {
+        $this->domain = $domain;
+        return $this;
+    }
 }

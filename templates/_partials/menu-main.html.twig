@@ -1,142 +1,85 @@
-<!-- Left Nav Menu -->
-<ul class="sidebar-menu">
-	<li class="header">NAVIGATION</li>
-	<li class="active"><a href="{{ path('home') }}"><i
-			class="fa fa-dashboard"></i> <span>Dashboard</span></a>
-	</li>
+{% set currentRoute = app.request.attributes.get('_route') %}
 
-	<li><a href="{{ path('domain_index') }}"><i
-			class="fa fa-sitemap"></i> <span>Domains</span></a>
-	</li>
-	
-	<!--  If there are domains in queue, show this piece -->
-	<li><a href="{{ path('queue') }}"><i
-			class="fa fa-hourglass-2"></i> <span>Queue</span></a>
-	</li> 
-    <!-- End -->
-
-	<li><a href="{{ path('ssl_cert_index') }}"><i class="fa fa-lock"></i>
-			<span>SSL Certificates</span></a>
-	</li>
-	<li><a href="{{ path('asset') }}"><i
-			class="fa fa-cubes"></i> <span>Assets</span></a>
-	</li>
-	<li><a href="{{ path('segment') }}"><i
-			class="fa fa-filter"></i> <span>Segments</span></a>		
-	</li> 
-
-    <!-- If session isn't read-only, show this -->	
-	<li><a href="/bulk/"><i class="fa fa-copy"></i>
-			<span>Bulk Updater</span></a>
-	</li>
-	<!-- End -->
-
-	<li><a href="{{ path('reporting_index') }}"><i
-			class="fa fa-bar-chart"></i> <span>Reporting</span></a>
-	</li>
-	
-	{% if is_granted('ROLE_ADMIN') %}
-	<li><a href="/admin/dw/"><i
-			class="fa fa-database"></i> <span>Data Warehouse</span></a>
-	</li>
-	{% endif %}
-
-	<li class="treeview">
-		<a href="#"> <i class="fa fa-gears"></i> <span>Settings</span> <i
-			class="fa fa-angle-left pull-right"></i>
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+	<!-- Brand Logo -->
+	<a href="{{ path('home') }}" class="brand-link"> <img
+		src="/images/logo-mini.png" alt="DomainMOD Logo"
+		class="brand-image img-circle elevation-3" style="opacity: .8">
+		<span class="brand-text font-weight-light">DomainMOD</span>
 	</a>
-		<ul class="treeview-menu">
-			<li><a
-				href="{{ path('settings_display') }}"><i class="fa"></i>Display
-					Settings</a>
-			</li>
-			<li><a
-				href="{{ path('settings_defaults') }}"><i class="fa"></i>User
-					Defaults</a>
-			</li>
-			<li><a
-				href="{{ path('settings_profile') }}"><i class="fa"></i>User
-					Profile</a>
-			</li>
-			<li><a
-				href="{{ path('settings_password') }}"><i class="fa"></i>Change
-					Password</a>
-			</li>
-		</ul>
-	</li> 
 
-	<li class="treeview">
-		<a href="#"> <i class="fa fa-check"></i> <span>Maintenance</span>
-			<i class="fa fa-angle-left pull-right"></i>
-	</a>
-		<ul class="treeview-menu">
-			<li><a
-				href="/maintenance/update-conversions.php"><i
-					class="fa"></i>Update Conversion Rates</a></li>
-			<li><a
-				href="/maintenance/update-domain-fees.php"><i
-					class="fa"></i>Update Domain Fees</a></li>
-			<li><a
-				href="/maintenance/update-ssl-fees.php"><i
-					class="fa"></i>Update SSL Fees</a></li>
-		</ul>
-	</li> 
-	
-	{% if is_granted('ROLE_ADMIN') %}
-	<li class="treeview">
-		<a href="#"> <i class="fa fa-wrench"></i> <span>Administration</span>
-			<i class="fa fa-angle-left pull-right"></i>
-	</a>
-		<ul class="treeview-menu">
-			<li><a
-				href="/admin/settings/"><i class="fa"></i>System
-					Settings</a>
-			</li>
-			<li><a
-				href="{{ path('admin_defaults') }}"><i class="fa"></i>System
-					Defaults</a>
-			</li>
-			<li><a
-				href="{{ path('user_index') }}"><i class="fa"></i>Users</a>
-			</li>
-			<li><a
-				href="/admin/domain-fields/"><i
-					class="fa"></i>Custom Domain Fields</a>
-			</li>
-			<li><a
-				href="/admin/ssl-fields/"><i class="fa"></i>Custom
-					SSL Fields</a>
-			</li>
-			<li><a
-				href="{{ path('scheduler_index') }}"><i class="fa"></i>Task
-					Scheduler</a>
-			</li>
-			<li><a
-				href="/admin/maintenance/"><i class="fa"></i>Maintenance</a>
-			</li>
-			<li><a
-				href="/admin/backup/"><i class="fa"></i>Backup
-					& Restore</a>
-			</li>
-			<li><a
-				href="/admin/debug-log/"><i class="fa"></i>Debug
-					Log</a>
-			</li>
-			<li><a href="/admin/info/"><i class="fa"></i>System
-					Information</a>
-			</li>
-		</ul>
-	</li>
-	{% endif %}
+	<!-- Sidebar -->
+	<div class="sidebar">
+		<nav class="mt-2">
+			<ul class="nav nav-pills nav-sidebar flex-column"
+				data-widget="treeview" role="menu" data-accordian="false">
 
-	<li class="header">HELP</li>
-	<li><a target="_blank" href="/docs/"><i
-			class="fa fa-book"></i> <span>Documentation</span></a></li>
-	<li><a target="_blank" href="https://domainmod.org/support/"><i
-			class="fa fa-support"></i> <span>Support</span></a></li>
-	<li><a target="_blank" href="https://domainmod.org/news/"><i
-			class="fa fa-newspaper-o"></i> <span>News</span></a></li>
-	<li><a target="_blank" href="https://domainmod.org/contribute/"><i
-			class="fa fa-money"></i> <span>Contribute</span></a></li>
-</ul>
-<!-- /Left Nav Menu -->
+				{{ _self.navLink('Dashboard','home','fa-tachometer-alt') }}
+				{{ _self.navLink('Domains','domain_index','fa-sitemap') }}
+				{{ _self.navLink('Queue','queue','fa-hourglass-start') }}
+				{{ _self.navLink('SSL Certificates','ssl_cert_index','fa-lock') }}
+				{{ _self.navLink('Assets','asset','fa-cubes') }}
+				{{ _self.navLink('Segments','segment','fa-filter') }}
+				{{ _self.navLink('Bulk Updater','segment','fa-copy') }}
+				{{ _self.navLink('Reporting','reporting_index','fa-chart-bar') }}
+				{% if is_granted('ROLE_ADMIN') %}
+				{{ _self.navLink('Data Warehouse','segment','fa-database') }}
+				{% endif %}
+
+				<li class="nav-item has-treeview"><a href="#" class="nav-link"><i
+						class="nav-icon fa fa-cogs"></i>
+						<p>
+							Settings<i class="right fa fa-angle-left"></i>
+						</p></a>
+					<ul class="nav nav-treeview">
+						{{ _self.navLink('Display Settings','settings_display','fa-tv') }}
+						{{ _self.navLink('User Defaults','settings_defaults','fa-sliders-h') }}
+						{{ _self.navLink('User Profile','settings_profile','fa-passport') }}
+						{{ _self.navLink('Change Password','settings_password','fa-key') }}
+					</ul></li>
+
+				<li class="nav-item has-treeview"><a href="#" class="nav-link"><i
+						class="nav-icon fa fa-check"></i>
+						<p>
+							Maintenance<i class="right fa fa-angle-left"></i>
+						</p></a>
+					<ul class="nav nav-treeview">
+						{{ _self.navLink('Update Conversion Rates','segment','fa-coins') }}
+						{{ _self.navLink('Update Domain Fees','segment','fa-money-bill-wave') }}
+						{{ _self.navLink('Update SSL Fees','segment','fa-money-bill-alt') }}
+					</ul></li>
+
+				{% if is_granted('ROLE_ADMIN') %}
+				<li class="nav-item has-treeview"><a href="#" class="nav-link"><i
+						class="nav-icon fa fa-wrench"></i>
+						<p>
+							Administration<i class="right fa fa-angle-left"></i>
+						</p></a>
+					<ul class="nav nav-treeview">
+						{{ _self.navLink('System Settings','admin_settings','fa-cog') }}
+						{{ _self.navLink('System Defaults','admin_defaults','fa-tasks') }}
+						{{ _self.navLink('Users','user_index','fa-users-cog') }}
+						{{ _self.navLink('Custom Domain Fields','segment','fa-building') }}
+						{{ _self.navLink('Custom SSL Fields','segment','fa-key') }}
+						{{ _self.navLink('Task Scheduler','scheduler_index','fa-calendar-alt') }}
+						{{ _self.navLink('Maintenance','segment','fa-tools') }}
+						{{ _self.navLink('Backup & Restore','segment','fa-archive') }}
+						{{ _self.navLink('Debug Log','segment','fa-bug') }}
+						{{ _self.navLink('System Information','segment','fa-info') }}
+					</ul></li>
+				{% endif %}
+			</ul>
+		</nav>
+	</div>
+</aside>
+
+{% macro navLink(text, route, icon) %}
+<li class="nav-item"><a href="{{ path(route) }}"
+	class="nav-link {{ app.request.attributes.get('_route') == route ? "active" }}">
+		<i class="nav-icon fa {{ icon }}"></i>
+		<p>
+			{{ text }}
+		</p>
+</a></li>
+{% endmacro %}

@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <title>DomainMOD :: {% block title %}{% endblock %}</title>
 
-<link rel="icon" type="image/ico"
-	href="/images/favicon.ico" />
+<link rel="icon" type="image/ico" href="/images/favicon.ico" />
 <style>
 html {
 	overflow-y: scroll;
@@ -16,286 +15,84 @@ html {
 <meta
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 	name="viewport">
-<!-- Bootstrap 3.3.5 -->
-<link rel="stylesheet"
-	href="/_includes/theme/bootstrap/css/bootstrap.min.css">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!-- Ionicons -->
-<link rel="stylesheet"
-	href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-<!-- DataTables -->
-<link rel="stylesheet"
-	href="/_includes/theme/plugins/datatables/dataTables.bootstrap.css">
-<link rel="stylesheet"
-	href="/_includes/theme/plugins/datatables/dataTables.responsive.css">
-<link rel="stylesheet"
-	href="/_includes/theme/plugins/datatables/dataTables.fontAwesome.css">
-<!-- iCheck for checkboxes and radio inputs -->
-<link rel="stylesheet"
-	href="/_includes/theme/plugins/iCheck/square/red.css">
-<!-- Select2 -->
-<link rel="stylesheet"
-	href="/_includes/theme/plugins/select2/select2.min.css">
-<!-- Theme style -->
-<link rel="stylesheet" href="/_includes/theme/dist/css/AdminLTE.min.css">
-<!-- AdminLTE Skins. Choose a skin from the css/skins
-   folder instead of downloading all of them to reduce the load. -->
-<link rel="stylesheet"
-	href="/_includes/theme/dist/css/skins/skin-red.min.css">
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
 
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+{{ encore_entry_link_tags('bootstrap') }}
+{{ encore_entry_link_tags('datatables') }}
+{{ encore_entry_link_tags('app') }}
 {% block stylesheets %}
 {% endblock %}
 </head>
-<body class="hold-transition skin-red sidebar-mini" onLoad="document.forms[0].elements[0].focus()">
+<body class="hold-transition skin-red sidebar-mini"
+	onLoad="document.forms[0].elements[0].focus()">
 
-<!-- Site wrapper -->
-<div class="wrapper">
+	<!-- Site wrapper -->
+	<div class="wrapper">
 
-  <header class="main-header">
-    <!-- Logo -->
-    <a href="{{ path('home') }}" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">
-          <img src="/images/logo-mini.png" alt="Small Logo">
-      </span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg" >
-          <img src="/images/logo.png" alt="DomainMOD Logo">
-      </span>
-    </a>
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
-      <!-- Sidebar toggle button-->
-      <span class="hidden-md hidden-lg">
-         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-             <span class="sr-only">Toggle navigation</span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-         </a>
-      </span>
+		{% include '_partials/top-navbar.html.twig' %}
+		<!-- =============================================== -->
 
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
+		{% include '_partials/menu-main.html.twig' %}
 
-          <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">{{ app.user.firstname ~ ' ' ~ app.user.lastname }}</span>&nbsp;
-              <i class="fa fa-user"></i>
-            </a>
+		<!-- =============================================== -->
 
-              <ul class="dropdown-menu">
-              <!-- User image -->
-								<li class="user-header">
-									<p>
-										{{ app.user.firstname ~ ' ' ~ app.user.lastname }}<BR>{{ app.user.emailaddress }}<BR>
-										<BR> <small> Currency: {{ app.user.settings.defaultCurrency }}<BR> Time Zone:
-											{{ app.user.settings.defaultTimezone }}<BR> Expiration Emails: {{ app.user.settings.getExpirationEmails ? "Yes" : "No" }}
-										</small>
-									</p></li>
-								<li class="user-footer">
-                <div class="pull-left">
-                  <a href="/settings/profile/" class="btn btn-default btn-flat">User Profile</a>&nbsp;&nbsp;
-                </div>
-                <div class="pull-right">
-                  <a href="{{ path('app_logout') }}" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  <!-- =============================================== -->
-
-  <!-- Left side column. contains the sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-
-      <!-- search form -->
-      <form action="{{ path('domain_index') }}" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="search_for" class="form-control" placeholder="Domain Keyword Search" value="">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      {% include '_partials/menu-main.html.twig' %}
-    </section>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- =============================================== -->
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-
-      <!-- Content Header (Page header) -->
-      <section class="content-header">
-
-
-          <span class="visible-sm visible-md visible-lg">
-              {{ _self.breadcrumb('section','left', block('breadcrumbs')) }}
-          </span>
-
-          <span class="visible-xs">
-              {{ _self.breadcrumb('section','right') }}
-              {{ block('breadcrumbs') }}
-          </span>
-          <BR>
-
-				{% for message in app.flashes('danger') %}
-				<BR>
-				<div class="alert alert-danger alert-dismissible">
-					<h4>
-						<i class="icon fa fa-exclamation-circle"></i> Alert!
-					</h4>
-					{{ message }}
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0 text-dark">
+								{{ block('title') }}
+							</h1>
+						</div>
+						<!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								{% block breadcrumbs %}
+								{% endblock %}
+							</ol>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
 				</div>
-				{% endfor %}
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
 
-				{% for message in app.flashes('success') %}
-				<BR>
-				<div class="alert alert-success alert-dismissible">
-					<h4>
-						<i class="icon fa fa-check"></i> Success
-					</h4>
-					{{ message }}
+			<!-- Main content -->
+			<div class="content">
+				<div class="container-fluid">
+
+						{% block body %}
+						{% endblock %}
+
 				</div>
-				{% endfor %}
+				<!-- /.container-fluid -->
+			</div>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
 
-				{% for message in app.flashes('info') %}
-				<BR>
-				<div class="alert alert-info alert-dismissible">
-					<h4>
-						<i class="icon fa fa-info"></i> Info
-					</h4>
 
-					{{ message }}
-				</div>
-				{% endfor %}
-				{#
-        <?php
-        if ($_SESSION['s_message_danger'] != "") {
-            echo $system->showMessageDanger($_SESSION['s_message_danger']);
-            unset($_SESSION['s_message_danger']);
-        }
+		<footer class="main-footer">
+			<div class="float-right d-none d-sm-inline">Version 5.0.0</div>
+			<a href="http://domainmod.org">DomainMOD </a> is open source software
+			released under the <a href="http://www.gnu.org/licenses/">GNU/GPL
+				License</a>. Created by <a href="http://chetcuti.com">Greg Chetcuti</a>.<BR>
+		</footer>
 
-        if ($_SESSION['s_message_success'] != "") {
-            echo $system->showMessageSuccess($_SESSION['s_message_success']);
-            unset($_SESSION['s_message_success']);
-        }
+	</div>
+	<!-- ./wrapper -->
 
-        if ($_SESSION['s_message_info'] != "") {
-            echo $system->showMessageInfo($_SESSION['s_message_info']);
-            unset($_SESSION['s_message_info']);
-        }
+	{{ encore_entry_script_tags('bootstrap') }}
+	{{ encore_entry_script_tags('datatables') }}
+	{{ encore_entry_script_tags('app') }}
 
-        require_once DIR_INC . '/layout/table-maintenance.inc.php';
-        ?>
-#}
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-      <!-- Default box -->
-      <div class="box box-solid box-danger">
-        <div class="box-header with-border">
-            <h3 class="box-title">{{ block('title') }}</h3>
-            {% if softwareSectionLogo|default(false) %}
-                <span class="pull-right"><i class="fa {{ softwareSectionLogo }}"></i></span>
-            {% endif %}
-        </div>
-        <div class="box-body">
-        
-        
-        
-        
-        
-	{% block body %}
-	{% endblock %}
-	
-	
-	
-	
-	        </div>
-        <!-- /.box-body -->
-      </div>
-      <!-- /.box -->
-
-    </section>
-    <!-- /.content -->
-
-  </div>
-  <!-- /.content-wrapper -->
-    <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-  </aside>
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
-
-    <footer class="main-footer">
-
-        <div class="pull-right hidden-xs">
-            Version 5.0.0
-        </div>
-        <div class="visible-xs">
-            Version 5.0.0
-        </div>
-        <a href="http://domainmod.org">DomainMOD </a> is open source software released under the <a href="http://www.gnu.org/licenses/">GNU/GPL License</a>.
-        Created by <a href="http://chetcuti.com">Greg Chetcuti</a>.<BR>
-
-    </footer>
-
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery 2.2.0 -->
-<script src="/_includes/theme/plugins/jQuery/jQuery-2.2.0.min.js"></script>
-<!-- Bootstrap 3.3.5 -->
-<script src="/_includes/theme/bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="/_includes/theme/plugins/datatables/jquery.dataTables.js"></script>
-<script src="/_includes/theme/plugins/datatables/dataTables.bootstrap.js"></script>
-<script src="/_includes/theme/plugins/datatables/dataTables.responsive.js"></script>
-<!-- Select2 -->
-<script src="/_includes/theme/plugins/select2/select2.full.min.js"></script>
-<!-- SlimScroll -->
-<script src="/_includes/theme/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="/_includes/theme/plugins/fastclick/fastclick.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/_includes/theme/dist/js/app.min.js"></script>
-<!-- iCheck 1.0.1 -->
-<script src="/_includes/theme/plugins/iCheck/icheck.min.js"></script>
-<script>
+	<script>
   $(function () {
 
     //Initialize Select2 Elements
@@ -313,30 +110,61 @@ html {
     //Colorpicker
     // $(".my-colorpicker1").colorpicker();
 
+    {% for message in app.flashes('danger') %}
+    $(document).Toasts('create', {
+        title: 'Warning',
+        class: 'bg-danger',
+        autohide: true,
+        body: '{{ message }}'
+      });
+    {% endfor %}
+    
+	{% for message in app.flashes('success') %}
+    $(document).Toasts('create', {
+        title: 'Success',
+        class: 'bg-success',
+        autohide: true,
+        body: '{{ message }}'
+      });
+    {% endfor %}
+
+    {% for message in app.flashes('info') %}
+    $(document).Toasts('create', {
+        title: 'Information',
+        class: 'bg-info',
+        autohide: true,
+        body: '{{ message }}'
+      });
+    {% endfor %}
   });
 </script>
-	
+
 	{% block javascripts %}
 	{% endblock %}
 </body>
 </html>
 
 {% macro breadcrumb(section, position, data) %}
-      <ol class="breadcrumb pull-{{ position }}">
-          {% if data == "<li>Dashboard</li>\n" %}
-              <li><i class="fa fa-dashboard"></i></li>
-          {% else %}
-              <li><a href="{{ path('home') }}"><i class="fa fa-dashboard"></i></a></li>
-          {% endif %}
-          
-          {{ data|raw }}
-      </ol>
+<ol class="breadcrumb pull-{{ position }}">
+	{% if data == "<li>Dashboard</li>\n" %}
+	<li><i class="fa fa-dashboard"></i></li>
+	{% else %}
+	<li><a href="{{ path('home') }}"><i class="fa fa-dashboard"></i></a></li>
+	{% endif %}
+
+	{{ data|raw }}
+</ol>
 {% endmacro %}
 
 {% macro showButton(type, text) %}
-<button style="margin-top:5px" type="{{ type }}" class="btn btn-primary btn-danger">{{ text }}</button>&nbsp;
+<button style="margin-top: 5px" type="{{ type }}"
+	class="btn btn-primary btn-danger">
+	{{ text }}
+</button>
+&nbsp;
 {% endmacro %}
 
 {% macro highlightText(color, text) %}
-<strong><span style="color: {{ color == 'red' ? '#a30000' : '#009933' }}">{{ text }}</span></strong>
+<strong><span
+	style="color: {{ color == 'red' ? '#a30000' : '#009933' }}">{{ text }}</span></strong>
 {% endmacro %}

@@ -61,7 +61,7 @@ class AdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $setting = $repository->findOneBy([]);
+        $setting = $repository->getSettings();
         $form = $this->createForm(SystemSettingsType::class, $setting);
         $form->handleRequest($request);
 
@@ -69,6 +69,7 @@ class AdminController extends AbstractController
             $repository->save($setting);
 
             $this->addFlash('success', 'The System Settings were updated');
+            $request->getSession()->set('settings', $setting);
             return $this->redirectToRoute('admin_index');
         }
         return $this->render('admin/settings.html.twig', [

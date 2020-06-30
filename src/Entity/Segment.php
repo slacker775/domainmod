@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +13,9 @@ use Doctrine\Common\Collections\Collection;
  */
 class Segment
 {
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
@@ -24,6 +25,7 @@ class Segment
     private $id;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=35, nullable=false)
@@ -31,6 +33,7 @@ class Segment
     private $name;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=0, nullable=false)
@@ -38,6 +41,7 @@ class Segment
     private $description;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="segment", type="text", length=0, nullable=false)
@@ -45,13 +49,15 @@ class Segment
     private $segment;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\SegmentData", mappedBy="segment")
-     * 
+     *
      * @var Collection
      */
     private $segmentData;
-    
+
     /**
+     *
      * @var int
      *
      * @ORM\Column(name="number_of_domains", type="integer", nullable=false)
@@ -59,6 +65,7 @@ class Segment
     private $numberOfDomains;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="notes", type="text", length=0, nullable=false)
@@ -66,20 +73,25 @@ class Segment
     private $notes;
 
     /**
-     * @var bool
      *
-     * @ORM\Column(name="creation_type_id", type="boolean", nullable=false, options={"default"="2"})
+     * @var CreationType
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
+     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
      */
-    private $creationTypeId = '2';
+    private $creationType;
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
-    private $createdBy = '0';
+    private $createdBy;
 
     /**
+     *
      * @var \DateTime
      *
      * @ORM\Column(name="insert_time", type="datetime", nullable=false)
@@ -87,6 +99,7 @@ class Segment
     private $created;
 
     /**
+     *
      * @var \DateTime
      *
      * @ORM\Column(name="update_time", type="datetime", nullable=false)
@@ -96,100 +109,116 @@ class Segment
     public function __construct()
     {
         $this->segmentData = new ArrayCollection();
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
-    /**
-     * @return number
-     */
-    public function getId()
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @return string
-     */
-    public function getSegment()
+    public function getSegment(): string
     {
         return $this->segment;
     }
 
-    /**
-     * @return string
-     */
-    public function getNotes()
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
 
-    /**
-     * @param number $id
-     */
-    public function setId($id)
+    public function getSegmentData(): Collection
     {
-        $this->id = $id;
-        return $this;
+        return $this->segmentData;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function getCreationType(): CreationType
     {
-        $this->name = $name;
-        return $this;
+        return $this->creationType;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function getCreatedBy(): User
     {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @param string $segment
-     */
-    public function setSegment($segment)
-    {
-        $this->segment = $segment;
-        return $this;
-    }
-
-    /**
-     * @param string $notes
-     */
-    public function setNotes($notes)
-    {
-        $this->notes = $notes;
-        return $this;
+        return $this->createdBy;
     }
 
     public function getNumberOfDomains(): int
     {
         return $this->numberOfDomains;
     }
-    
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function setSegment(string $segment): self
+    {
+        $this->segment = $segment;
+        return $this;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
+        return $this;
+    }
+
     public function setNumberOfDomains(int $numberOfDomains): self
     {
         $this->numberOfDomains = $numberOfDomains;
+        return $this;
+    }
+
+    public function setSegmentData(Collection $segmentData): self
+    {
+        $this->segmentData = $segmentData;
+        return $this;
+    }
+
+    public function addSegmentData(SegmentData $data): self
+    {
+        if ($this->segmentData->contains($data) === false) {
+            $this->segmentData->add($data);
+        }
+        return $this;
+    }
+
+    public function removeSegmentData(SegmentData $data): self
+    {
+        if ($this->segmentData->contains($data) === true) {
+            $this->segmentData->removeElement($data);
+        }
+        return $this;
+    }
+
+    public function setCreationType(CreationType $creationType): self
+    {
+        $this->creationType = $creationType;
+        return $this;
+    }
+
+    public function setCreatedBy(User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
         return $this;
     }
 }

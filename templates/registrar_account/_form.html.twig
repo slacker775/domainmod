@@ -20,7 +20,7 @@
 	</div>
 	<div class="box-body">
 
-		{% if registrar_account.registrar %}
+		{% if registrar_account.registrar.apiRegistrar|default(false) %}
 		<strong>API Requirements</strong><BR>
 		{{ registrar_account.registrar.apiRegistrar.name }}
 		requires the following credentials in order to use their API.

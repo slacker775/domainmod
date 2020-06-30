@@ -2,16 +2,25 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Add Registrar Account{% endblock %}
+{% block title %}
+Add Registrar Account
+{% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li><a href="{{ path('registrar_account_index') }}">Registrar Accounts</a></li>
-<li class='active'>Add</li>
+<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
+<li class="breadcrumb-item"><a
+	href="{{ path('registrar_account_index') }}">Registrar Accounts</a></li>
+<li class='breadcrumb-item active'>Add</li>
 {% endblock %}
 
 {% block body %}
-
-    {{ include('registrar_account/_form.html.twig') }}
-
+<div class="row">
+	<div class="col-lg-6">
+		<div class="card">
+			<div class="card-body">
+				{{ include('registrar_account/_form.html.twig') }}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}

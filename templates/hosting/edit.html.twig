@@ -1,15 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Web Host{% endblock %}
+{% block title %}
+Edit Web Host
+{% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li><a href="{{ path('hosting_index') }}">Web Hosts</a></li>
-<li>Edit</li>
+<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
+<li class="breadcrumb-item"><a href="{{ path('hosting_index') }}">Web
+		Hosts</a></li>
+<li class="breadcrumb-item active">Edit</li>
 {% endblock %}
 
 {% block body %}
-    {{ include('hosting/_form.html.twig', {'button_label': 'Save'}) }}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				{{ include('hosting/_form.html.twig', {'button_label': 'Save'}) }}
 
-    {{ include('hosting/_delete_form.html.twig') }}
+				{{ include('hosting/_delete_form.html.twig') }}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
