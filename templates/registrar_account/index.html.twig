@@ -47,10 +47,10 @@ Domain Registrar Accounts
 								{% endif %} {% if registrar_account.reseller %} <strong>^</strong>
 								{% endif %}</td>
 
-							<td><a href="edit/account-owner.php?oid=1">{{ registrar_account.owner }}</a></td>
+							<td><a href="{{ path('owner_edit', { id: registrar_account.owner.id }) }}">{{ registrar_account.owner }}</a></td>
 
 							<td>{% if registrar_account.getActiveDomainCount > 0 %} <a
-								href="{{ path('domain_index', { accountId: registrar_account.id }) }}">{{ registrar_account.getActiveDomainCount }}</a>
+								href="{{ path('domain_index', { account: registrar_account.id }) }}">{{ registrar_account.getActiveDomainCount }}</a>
 								{% else %} - {% endif %}</td>
 						</tr>
 						{% endfor %}

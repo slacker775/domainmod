@@ -11,6 +11,12 @@ use App\Form\DomainType;
 use App\Repository\RegistrarRepository;
 use App\Repository\CreationTypeRepository;
 use App\Repository\UserRepository;
+use App\Entity\Registrar;
+use App\Entity\RegistrarAccount;
+use App\Entity\Dns;
+use App\Entity\Hosting;
+use App\Entity\Owner;
+use League\Csv\Writer;
 
 /**
  *
@@ -27,18 +33,79 @@ class DomainController extends AbstractController
         $this->repository = $repository;
     }
 
+    /*
+     * This function returns all domains based on filters that may be
+     * present in the request
+     */
+    private function getDomains(array $filters): ?array
+    {
+        $domains = $this->repository->findBy($filters, [
+            'domain' => 'ASC'
+        ]);
+        return $domains;
+    }
+
+    private function getRequestFilters(Request $request): array
+    {
+        $filters = [];
+        $registrarId = $request->query->getInt('registrar');
+        if ($registrarId != 0) {
+            $filters['registrar'] = $this->getDoctrine()
+            ->getRepository(Registrar::class)
+            ->find($registrarId);
+        }
+        $accountId = $request->query->getInt('account');
+        if ($accountId != 0) {
+            $filters['account'] = $this->getDoctrine()
+            ->getRepository(RegistrarAccount::class)
+            ->find($accountId);
+        }
+        $dnsId = $request->query->getInt('dns');
+        if ($dnsId != 0) {
+            $filters['dns'] = $this->getDoctrine()
+            ->getRepository(Dns::class)
+            ->find($dnsId);
+        }
+        $hostingId = $request->query->getInt('hosting');
+        if ($hostingId != 0) {
+            $filters['hostingProvider'] = $this->getDoctrine()
+            ->getRepository(Hosting::class)
+            ->find($hostingId);
+        }
+        $ownerId = $request->query->getInt('owner');
+        if ($ownerId != 0) {
+            $filters['owner'] = $this->getDoctrine()
+            ->getRepository(Owner::class)
+            ->find($ownerId);
+        }
+        $tld = $request->query->get('tld');
+        if ($tld != null) {
+            $filters['tld'] = $tld;
+        }
+        return $filters;
+    }
+    
     /**
      *
      * @Route("/", name="domain_index")
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $this->getRequestFilters($request);
+        
+        $domains = $this->getDomains($filters);
+
+        $totalCost = 0;
+        foreach ($domains as $d) {
+            $totalCost += $d->getTotalCost();
+        }
+
         return $this->render('domain/index.html.twig', [
             'controller_name' => 'DomainController',
-            'domains' => $this->repository->findBy([], [
-                'domain' => 'ASC'
-            ]),
-            'sortBy' => 'dn_a'
+            'domains' => $domains,
+            'totalCost' => $totalCost,
+            'sortBy' => 'dn_a',
+            'filters' => $filters,
         ]);
     }
 
@@ -99,23 +166,56 @@ class DomainController extends AbstractController
      *
      * @Route("/export", name="domain_export")
      */
-    public function export()
+    public function export(Request $request)
     {
-        return $this->redirectToRoute('domain_index');
+        $domains = $this->getDomains($request);
+
+        $csv = Writer::createFromFileObject(new \SplTempFileObject());
+        $csv->insertOne([
+            'domain',
+            'tld',
+            'owner',
+            'registrar',
+            'account',
+            'expiration'
+        ]);
+        foreach ($domains as $d) {
+            $csv->insertOne([
+                $d->getDomain(),
+                $d->getTld(),
+                $d->getOwner(),
+                $d->getRegistrar(),
+                $d->getAccount(),
+                $d->getExpiryDate()->format('m/d/Y')
+            ]);
+        }
+
+        return new Response($csv->getContent(), 200, [
+            'Content-Encoding' => 'none',
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="domain-export.csv"',
+            'Content-Description' => 'Domain Export'
+        ]);
     }
 
     /**
      *
      * @Route("/{id}/edit", name="domain_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Domain $domain): Response
+    public function edit(Request $request, Domain $domain, RegistrarRepository $registrarRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createForm(DomainType::class, $domain);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $domain->setTld()
+                ->setOwner($domain->getAccount()
+                ->getOwner())
+                ->setRegistrar($domain->getAccount()
+                ->getRegistrar())
+                ->setFee($registrarRepository->getFeeByTld($domain->getAccount()
+                ->getRegistrar(), $domain->getTld()));
             $this->addFlash('success', sprintf('Domain %s Updated', $domain->getDomain()));
             return $this->redirectToRoute('domain_index');
         }

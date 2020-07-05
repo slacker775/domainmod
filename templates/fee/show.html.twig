@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fee{% endblock %}
+
+{% block body %}
+    <h1>Fee</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fee.id }}</td>
+            </tr>
+            <tr>
+                <th>Tld</th>
+                <td>{{ fee.tld }}</td>
+            </tr>
+            <tr>
+                <th>InitialFee</th>
+                <td>{{ fee.initialFee }}</td>
+            </tr>
+            <tr>
+                <th>RenewalFee</th>
+                <td>{{ fee.renewalFee }}</td>
+            </tr>
+            <tr>
+                <th>TransferFee</th>
+                <td>{{ fee.transferFee }}</td>
+            </tr>
+            <tr>
+                <th>PrivacyFee</th>
+                <td>{{ fee.privacyFee }}</td>
+            </tr>
+            <tr>
+                <th>MiscFee</th>
+                <td>{{ fee.miscFee }}</td>
+            </tr>
+            <tr>
+                <th>FeeFixed</th>
+                <td>{{ fee.feeFixed ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ fee.created ? fee.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ fee.updated ? fee.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('fee_index') }}">back to list</a>
+
+    <a href="{{ path('fee_edit', {'id': fee.id}) }}">edit</a>
+
+    {{ include('fee/_delete_form.html.twig') }}
+{% endblock %}

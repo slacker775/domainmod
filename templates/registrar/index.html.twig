@@ -49,10 +49,11 @@ Domain Registrars
 								href="registrar-accounts.php?rid={{ registrar.id }}">{{ registrar.numAccounts|number_format }}</a><?php
 								{% else %} - {% endif %}</td>
 							<td>{% if registrar.numDomains >= 1 %} <a
-								href="../domains/index.php?rid={{ registrar.id }}">{{ registrar.numDomains|number_format }}</a><?php
+								href="{{ path('domain_index', { registrar: registrar.id }) }}">{{ registrar.numDomains|number_format }}</a><?php
 								{% else %} - {% endif %}</td>
-							<td><a href="registrar-fees.php?rid={{ registrar.id }}">fees</a>&nbsp;&nbsp;<a
-								target="_blank" href="{{ registrar.url }}">www</a></td>
+							<td><a href="{{ path('fee_index', { id: registrar.id }) }}">fees</a>&nbsp;&nbsp;
+								{% if registrar.url %} <a target="_blank"
+								href="{{ registrar.url }}">www</a> {% endif %}</td>
 						</tr>
 						{% endif %}
 						{% endfor %}

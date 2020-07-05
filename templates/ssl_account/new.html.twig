@@ -2,14 +2,25 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}New SSL Account{% endblock %}
+{% block title %}
+Add SSL Account
+{% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li><a href="{{ path('ssl_account_index') }}">SSL Accounts</a></li>
-<li class='active'>Add</li>
+<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
+<li class="breadcrumb-item"><a
+	href="{{ path('ssl_account_index') }}">SSL Accounts</a></li>
+<li class='breadcrumb-item active'>Add</li>
 {% endblock %}
 
 {% block body %}
-    {{ include('ssl_account/_form.html.twig') }}
+<div class="row">
+	<div class="col-lg-6">
+		<div class="card">
+			<div class="card-body">
+				{{ include('ssl_account/_form.html.twig') }}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}

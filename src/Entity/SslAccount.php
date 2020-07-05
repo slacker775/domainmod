@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * SslAccounts
@@ -89,6 +91,13 @@ class SslAccount
     private $notes;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SslCert", mappedBy="account")
+     *
+     * @var Collection
+     */
+    private $certs;
+    
+    /**
      *
      * @var CreationType
      *
@@ -125,6 +134,7 @@ class SslAccount
     public function __construct()
     {
         $this->reseller = false;
+        $this->certs = new ArrayCollection();
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
     }
@@ -252,6 +262,11 @@ class SslAccount
     public function getUpdated(): \DateTimeInterface
     {
         return $this->updated;
+    }
+    
+    public function getCerts(): Collection
+    {
+        return $this->certs;
     }
     
     public function __toString()

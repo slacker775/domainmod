@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="domains", indexes={@ORM\Index(name="domain_idx", columns={"domain"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Domain
 {
@@ -112,7 +113,7 @@ class Domain
      *
      * @var float
      *
-     * @ORM\Column(name="total_cost", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="total_cost", type="float", nullable=false)
      */
     private $totalCost;
 
@@ -231,8 +232,6 @@ class Domain
         $this->updated = new \DateTime();
         $this->status = '1';
         $this->totalCost = 0;
-        $this->function = '';
-        $this->notes = '';
         $this->feeFixed = false;
         $this->autorenew = false;
         $this->privacy = false;
@@ -473,4 +472,12 @@ class Domain
         return $this->domain;
     }
 
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function prePersist()
+    {
+        $this->updated = new \DateTime();
+    }
 }

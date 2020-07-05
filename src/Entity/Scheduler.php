@@ -251,7 +251,7 @@ class Scheduler
         return $this;
     }
 
-    public function setIsRunning(bool $isRunning = true): self
+    public function setRunning(bool $isRunning = true): self
     {
         $this->isRunning = $isRunning;
         return $this;

@@ -43,7 +43,7 @@ class Fee
      *
      * @var float
      *
-     * @ORM\Column(name="initial_fee", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="initial_fee", type="float", nullable=false)
      */
     private $initialFee;
 
@@ -51,7 +51,7 @@ class Fee
      *
      * @var float
      *
-     * @ORM\Column(name="renewal_fee", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="renewal_fee", type="float", nullable=false)
      */
     private $renewalFee;
 
@@ -59,7 +59,7 @@ class Fee
      *
      * @var float
      *
-     * @ORM\Column(name="transfer_fee", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="transfer_fee", type="float", nullable=false)
      */
     private $transferFee;
 
@@ -67,7 +67,7 @@ class Fee
      *
      * @var float
      *
-     * @ORM\Column(name="privacy_fee", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="privacy_fee", type="float", nullable=false)
      */
     private $privacyFee;
 
@@ -75,7 +75,7 @@ class Fee
      *
      * @var float
      *
-     * @ORM\Column(name="misc_fee", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="misc_fee", type="float", nullable=false)
      */
     private $miscFee;
 
@@ -114,19 +114,15 @@ class Fee
 
     public function __construct()
     {
+        $this->fixedFee = false;
+        $this->initialFee = 0;
+        $this->renewalFee = 0.0;
+        $this->transferFee = 0.0;
+        $this->privacyFee = 0.0;
+        $this->miscFee = 0.0;
+        $this->feeFixed = false;
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
-        $this->fixedFee = false;
-    }
-
-    public function getRegistrar(): Registrar
-    {
-        return $this->registrar;
-    }
-
-    public function __toString()
-    {
-        return sprintf("%s - %s", $this->getRegistrar()->getName(), $this->tld);
     }
 
     public function getId(): int
@@ -134,7 +130,12 @@ class Fee
         return $this->id;
     }
 
-    public function getTld(): string
+    public function getRegistrar(): Registrar
+    {
+        return $this->registrar;
+    }
+
+    public function getTld(): ?string
     {
         return $this->tld;
     }
@@ -164,7 +165,7 @@ class Fee
         return $this->miscFee;
     }
 
-    public function getCurrency(): Currency
+    public function getCurrency(): ?Currency
     {
         return $this->currency;
     }
@@ -226,5 +227,10 @@ class Fee
     {
         $this->feeFixed = $feeFixed;
         return $this;
+    }
+
+    public function __toString()
+    {
+        return sprintf("%s - %s", $this->getRegistrar()->getName(), $this->tld);
     }
 }

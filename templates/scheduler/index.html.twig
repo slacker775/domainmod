@@ -50,7 +50,7 @@ Current Timestamp: <strong>{{ "now"|date('r') }}</strong><BR>
             {{ s.lastRun|date('r') }}
             {% else %}
             -
-            {% endif %} {{ s.lastDuration }}<br>
+            {% endif %} ({{ s.lastDuration }})<br>
             <strong>Next Run:</strong> 
             {% if s.nextRun %}
             {{ s.nextRun|date('r') }}

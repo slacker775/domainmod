@@ -27,7 +27,7 @@ class CurrencyConversion
      * @var Currency
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
-     * @ORM\Column(name="currency_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="currency_id", referencedColumnName="id")
      */
     private $currency;
 

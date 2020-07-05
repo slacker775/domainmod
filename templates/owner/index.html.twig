@@ -42,10 +42,10 @@ Account Owners
 								{% if owner.id == app.user.settings.defaultOwnerDomains.id|default(false) %}
 								* {% endif %} {% if owner.id == app.user.settings.defaultOwnerSsl.id|default(false) %}
 								^ {% endif %}</td>
-							<td>{{ owner.registrarAccounts|length ?: '-' }}</td>
-							<td>{{ owner.domains|length ?: '-' }}</td>
-							<td>{{ owner.sslAccounts|length ?: '-' }}</td>
-							<td>{{ owner.sslCerts|length ?: '-' }}</td>
+							<td><a href="{{ path('registrar_account_index', { owner: owner.id }) }}">{{ owner.registrarAccounts|length ?: '-' }}</a></td>
+							<td><a href="{{ path('domain_index', { owner: owner.id }) }}">{{ owner.domains|length ?: '-' }}</a></td>
+							<td><a href="{{ path('ssl_account_index', { owner: owner.id }) }}">{{ owner.sslAccounts|length ?: '-' }}</a></td>
+							<td><a href="{{ path('ssl_cert_index', { owner: owner.id }) }}">{{ owner.sslCerts|length ?: '-' }}</a></td>
 						</tr>
 						{% else %}
 						<tr>

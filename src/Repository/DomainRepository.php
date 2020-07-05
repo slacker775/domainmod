@@ -4,6 +4,9 @@ namespace App\Repository;
 use App\Entity\Domain;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use App\Entity\Registrar;
+use Doctrine\ORM\AbstractQuery;
+use App\Entity\Fee;
 
 class DomainRepository extends ServiceEntityRepository
 {
@@ -55,6 +58,38 @@ class DomainRepository extends ServiceEntityRepository
             ->createQuery("SELECT COUNT(d) FROM App\Entity\Domain d WHERE d.expiryDate <= :expiration AND d.status NOT IN ('0','10')")
             ->setParameter('expiration', $expiration)
             ->getSingleScalarResult();
+    }
+
+    public function getTldsWithoutFeeAssignments(Registrar $registrar): array
+    {
+        $query = $this->getEntityManager()->createQuery("SELECT d.tld FROM App\Entity\Domain d WHERE d.registrar=:registrar AND d.fee IS NULL GROUP BY d.tld ORDER BY d.tld");
+        return $query->execute([
+            'registrar' => $registrar
+        ], AbstractQuery::HYDRATE_ARRAY);
+    }
+
+    public function updateDomainFees(Domain $domain): void
+    {
+        $fees = $this->getEntityManager()
+            ->getRepository(Fee::class)
+            ->findOneBy([
+            'registrar' => $domain->getRegistrar(),
+            'tld' => $domain->getTld()
+        ]);
+        if ($fees !== null) {
+            $totalCost = $fees->getRenewalFee() + $fees->getMiscFee();
+            if ($domain->isPrivacy() === true) {
+                $totalCost += $fees->getPrivacyFee();
+            }
+            $domain->setFee($fees)
+                ->setFeeFixed(true)
+                ->setTotalCost($totalCost);
+        } else {
+            $domain->setFee(null)
+                ->setFeeFixed(false)
+                ->setTotalCost(0);
+        }
+        $this->save($domain);
     }
 
     public function getDomainTotalCost(): float

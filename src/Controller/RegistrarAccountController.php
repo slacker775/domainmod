@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CreationTypeRepository;
+use App\Entity\Registrar;
+use App\Entity\Owner;
 
 /**
  *
@@ -21,12 +23,24 @@ class RegistrarAccountController extends AbstractController
      *
      * @Route("/", name="registrar_account_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        /* FIXME - allow filtering by registrar, owner or registrar account */
-        $registrarAccounts = $this->getDoctrine()
+        $filters = [];
+        
+        $registrarId = $request->query->getInt('registrar');
+        if($registrarId != 0) {
+            $filters['registrar'] = $this->getDoctrine()->getRepository(Registrar::class)->find($registrarId);
+        }
+        $accountId = $request->query->getInt('account');
+        if($accountId != 0) {
+            $filters['account'] = $this->getDoctrine()->getRepository(RegistrarAccount::class)->find($accountId);
+        }
+        $ownerId = $request->query->getInt('owner');
+        if($ownerId != 0) {
+            $filters['owner'] = $this->getDoctrine()->getRepository(Owner::class)->find($ownerId);
+        }$registrarAccounts = $this->getDoctrine()
             ->getRepository(RegistrarAccount::class)
-            ->findAll();
+            ->findBy($filters);
 
         return $this->render('registrar_account/index.html.twig', [
             'registrar_accounts' => $registrarAccounts,

@@ -75,27 +75,30 @@ class Registrar
     private $accounts;
 
     /**
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Fee", mappedBy="registrar")
-     * 
+     *
      * @var Fee
      */
     private $fees;
-    
-    /**
-     *
-     * @var bool
-     *
-     * @ORM\Column(name="creation_type_id", type="boolean", nullable=false, options={"default"="2"})
-     */
-    private $creationTypeId = '2';
 
     /**
      *
-     * @var int
+     * @var CreationType
      *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
+     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
      */
-    private $createdBy = '0';
+    private $creationType;
+
+    /**
+     *
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     */
+    private $createdBy;
 
     /**
      *
@@ -175,35 +178,57 @@ class Registrar
     {
         return $this->domains->count();
     }
-    
+
     public function addAccount(RegistrarAccount $account)
     {
         return $this->accounts->add($account->setRegistrar($this));
     }
-    
+
     public function getAccounts(): array
     {
         return $this->accounts;
     }
-    
+
     public function numAccounts(): int
     {
         return $this->accounts->count();
     }
-    
+
     public function getApiRegistrar(): ?ApiRegistrar
     {
         return $this->apiRegistrar;
     }
-    
+
     public function setApiRegistrar(?ApiRegistrar $apiRegistrar): self
     {
         $this->apiRegistrar = $apiRegistrar;
         return $this;
     }
-    
+
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getCreationType(): CreationType
+    {
+        return $this->creationType;
+    }
+
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreationType(CreationType $creationType): self
+    {
+        $this->creationType = $creationType;
+        return $this;
+    }
+
+    public function setCreatedBy(User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+        return $this;
     }
 }

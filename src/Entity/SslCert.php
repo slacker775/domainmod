@@ -55,7 +55,7 @@ class SslCert
      *
      * @var SslAccount
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\SslAccount")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SslAccount", inversedBy="certs")
      * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
     private $account;

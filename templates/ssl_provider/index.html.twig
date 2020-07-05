@@ -7,84 +7,63 @@ SSL Providers
 {% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li class='active'>SSL Providers</li>
+<li class='breadcrumb-item'><a href="{{ path('asset') }}">Assets</a></li>
+<li class='breadcrumb-item active'>SSL Providers</li>
 {% endblock %}
 
 {% block body %}
-Below is a list of all the SSL Certificate Providers that are stored in
-DomainMOD.
-<br>
-<br>
-<a href="{{ path('ssl_provider_new') }}">{{ _self.showButton('button','Add SSL Provider') }}</a>
-<a href="{{ path('ssl_provider_export') }}">{{ _self.showButton('button','Export') }}</a>
-<br>
-<br>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				Below is a list of all the SSL Certificate Providers that are stored
+				in DomainMOD. <br> <br> <a
+					href="{{ path('ssl_provider_new') }}">{{ _self.showButton('button','Add SSL Provider') }}</a>
+				<a href="{{ path('ssl_provider_export') }}">{{ _self.showButton('button','Export') }}</a>
+				<br> <br>
 
-{% if ssl_providers %}
-<table id="assets-ssl-providers"
-	class="table table-striped dt-responsive cell-border compact">
-	<thead>
-		<tr>
-			<th width="20px"></th>
-			<th>Provider</th>
-			<th>Accounts</th>
-			<th>Certs</th>
-			<th>Options</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for ssl_provider in ssl_providers %}
-		<tr>
-			<td></td>
-			<td><a
-				href="{{ path('ssl_provider_edit', { id: ssl_provider.id }) }}">{{ ssl_provider }}</a></td>
-			<td><a href="{{ path('ssl_account_index', { providerId: ssl_provider.id }) }}">{{ ssl_provider.accounts|length ?: '-' }}</a></td>
-			<td>{{ ssl_provider.certs|length ?: '-' }}</td>
-			<td><a href="{{ path('ssl_provider_fees', { id: ssl_provider.id }) }}">fees</a>&nbsp;&nbsp;
-				{% if ssl_provider.url %}<a target="_blank" href="{{ ssl_provider.url }}">www</a>{% endif %}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-{% else %}
-<BR>You don't currently have any SSL Providers. <a href="{{ path('ssl_provider_new') }}">Click here to add one</a>.
+				{% if ssl_providers %}
+
+				<table id="assets-ssl-providers"
+					class="table table-striped dt-responsive cell-border compact">
+					<thead>
+						<tr>
+							<th width="20px"></th>
+							<th>Provider</th>
+							<th>Accounts</th>
+							<th>Certs</th>
+							<th>Options</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for ssl_provider in ssl_providers %}
+						<tr>
+							<td></td>
+							<td><a
+								href="{{ path('ssl_provider_edit', { id: ssl_provider.id }) }}">{{ ssl_provider }}</a></td>
+							<td><a
+								href="{{ path('ssl_account_index', { providerId: ssl_provider.id }) }}">{{ ssl_provider.accounts|length ?: '-' }}</a></td>
+							<td>{{ ssl_provider.certs|length ?: '-' }}</td>
+							<td><a
+								href="{{ path('ssl_provider_fees', { id: ssl_provider.id }) }}">fees</a>&nbsp;&nbsp;
+								{% if ssl_provider.url %}<a target="_blank"
+								href="{{ ssl_provider.url }}">www</a> {% endif %}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
+				{% else %}
+				<br>You don't currently have any SSL Providers. <a
+					href="{{ path('ssl_provider_new') }}">Click here to add one</a>.
+			</div>
+		</div>
+	</div>
+</div>
 {% endif %}
 
 {% endblock %}
 
 {% block datatable_options %}
-	var oldStart = 0;
-	$('#assets-ssl-providers').DataTable({
-		"paging" : true,
-		"lengthChange" : true,
-		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
-		"searching" : true,
-		"info" : true,
-		"autoWidth" : true,
-		"bAutoWidth" : false,
-		"responsive" : {
-			details : {
-				type : "column"
-			}
-		},
-		"columnDefs" : [ {
-			className : "control",
-			orderable : false,
-			targets : 0
-		} ],
-		"ordering" : true,
-		"order" : [ [ 1, "asc" ] ],
-		"bSortClasses" : false,
-		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
-		"fnDrawCallback" : function(o) {
-			if (o._iDisplayStart != oldStart) {
-				var targetOffset = $("#assets-ssl-providers").offset().top;
-				$("html,body").animate({
-					scrollTop : targetOffset
-				}, 0);
-				oldStart = o._iDisplayStart;
-			}
-		}
-	});
+$('#assets-ssl-providers').DataTable();
 {% endblock %}

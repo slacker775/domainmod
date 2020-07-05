@@ -19,6 +19,8 @@ use Symfony\Component\Intl\Timezones;
 use App\Entity\Timezone;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\UserSetting;
+use Symfony\Component\Intl\Currencies;
+use App\Entity\Currency;
 
 class AppFixtures extends Fixture
 {
@@ -64,7 +66,8 @@ class AppFixtures extends Fixture
             'Manual',
             'Bulk Updater',
             'Manual or Bulk Updater',
-            'Queue'
+            'Queue',
+            'Import',
         ];
         foreach ($types as $type) {
             $obj = new CreationType($type);
@@ -121,7 +124,17 @@ class AppFixtures extends Fixture
     }
 
     private function loadCurrencies(ObjectManager $manager)
-    {}
+    {
+        $currencies = Currencies::getNames();
+
+        foreach ($currencies as $code => $name) {
+            $c = new Currency();
+            $c->setName($name)
+                ->setCurrency($code)
+                ->setSymbol(Currencies::getSymbol($code));
+            $manager->persist($c);
+        }
+    }
 
     private function loadTimezones(ObjectManager $manager)
     {
@@ -543,7 +556,8 @@ class AppFixtures extends Fixture
             ->setDefaultOwnerDomains($this->getReference(self::DEFAULT_OWNER_REF))
             ->setDefaultOwnerSsl($this->getReference(self::DEFAULT_OWNER_REF))
             ->setEmailSignature($this->getReference(self::ADMIN_USER_REF))
-            ->setSmtpPort(587)->setUseSmtp(false);
+            ->setSmtpPort(587)
+            ->setUseSmtp(false);
 
         $manager->persist($obj);
     }

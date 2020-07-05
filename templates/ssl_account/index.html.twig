@@ -2,55 +2,72 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}SslAccount index{% endblock %}
+{% block title %}
+SSL Accounts
+{% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li class='active'>SSL Accounts</li>
+<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
+<li class='breadcrumb-item active'>SSL Accounts</li>
 {% endblock %}
 
 {% block body %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				Below is a list of all the SSL Provider Accounts that are stored in
+				DomainMOD.<BR> <BR> <a
+					href="{{ path('ssl_account_new') }}">{{ _self.showButton('button','Add SSL Account') }}</a>
+				<a href="">{{ _self.showButton('button','Export') }}</a><BR> <BR>
 
-{% if ssl_accounts %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Owner</th>
-                <th>SslProvider</th>
-                <th>EmailAddress</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Reseller</th>
-                <th>ResellerId</th>
-                <th>Notes</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ssl_account in ssl_accounts %}
-            <tr>
-                <td>{{ ssl_account.id }}</td>
-                <td>{{ ssl_account.owner }}</td>
-                <td>{{ ssl_account.sslProvider }}</td>
-                <td>{{ ssl_account.emailAddress }}</td>
-                <td>{{ ssl_account.username }}</td>
-                <td>{{ ssl_account.password }}</td>
-                <td>{{ ssl_account.reseller ? 'Yes' : 'No' }}</td>
-                <td>{{ ssl_account.resellerId }}</td>
-                <td>{{ ssl_account.notes }}</td>
-                <td>
-                    <a href="{{ path('ssl_account_edit', {'id': ssl_account.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="14">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-<BR>You don't currently have any SSL Provider Accounts. <a href="{{ path('ssl_account_new') }}">Click here to add one</a>.<BR>
-{% endif %}
+				{% if ssl_accounts %}
+				<table id="assets-ssl-accounts"
+					class="table table-striped dt-responsive cell-border compact">
+					<thead>
+						<tr>
+							<th width="20px"></th>
+							<th>Provider</th>
+							<th>Account</th>
+							<th>Owner</th>
+							<th>SSL Certs</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for ssl_account in ssl_accounts %}
+						<tr>
+							<td></td>
+							<td>{{ ssl_account.sslProvider }}</td>
+							<td><a
+								href="{{ path('ssl_account_edit', { id: ssl_account.id }) }}">{{ ssl_account.username }}</a>
+							{% if app.user.settings.defaultSslProviderAccount.id == ssl_account.id %}&nbsp;<strong>*</strong>
+							{% endif %} {% if ssl_account.reseller %}&nbsp;<strong>^</strong>
+								{% endif %}</td>
+							<td><a href="{{ path('owner_edit', { id: ssl_account.owner.id }) }}">{{ ssl_account.owner }}</a></td>
+							<td><a href="{{ path('ssl_cert_index', { account: ssl_account.id }) }}">{{ ssl_account.certs|length ?: '-'}}</a></td>
+						</tr>
+						{% else %}
+						<tr>
+							<td colspan="14">no records found</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<strong>*</strong> = Default (<a
+					href="{{ path('settings_defaults') }}">set defaults</a>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>^</strong>
+				= Reseller<BR> <BR>
+
+				{% else %}
+				<BR>You don't currently have any SSL Accounts. <a
+					href="{{ path('ssl_account_new') }}">Click here to add one</a>.<BR>
+				{% endif %}
+
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block datatable_options %}
+$('#assets-ssl-accounts').DataTable();
 {% endblock %}
