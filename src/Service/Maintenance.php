@@ -24,7 +24,7 @@ class Maintenance implements LoggerAwareInterface
         $this->domainRepository = $domainRepository;
     }
 
-    public function Maintenance()
+    public function Maintenance(): void
     {
         $this->logger->info(sprintf("Maintenance Beginning"));
 
@@ -37,7 +37,7 @@ class Maintenance implements LoggerAwareInterface
         $this->logger->info(sprintf("Maintenance Complete"));
     }
 
-    private function lowercaseDomains()
+    private function lowercaseDomains(): void
     {
         $this->logger->info(sprintf("Maintenance Task: Lowercasing all domain names"));
 
@@ -56,19 +56,21 @@ class Maintenance implements LoggerAwareInterface
         return preg_replace("/^((.*?)\.)(.*)$/", "\\3", $domain);
     }
 
-    private function lowercaseFeeTlds()
+    private function lowercaseFeeTlds(): void
     {
         $this->logger->info(sprintf("Maintenance Task: Lowercasing all TLDs in fees"));
         $fees = $this->entityManager->getRepository(Fee::class)->findAll();
-
         foreach ($fees as $f) {
-            $f->setTld(strtolower($f->getTld()));
+            $tld = $f->getTld();
+            if ($tld !== null) {
+                $f->setTld(strtolower($tld));
 
-            $this->entityManager->persist($f);
+                $this->entityManager->persist($f);
+            }
         }
     }
 
-    private function updateSegments()
+    private function updateSegments(): void
     {
         $this->logger->info(sprintf("Maintenance Task: Updating domain segments"));
 
@@ -106,7 +108,7 @@ class Maintenance implements LoggerAwareInterface
         }
     }
 
-    private function updateDomainFees()
+    private function updateDomainFees(): void
     {
         $this->logger->info(sprintf("Maintenance Task: Updating domain fees"));
         $domains = $this->domainRepository->findAll();

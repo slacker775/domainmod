@@ -8,20 +8,25 @@ use GoDaddy\Domain\Api\Client;
 class GoDaddy implements ApiRegistrarInterface
 {
 
-    private string $apiKey;
+    private ?string $apiKey;
 
-    private string $apiSecret;
+    private ?string $apiSecret;
 
-    private $apiClient;
+    private ?Client $apiClient;
     
     public function __construct()
     {
         $this->apiClient = null;
+        $this->apiKey = null;
+        $this->apiSecret = null;
     }
 
     private function getInstance(): Client
     {
         if($this->apiClient === null) {
+            if($this->apiKey === null || $this->apiSecret === null) {
+                throw new \Exception('GoDaddy service requires apiKey and apiSecret to be set!');
+            }
             $this->apiClient = ClientFactory::create($this->apiKey, $this->apiSecret);
         }
         return $this->apiClient;
@@ -60,6 +65,10 @@ class GoDaddy implements ApiRegistrarInterface
     public function listDomains(): array
     {
         $data = $this->getInstance()->listDomains();
+        
+        if($data === null) {
+            return [];
+        }
         $result = [];
         foreach($data as $domain) {
             $result[] = $domain->getDomain();

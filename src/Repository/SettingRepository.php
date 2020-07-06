@@ -13,7 +13,7 @@ class SettingRepository extends ServiceEntityRepository
         parent::__construct($registry, Setting::class);
     }
 
-    public function save(Setting $setting)
+    public function save(Setting $setting): void
     {
         $this->getEntityManager()->persist($setting);
     }

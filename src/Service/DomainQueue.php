@@ -23,7 +23,7 @@ class DomainQueue implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     private EntityManagerInterface $entityManager;
-    
+
     private DomainQueueRepository $domainQueueRepository;
 
     private DomainQueueListRepository $domainQueueListRepository;
@@ -35,13 +35,13 @@ class DomainQueue implements LoggerAwareInterface
         $this->domainQueueListRepository = $domainQueueListRepository;
     }
 
-    public function run()
+    public function run(): void
     {
         $this->processDomainQueueList();
         $this->processDomainQueue();
     }
 
-    private function processDomainQueueList()
+    private function processDomainQueueList(): void
     {
         $queue = $this->domainQueueListRepository->getAllReadyToProcess();
 
@@ -84,9 +84,13 @@ class DomainQueue implements LoggerAwareInterface
 
     private function getApiRegistrarService(RegistrarAccount $account): ApiRegistrarInterface
     {
-        if (strtolower($account->getRegistrar()
+        $apiRegistrar = $account->getRegistrar()
             ->getApiRegistrar()
-            ->getName()) == 'godaddy') {
+            ->getName();
+        if ($apiRegistrar === null) {
+            throw new \Exception('API Registrar not defined!');
+        }
+        if (strtolower($apiRegistrar) == 'godaddy') {
             $service = new GoDaddy();
             $service->setCredentials([
                 'apiKey' => $account->getApiKey(),
@@ -95,38 +99,38 @@ class DomainQueue implements LoggerAwareInterface
             return $service;
         }
     }
-    
-    private function processDomainQueue()
+
+    private function processDomainQueue(): void
     {
         $queue = $this->domainQueueRepository->getAllReadyToProcess();
-        
+
         $this->domainQueueRepository->markProcessingQueue();
-        
-        if($queue !== null) {
+
+        if (count($queue) > 0) {
             $this->logger->notice('[START] Processing domains in the Domain Queue');
-            
-            foreach($queue as $q) {
+
+            foreach ($queue as $q) {
                 $this->logger->info(sprintf('Processing domain %s', $q->getDomainName()));
-                
+
                 $this->logger->debug(sprintf('Using API Registrar: %s', $q->getApiRegistrar()));
-                
+
                 $service = $this->getApiRegistrarService($q->getAccount());
-                
+
                 $details = $service->getDomain($q->getDomainName());
-                
+
                 dump($details);
             }
             $this->logger->notice('[END] Processing domains in the Domain Queue');
         } else {
             $this->logger->info('No domains in the Domain Queue to process');
         }
-        
+
         $this->copyToHistoryDomain();
-        
-        //$this->entityManager->flush();
+
+        // $this->entityManager->flush();
     }
 
-    private function importToDomainQueue(string $domain, DomainQueueList $ql)
+    private function importToDomainQueue(string $domain, DomainQueueList $ql): void
     {
         $this->logger->debug(sprintf('[IMPORT] Importing domain %s to domain queue for processing', $domain));
 
@@ -162,7 +166,7 @@ class DomainQueue implements LoggerAwareInterface
             /* Domain is NOT in the domains table, lets make sure its not already in the queue */
             $domainQueueEntry = $this->entityManager->getRepository(DomainQueueEntity::class)->findOneByDomainName($domain);
 
-            if ($domainQueueEntry !== null) {
+            if (($domainQueueEntry !== null) && ($domainEntry !== null)) {
                 $dq = new DomainQueueEntity();
                 $dq->setDomain($domainEntry)
                     ->setTld($domainEntry->getTld())
@@ -200,7 +204,7 @@ class DomainQueue implements LoggerAwareInterface
         }
     }
 
-    private function copyToHistoryList()
+    private function copyToHistoryList(): void
     {
         $entries = $this->domainQueueListRepository->findBy([
             'finished' => true,
@@ -209,7 +213,7 @@ class DomainQueue implements LoggerAwareInterface
             'created' => 'ASC'
         ]);
 
-        if ($entries !== null) {
+        if (count($entries) > 0) {
             foreach ($entries as $entry) {
                 $dqh = new DomainQueueListHistory();
                 $dqh->setDomainCount($entry->getDomainCount())
@@ -223,14 +227,12 @@ class DomainQueue implements LoggerAwareInterface
             $this->domainQueueListRepository->markCopiedToHistory();
             $this->entityManager->flush();
         } else {
-            $this->log->info('No Domain Queue List results to copy to history table');
+            $this->logger->info('No Domain Queue List results to copy to history table');
         }
     }
-    
-    private function copyToHistoryDomain()
-    {
-        
-    }
+
+    private function copyToHistoryDomain(): void
+    {}
 
     private function domainInMainTable(string $domain): bool
     {
