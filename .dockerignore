@@ -1,5 +1,6 @@
 .git
-node_modules
 legacy
-yarn-error.log
-var
+symfony/node_modules
+symfony/yarn-error.log
+symfony/var
+symfony/.env.local
