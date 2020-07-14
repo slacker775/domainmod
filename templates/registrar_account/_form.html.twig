@@ -9,16 +9,17 @@
 {{ form_row(form.reseller) }}
 {{ form_row(form.resellerId) }}
 
-<div class="box box-default collapsed-box box-solid">
-	<div class="box-header with-border">
-		<h3 class="box-title" style="padding-top: 3px;">
-			<button type="button" class="btn btn-box-tool" data-widget="collapse">
-				<i class="fa fa-plus"></i>
+<div class="card card-danger collapsed-card">
+	<div class="card-header">
+		<h3 class="card-title">API Credentials</h3>
+		<div class="card-tools">
+			<button class="btn btn-tool" type="button"
+				data-card-widget="collapse">
+				<i class="fas fa-plus"></i>
 			</button>
-			&nbsp;API Credentials
-		</h3>
+		</div>
 	</div>
-	<div class="box-body">
+	<div class="card-body" style="display: none;">
 
 		{% if registrar_account.registrar.apiRegistrar|default(false) %}
 		<strong>API Requirements</strong><BR>
@@ -39,33 +40,33 @@
 			</li>
 			{% endif %}
 			{% if registrar_account.registrar.apiRegistrar.reqResellerId %}
-			<li>Reseller ID {% if registrar_account.resellerId %}
-				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
-				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			<li>Reseller ID {% if registrar_account.resellerId %} (<span
+				style="color: darkgreen"><strong>saved</strong></span>) {% else %} (<span
+				style="color: #a30000"><strong>missing</strong></span>) {% endif %}
 			</li>
 			{% endif %}
 			{% if registrar_account.registrar.apiRegistrar.reqApiAppName %}
-			<li>API Application Name {% if registrar_account.apiAppName %}
-				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
-				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			<li>API Application Name {% if registrar_account.apiAppName %} (<span
+				style="color: darkgreen"><strong>saved</strong></span>) {% else %} (<span
+				style="color: #a30000"><strong>missing</strong></span>) {% endif %}
 			</li>
 			{% endif %}
 			{% if registrar_account.registrar.apiRegistrar.reqApiKey %}
-			<li>API Key {% if registrar_account.apiKey %}
-				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
-				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			<li>API Key {% if registrar_account.apiKey %} (<span
+				style="color: darkgreen"><strong>saved</strong></span>) {% else %} (<span
+				style="color: #a30000"><strong>missing</strong></span>) {% endif %}
 			</li>
 			{% endif %}
 			{% if registrar_account.registrar.apiRegistrar.reqApiSecret %}
-			<li>API Secret {% if registrar_account.apiSecret %}
-				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
-				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			<li>API Secret {% if registrar_account.apiSecret %} (<span
+				style="color: darkgreen"><strong>saved</strong></span>) {% else %} (<span
+				style="color: #a30000"><strong>missing</strong></span>) {% endif %}
 			</li>
 			{% endif %}
 			{% if registrar_account.registrar.apiRegistrar.reqIpAddress %}
-			<li>Connecting IP Address {% if registrar_account.apiIp %}
-				(<span style="color: darkgreen"><strong>saved</strong></span>) {% else %}
-				(<span style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			<li>Connecting IP Address {% if registrar_account.apiIp %} (<span
+				style="color: darkgreen"><strong>saved</strong></span>) {% else %} (<span
+				style="color: #a30000"><strong>missing</strong></span>) {% endif %}
 			</li>
 			{% endif %}
 		</ul>
@@ -75,6 +76,7 @@
 		{{ form_row(form.apiKey) }}
 		{{ form_row(form.apiSecret) }}
 		{{ form_row(form.apiIp) }}
+
 	</div>
 </div>
 {{ form_row(form.notes) }}
