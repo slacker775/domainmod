@@ -44,8 +44,7 @@ class DnsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $dns->setCreationType($creationTypeRespository->findByName('Manual'))
-                ->setCreatedBy($this->getUser());
+            $dns->setCreationType($creationTypeRespository->findByName('Manual'));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($dns);

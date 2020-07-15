@@ -63,8 +63,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $password = ($this->generator->generatePasswords())[0];
             $user->setPassword($this->encoder->encodePassword($user, $password));
-            $user->setCreationType($creationTypeRepository->findByName('Manual'))
-                ->setCreatedBy($this->getUser());
+            $user->setCreationType($creationTypeRepository->findByName('Manual'));
 
             $this->repository->save($user);
 

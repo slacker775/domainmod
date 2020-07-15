@@ -46,8 +46,7 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $category->setCreationType($creationTypeRespository->findByName('Manual'))
-                ->setCreatedBy($this->getUser());
+            $category->setCreationType($creationTypeRespository->findByName('Manual'));
             $entityManager->persist($category);
             $entityManager->flush();
 

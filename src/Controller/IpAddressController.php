@@ -44,8 +44,7 @@ class IpAddressController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $ipAddress->setCreatedBy($this->getUser())
-                ->setCreationType($creationTypeRepository->findByName('Manual'));
+            $ipAddress->setCreationType($creationTypeRepository->findByName('Manual'));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ipAddress);
             $entityManager->flush();

@@ -12,7 +12,7 @@ class RegistrarAccountRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RegistrarAccount::class);
     }
-
+    
     public function getAccountsWithApi(): array
     {
         $query = $this->getEntityManager()->createQuery('SELECT a FROM App\Entity\RegistrarAccount a JOIN a.registrar r JOIN r.apiRegistrar api ' . 

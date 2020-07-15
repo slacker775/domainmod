@@ -2,7 +2,7 @@
 
 {{ form_start(form) }}
 {# {{ form_widget(form) }} #}
-    {% if domain.domain is null %}
+    {% if not form.vars.valid or domain.domain is null %}
     {{ form_row(form.domain) }}
     {% endif %}
     {{ form_row(form.function) }}

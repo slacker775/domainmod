@@ -5,6 +5,9 @@
     "amphp/byte-stream": {
         "version": "v1.7.3"
     },
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "brick/math": {
         "version": "0.8.15"
     },
@@ -119,6 +122,9 @@
     },
     "felixfbecker/language-server-protocol": {
         "version": "v1.4.0"
+    },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.41"
     },
     "hackzilla/password-generator": {
         "version": "1.5.0"
@@ -291,6 +297,18 @@
     },
     "slacker775/godaddy-domain-api": {
         "version": "1.0.0"
+    },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        },
+        "files": [
+            "config/packages/stof_doctrine_extensions.yaml"
+        ]
     },
     "symfony/asset": {
         "version": "v5.1.2"

@@ -16,6 +16,34 @@ Domains
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="card-body">
+
+				{% if registrarCount == 0 %}
+				<strong>0</strong> Domain Registrars found<br> <br> Before you can
+				start adding domains to DomainMOD you need to add at least one
+				domain registrar and a domain registrar account.<br> <br> Please see
+				the <a target='_blank' href='/docs/userguide/first-run/'>First
+					Run</a> section of the User Guide for more detailed information.<br> <br> <a href="{{ path('registrar_new') }}">Click here to add a
+					Domain Registrar &raquo;</a><br>
+				{% endif %}
+
+				{% if registrarAccountCount == 0 and registrarCount > 0 %}
+				<strong>0</strong> Domain Registrar Accounts found<br> <br> Before you can
+				start adding domains to DomainMOD you need to add at least one
+				domain registrar and a domain registrar account.<br> <br> Please see
+				the <a target='_blank' href='/docs/userguide/first-run/'>First
+					Run</a> section of the User Guide for more detailed information.<br> <br> <a href="{{ path('registrar_account_new') }}">Click here to add a
+					Domain Registrar Account &raquo;</a><br>
+				{% endif %}
+
+				{% if domainCount == 0 and registrarCount > 0 and registrarAccountCount > 0 %}
+				<strong>0</strong> Domains found<br> <br> Add a domain
+				<a href='{{ path('domain_new') }}'>manually</a>, add domains using
+				the <a href='{{ path('queue_intro') }}'>Domain
+					Queue</a>, or see the <a target='_blank'
+					href='../docs/userguide/adding-domains/'>Adding Domains</a> section
+				of the User Guide for more options.<br>
+				{% endif %}
+
 				<a href="{{ path('domain_new') }}">{{ _self.showButton('button','Add Domain') }}</a>
 				<a href="{{ path('queue_intro') }}">{{ _self.showButton('button','Add Domains to Queue') }}</a>
 				<a target="_blank" href="{{ path('domain_raw') }}">{{ _self.showButton('button','Raw List') }}</a>

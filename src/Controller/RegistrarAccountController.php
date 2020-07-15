@@ -26,19 +26,26 @@ class RegistrarAccountController extends AbstractController
     public function index(Request $request): Response
     {
         $filters = [];
-        
+
         $registrarId = $request->query->getInt('registrar');
-        if($registrarId != 0) {
-            $filters['registrar'] = $this->getDoctrine()->getRepository(Registrar::class)->find($registrarId);
+        if ($registrarId != 0) {
+            $filters['registrar'] = $this->getDoctrine()
+                ->getRepository(Registrar::class)
+                ->find($registrarId);
         }
         $accountId = $request->query->getInt('account');
-        if($accountId != 0) {
-            $filters['account'] = $this->getDoctrine()->getRepository(RegistrarAccount::class)->find($accountId);
+        if ($accountId != 0) {
+            $filters['account'] = $this->getDoctrine()
+                ->getRepository(RegistrarAccount::class)
+                ->find($accountId);
         }
         $ownerId = $request->query->getInt('owner');
-        if($ownerId != 0) {
-            $filters['owner'] = $this->getDoctrine()->getRepository(Owner::class)->find($ownerId);
-        }$registrarAccounts = $this->getDoctrine()
+        if ($ownerId != 0) {
+            $filters['owner'] = $this->getDoctrine()
+                ->getRepository(Owner::class)
+                ->find($ownerId);
+        }
+        $registrarAccounts = $this->getDoctrine()
             ->getRepository(RegistrarAccount::class)
             ->findBy($filters);
 
@@ -61,8 +68,8 @@ class RegistrarAccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $registrarAccount->setCreationType($creationTypeRepository->findByName('Manual'))
-                ->setCreatedBy($this->getUser());
+            $registrarAccount->setCreationType($creationTypeRepository->findByName('Manual'));
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($registrarAccount);
             $entityManager->flush();

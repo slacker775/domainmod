@@ -65,7 +65,6 @@ class SslCertController extends AbstractController
                 ->getOwner())
                 ->setSslProvider($sslCert->getAccount()
                 ->getSslProvider())
-                ->setCreatedBy($this->getUser())
                 ->setCreationType($creationTypeRepository->findByName('Manual'));
 
             $fees = $sslCert->getSslProvider()->getFee();

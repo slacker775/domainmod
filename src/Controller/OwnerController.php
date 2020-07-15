@@ -44,8 +44,7 @@ class OwnerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $owner->setCreatedBy($this->getUser())
-                ->setCreationType($creationTypeRepository->findByName('Manual'));
+            $owner->setCreationType($creationTypeRepository->findByName('Manual'));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($owner);
             $entityManager->flush();

@@ -40,7 +40,7 @@ SSL Accounts
 							<td>{{ ssl_account.sslProvider }}</td>
 							<td><a
 								href="{{ path('ssl_account_edit', { id: ssl_account.id }) }}">{{ ssl_account.username }}</a>
-							{% if app.user.settings.defaultSslProviderAccount.id == ssl_account.id %}&nbsp;<strong>*</strong>
+							{% if app.user.settings.defaultSslProviderAccount.id|default(false) == ssl_account.id %}&nbsp;<strong>*</strong>
 							{% endif %} {% if ssl_account.reseller %}&nbsp;<strong>^</strong>
 								{% endif %}</td>
 							<td><a href="{{ path('owner_edit', { id: ssl_account.owner.id }) }}">{{ ssl_account.owner }}</a></td>

@@ -80,8 +80,7 @@ class QueueController extends AbstractController
                 ->setRegistrar($account->getRegistrar())
                 ->setOwner($account->getOwner())
                 ->setApiRegistrar($account->getRegistrar()
-                ->getApiRegistrar())
-                ->setCreatedBy($this->getUser());
+                ->getApiRegistrar());
             $this->getDoctrine()
                 ->getManager()
                 ->persist($queueItem);

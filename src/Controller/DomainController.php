@@ -17,6 +17,7 @@ use App\Entity\Dns;
 use App\Entity\Hosting;
 use App\Entity\Owner;
 use League\Csv\Writer;
+use App\Repository\RegistrarAccountRepository;
 
 /**
  *
@@ -28,9 +29,15 @@ class DomainController extends AbstractController
 
     private DomainRepository $repository;
 
-    public function __construct(DomainRepository $repository)
+    private RegistrarAccountRepository $accountRepository;
+
+    private RegistrarRepository $registrarRepository;
+
+    public function __construct(DomainRepository $repository, RegistrarAccountRepository $accountRepository, RegistrarRepository $registrarRepository)
     {
         $this->repository = $repository;
+        $this->accountRepository = $accountRepository;
+        $this->registrarRepository = $registrarRepository;
     }
 
     /*
@@ -51,32 +58,32 @@ class DomainController extends AbstractController
         $registrarId = $request->query->getInt('registrar');
         if ($registrarId != 0) {
             $filters['registrar'] = $this->getDoctrine()
-            ->getRepository(Registrar::class)
-            ->find($registrarId);
+                ->getRepository(Registrar::class)
+                ->find($registrarId);
         }
         $accountId = $request->query->getInt('account');
         if ($accountId != 0) {
             $filters['account'] = $this->getDoctrine()
-            ->getRepository(RegistrarAccount::class)
-            ->find($accountId);
+                ->getRepository(RegistrarAccount::class)
+                ->find($accountId);
         }
         $dnsId = $request->query->getInt('dns');
         if ($dnsId != 0) {
             $filters['dns'] = $this->getDoctrine()
-            ->getRepository(Dns::class)
-            ->find($dnsId);
+                ->getRepository(Dns::class)
+                ->find($dnsId);
         }
         $hostingId = $request->query->getInt('hosting');
         if ($hostingId != 0) {
             $filters['hostingProvider'] = $this->getDoctrine()
-            ->getRepository(Hosting::class)
-            ->find($hostingId);
+                ->getRepository(Hosting::class)
+                ->find($hostingId);
         }
         $ownerId = $request->query->getInt('owner');
         if ($ownerId != 0) {
             $filters['owner'] = $this->getDoctrine()
-            ->getRepository(Owner::class)
-            ->find($ownerId);
+                ->getRepository(Owner::class)
+                ->find($ownerId);
         }
         $tld = $request->query->get('tld');
         if ($tld != null) {
@@ -84,7 +91,7 @@ class DomainController extends AbstractController
         }
         return $filters;
     }
-    
+
     /**
      *
      * @Route("/", name="domain_index")
@@ -92,7 +99,7 @@ class DomainController extends AbstractController
     public function index(Request $request)
     {
         $filters = $this->getRequestFilters($request);
-        
+
         $domains = $this->getDomains($filters);
 
         $totalCost = 0;
@@ -103,9 +110,12 @@ class DomainController extends AbstractController
         return $this->render('domain/index.html.twig', [
             'controller_name' => 'DomainController',
             'domains' => $domains,
+            'domainCount' => count($domains),
+            'registrarCount' => $this->registrarRepository->count([]),
+            'registrarAccountCount' => $this->accountRepository->count([]),
             'totalCost' => $totalCost,
             'sortBy' => 'dn_a',
-            'filters' => $filters,
+            'filters' => $filters
         ]);
     }
 
@@ -137,8 +147,7 @@ class DomainController extends AbstractController
                 ->getRegistrar())
                 ->setFee($registrarRepository->getFeeByTld($domain->getAccount()
                 ->getRegistrar(), $domain->getTld()))
-                ->setCreationType($creationTypeRepository->findByName('Manual'))
-                ->setCreatedBy($this->getUser());
+                ->setCreationType($creationTypeRepository->findByName('Manual'));
             $this->repository->save($domain);
 
             $this->addFlash('success', sprintf('Domain %s Added', $domain->getDomain()));
@@ -186,7 +195,8 @@ class DomainController extends AbstractController
                 $d->getOwner(),
                 $d->getRegistrar(),
                 $d->getAccount(),
-                $d->getExpiryDate()->format('m/d/Y')
+                $d->getExpiryDate()
+                    ->format('m/d/Y')
             ]);
         }
 

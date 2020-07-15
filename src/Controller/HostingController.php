@@ -44,8 +44,7 @@ class HostingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hosting->setCreatedBy($this->getUser())
-                ->setCreationType($creationTypeRepository->findByName('Manual'));
+            $hosting->setCreationType($creationTypeRepository->findByName('Manual'));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($hosting);
             $entityManager->flush();
