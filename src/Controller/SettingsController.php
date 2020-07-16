@@ -9,14 +9,18 @@ use App\Form\UserDefaultsType;
 use App\Repository\SettingRepository;
 use App\Form\UserDisplayType;
 use App\Service\SettingsResolver;
+use App\Repository\UserSettingRepository;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  *
  * @Route("/settings")
  *
  */
-class SettingsController extends AbstractController
+class SettingsController extends AbstractController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     private SettingRepository $repository;
 
@@ -68,7 +72,7 @@ class SettingsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->container->get('session')->set('settings', $this->resolver->resolveSettings($this->getUser()));            
+            $this->container->get('session')->set('settings', $this->resolver->resolveSettings($this->getUser()));
             $this->addFlash('success', 'Your display preferences were updated');
         }
         return $this->render('settings/display.html.twig', [
@@ -96,5 +100,34 @@ class SettingsController extends AbstractController
         return $this->render('settings/profile.html.twig', [
             'controller_name' => 'SettingsController'
         ]);
+    }
+
+    /**
+     *
+     * @Route("/show-inactive", name="settings_show_inactive")
+     */
+    public function showInactiveAssets(Request $request, UserSettingRepository $repository): Response
+    {
+        return $this->toggleInactiveAssets($request, $repository, true);
+    }
+
+    /**
+     *
+     * @Route("/hide-inactive", name="settings_hide_inactive")
+     */
+    public function hideInactiveAssets(Request $request, UserSettingRepository $repository): Response
+    {
+        return $this->toggleInactiveAssets($request, $repository, false);
+    }
+
+    private function toggleInactiveAssets(Request $request, UserSettingRepository $repository, bool $value = true): Response
+    {
+        $this->logger->info(sprintf('Setting inactive asset toggle to %s for user %s', $value ? 'true' : 'false', $this->getUser()));
+
+        $repository->save($this->getUser()
+            ->getSettings()
+            ->setDisplayInactiveAssets($value));
+        $this->container->get('session')->set('settings', $this->resolver->resolveSettings($this->getUser()));
+        return $this->redirect($request->headers->get('referer'));
     }
 }

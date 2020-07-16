@@ -1,0 +1,12 @@
+{% if app.session.get('settings').displayInactiveAssets|default(false) %}
+<em>Inactive Assets are currently displayed. <a
+	href="{{ path('settings_hide_inactive') }}">Click here to hide them</a>.
+</em>
+<br>
+{% else %}
+<em>Inactive Assets are currently hidden. <a
+	href="{{ path('settings_show_inactive') }}">Click here to display
+		them</a>.
+</em>
+<br>
+{% endif %}

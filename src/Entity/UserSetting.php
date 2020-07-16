@@ -691,7 +691,7 @@ class UserSetting
         return $this;
     }
 
-    public function setDisplayInactiveAssets(bool $displayInactiveAssets): self
+    public function setDisplayInactiveAssets(bool $displayInactiveAssets = true): self
     {
         $this->displayInactiveAssets = $displayInactiveAssets;
         return $this;
