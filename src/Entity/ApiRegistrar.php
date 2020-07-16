@@ -120,6 +120,14 @@ class ApiRegistrar
 
     /**
      *
+     * @ORM\Column(type="boolean", options={"default"=false})
+     *
+     * @var bool
+     */
+    private $retTransferLock;
+
+    /**
+     *
      * @var bool
      *
      * @ORM\Column(name="ret_autorenewal_status", type="boolean", nullable=false)
@@ -314,5 +322,16 @@ class ApiRegistrar
     public function __toString(): ?string
     {
         return $this->name;
+    }
+
+    public function isRetTransferLock(): bool
+    {
+        return $this->retTransferLock;
+    }
+
+    public function setRetTransferLock($retTransferLock = true): self
+    {
+        $this->retTransferLock = $retTransferLock;
+        return $this;
     }
 }

@@ -1,6 +1,5 @@
 <?php
-declare(strict_types=1);
-
+declare(strict_types = 1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -181,6 +180,14 @@ class Domain
 
     /**
      *
+     * @ORM\Column(type="boolean", options={"default"=false})
+     *
+     * @var bool
+     */
+    private $transferLock;
+
+    /**
+     *
      * @var string
      *
      * @ORM\Column(name="active", type="string", length=2, nullable=false, options={"default"="1"})
@@ -206,7 +213,7 @@ class Domain
 
     use BlameableEntity;
 
-    use TimestampableEntity;   
+    use TimestampableEntity;
 
     public function __construct()
     {
@@ -215,6 +222,7 @@ class Domain
         $this->feeFixed = false;
         $this->autorenew = false;
         $this->privacy = false;
+        $this->transferLock = false;
     }
 
     public function getId(): ?int
@@ -343,8 +351,8 @@ class Domain
 
     public function setTld(string $tld = null): self
     {
-        if($tld === null and $this->domain !== null) {
-            $tld = preg_replace("/^((.*?)\.)(.*)$/", "\\3", $this->domain);          
+        if ($tld === null and $this->domain !== null) {
+            $tld = preg_replace("/^((.*?)\.)(.*)$/", "\\3", $this->domain);
         }
         $this->tld = $tld;
         return $this;
@@ -441,4 +449,14 @@ class Domain
         return $this->domain;
     }
 
+    public function isTransferLock(): bool
+    {
+        return $this->transferLock;
+    }
+
+    public function setTransferLock($transferLock = true): self
+    {
+        $this->transferLock = $transferLock;
+        return $this;
+    }
 }
