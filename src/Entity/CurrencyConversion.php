@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * CurrencyConversions
  *
- * @ORM\Table(name="currency_conversions")
  * @ORM\Entity
  */
 class CurrencyConversion
@@ -48,27 +48,7 @@ class CurrencyConversion
      */
     private $conversion;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
-
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
-    }
+    use TimestampableEntity;    
 
     public function getId(): int
     {

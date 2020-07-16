@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Settings
  *
- * @ORM\Table(name="settings")
  * @ORM\Entity
  */
 class Setting
@@ -275,21 +275,7 @@ class Setting
      */
     private $localPhpLog;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;
 
     public function __construct()
     {
@@ -303,8 +289,6 @@ class Setting
         $this->smtpPort = '587';
         $this->debugMode = false;
         $this->localPhpLog = false;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -629,5 +613,25 @@ class Setting
     {
         $this->expirationDays = $expirationDays;
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'defaultCategoryDomains' => $this->defaultCategoryDomains,
+            'defaultCategorySsl' => $this->defaultCategorySsl,
+            'defaultDns' => $this->defaultDns,
+            'defaultHost' => $this->defaultHost,
+            'defaultIpAddressDomains' => $this->defaultIpAddressDomains,
+            'defaultIpAddressSsl' => $this->defaultIpAddressSsl,
+            'defaultOwnerDomains' => $this->defaultOwnerDomains,
+            'defaultOwnerSsl' => $this->defaultOwnerSsl,
+            'defaultRegistrar' => $this->defaultRegistrar,
+            'defaultRegistrarAccount' => $this->defaultRegistrarAccount,
+            'defaultSslProviderAccount' => $this->defaultSslProviderAccount,
+            'defaultSslType' => $this->defaultSslType,
+            'defaultSslProvider' => $this->defaultSslProvider,
+            'largeMode' => $this->largeMode,
+        ];
     }
 }

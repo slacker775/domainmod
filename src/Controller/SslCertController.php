@@ -30,9 +30,7 @@ class SslCertController extends AbstractController
      */
     public function index(): Response
     {
-        $sslCerts = $this->getDoctrine()
-            ->getRepository(SslCert::class)
-            ->findAll();
+        $sslCerts = $this->repository->findAll();
 
         return $this->render('ssl_cert/index.html.twig', [
             'ssl_certs' => $sslCerts

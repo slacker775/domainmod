@@ -2,13 +2,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * SslCerts
  *
- * @ORM\Table(name="ssl_certs")
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
 class SslCert
 {
@@ -162,38 +162,15 @@ class SslCert
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
         $this->status = '1';
         $this->total_cost = 0.0;
         $this->feeFixed = false;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -274,21 +251,6 @@ class SslCert
     public function getCreationType(): CreationType
     {
         return $this->creationTypeId;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
-    }
-
-    public function getInsertTime(): \DateTime
-    {
-        return $this->insertTime;
-    }
-
-    public function getUpdateTime(): \DateTime
-    {
-        return $this->updateTime;
     }
 
     public function setOwner(Owner $owner): self
@@ -385,9 +347,4 @@ class SslCert
         return $this;
     }
 
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
 }

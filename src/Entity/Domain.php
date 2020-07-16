@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Domains
  *
- * @ORM\Table(name="domains", indexes={@ORM\Index(name="domain_idx", columns={"domain"})})
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
 class Domain
 {
@@ -72,6 +73,8 @@ class Domain
      * @var string
      *
      * @ORM\Column(name="domain", type="string", length=255, nullable=false)
+     * @Assert\Hostname
+     * @Assert\NotBlank
      */
     private $domain;
 
@@ -201,35 +204,12 @@ class Domain
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;   
 
     public function __construct()
     {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
         $this->status = '1';
         $this->totalCost = 0;
         $this->feeFixed = false;
@@ -335,11 +315,6 @@ class Domain
     public function getCreationType(): CreationType
     {
         return $this->creationType;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
     }
 
     public function setOwner(Owner $owner): self
@@ -461,23 +436,9 @@ class Domain
         return $this;
     }
 
-    public function setCreatedBy(User $user): self
-    {
-        $this->createdBy = $user;
-        return $this;
-    }
-    
     public function __toString()
     {
         return $this->domain;
     }
 
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function prePersist()
-    {
-        $this->updated = new \DateTime();
-    }
 }

@@ -2,11 +2,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
  * DomainFields
  *
- * @ORM\Table(name="domain_fields")
  * @ORM\Entity
  */
 class DomainField
@@ -71,36 +72,9 @@ class DomainField
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
-
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
-    }
+    use TimestampableEntity;    
 
     public function getId(): int
     {
@@ -135,11 +109,6 @@ class DomainField
     public function getCreationType(): CreationType
     {
         return $this->creationType;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
     }
 
     public function setName(string $name): self
@@ -178,9 +147,4 @@ class DomainField
         return $this;
     }
 
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
 }

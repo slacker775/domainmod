@@ -3,12 +3,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Users
  *
- * @ORM\Table(name="users")
  * @ORM\Entity
+ * @ORM\Table(name="users")
  */
 class User implements UserInterface
 {
@@ -126,31 +128,10 @@ class User implements UserInterface
      * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
      */
     private $creationType;
+    
+    use BlameableEntity;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;
 
     public function __construct()
     {
@@ -162,8 +143,6 @@ class User implements UserInterface
         $this->lastLogin = null;
         $this->settings = new UserSetting();
         $this->settings->setUser($this);
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -229,11 +208,6 @@ class User implements UserInterface
     public function getCreationType(): CreationType
     {
         return $this->creationType;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
     }
 
     public function setFirstName(string $firstName): self
@@ -308,12 +282,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->username;
@@ -321,11 +289,13 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        $roles = ['ROLE_USER'];
-        if($this->isAdmin() === true) {
+        $roles = [
+            'ROLE_USER'
+        ];
+        if ($this->isAdmin() === true) {
             $roles[] = 'ROLE_ADMIN';
         }
-        if($this->isReadOnly() === true) {
+        if ($this->isReadOnly() === true) {
             $roles[] = 'ROLE_READ_ONLY';
         }
         return $roles;

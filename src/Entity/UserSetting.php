@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * UserSettings
  *
- * @ORM\Table(name="user_settings")
  * @ORM\Entity
  */
 class UserSetting
@@ -355,21 +355,7 @@ class UserSetting
      */
     private $displayDwIntroPage = true;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;
 
     public function __construct()
     {
@@ -412,8 +398,6 @@ class UserSetting
         $this->displaySslFee = false;
         $this->displayInactiveAssets = true;
         $this->displayDwIntroPage = true;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getDefaultRegistrar(): ?Registrar
@@ -854,5 +838,50 @@ class UserSetting
     {
         $this->displayDwIntroPage = $displayDwIntroPage;
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'defaultCategoryDomains' => $this->defaultCategoryDomains,
+            'defaultCategorySsl' => $this->defaultCategorySsl,
+            'defaultDns' => $this->defaultDns,
+            'defaultHost' => $this->defaultHost,
+            'defaultIpAddressDomains' => $this->defaultIpAddressDomains,
+            'defaultIpAddressSsl' => $this->defaultIpAddressSsl,
+            'defaultOwnerDomains' => $this->defaultOwnerDomains,
+            'defaultOwnerSsl' => $this->defaultOwnerSsl,
+            'defaultRegistrar' => $this->defaultRegistrar,
+            'defaultRegistrarAccount' => $this->defaultRegistrarAccount,
+            'defaultSslProviderAccount' => $this->defaultSslProviderAccount,
+            'defaultSslType' => $this->defaultSslType,
+            'defaultSslProvider' => $this->defaultSslProvider,
+            'defaultCurrency' => $this->defaultCurrency,
+            'defaultTimezone' => $this->defaultTimezone,
+            'expirationEmails' => $this->expirationEmails,
+            'numberOfDomains' => $this->numberOfDomains,
+            'numberOfSslCerts' => $this->numberOfSslCerts,
+            'displayDomainOwner' => $this->displayDomainOwner,
+            'displayDomainRegistrar' => $this->displayDomainRegistrar,
+            'displayDomainAccount' => $this->displayDomainAccount,
+            'displayDomainExpiryDate' => $this->displayDomainExpiryDate,
+            'displayDomainCategory' => $this->displayDomainCategory,
+            'displayDomainDns' => $this->displayDomainDns,
+            'displayDomainHost' => $this->displayDomainHost,
+            'displayDomainIp' => $this->displayDomainIp,
+            'displayDomainTld' => $this->displayDomainTld,
+            'displayDomainFee' => $this->displayDomainFee,
+            'displaySslOwner' => $this->displaySslOwner,
+            'displaySslProvider' => $this->displaySslProvider,
+            'displaySslAccount' => $this->displaySslAccount,
+            'displaySslDomain' => $this->displaySslDomain,
+            'displaySslType' => $this->displaySslType,
+            'displaySslExpiryDate' => $this->displaySslExpiryDate,
+            'displaySslIp' => $this->displaySslIp,
+            'displaySslCategory' => $this->displaySslCategory,
+            'displaySslFee' => $this->displaySslFee,
+            'displayInactiveAssets' => $this->displayInactiveAssets,
+            'displayDwIntroPage' => $this->displayDwIntroPage
+        ];
     }
 }

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CreationTypeRepository;
+use App\Repository\DnsRepository;
 
 /**
  *
@@ -16,15 +17,20 @@ use App\Repository\CreationTypeRepository;
 class DnsController extends AbstractController
 {
 
+    private DnsRepository $repository;
+
+    public function __construct(DnsRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="dns_index", methods={"GET"})
      */
     public function index(): Response
     {
-        $dns = $this->getDoctrine()
-            ->getRepository(Dns::class)
-            ->findAll();
+        $dns = $this->repository->findAll();
 
         return $this->render('dns/index.html.twig', [
             'dns' => $dns
@@ -45,10 +51,8 @@ class DnsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $dns->setCreationType($creationTypeRespository->findByName('Manual'));
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($dns);
-            $entityManager->flush();
+            $this->repository->save($dns);
+            ;
 
             $this->addFlash('success', sprintf('DNS Profile %s Added', $dns->getName()));
             return $this->redirectToRoute('dns_index');
@@ -81,9 +85,6 @@ class DnsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
 
             $this->addFlash('success', sprintf('DNS Profile %s Updated', $dn->getName()));
             return $this->redirectToRoute('dns_index');
@@ -104,9 +105,7 @@ class DnsController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $dn->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($dn);
-            $entityManager->flush();
+            $this->repository->remove($dn);
             $this->addFlash('success', sprintf('DNS Profile %s Deleted', $dn->getName()));
         }
 

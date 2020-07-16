@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * DomainFieldData
  *
- * @ORM\Table(name="domain_field_data")
  * @ORM\Entity
  */
 class DomainFieldData
@@ -31,27 +31,7 @@ class DomainFieldData
      */
     private $domain;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
-
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
-    }
+    use TimestampableEntity;    
 
     public function getId(): int
     {

@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CreationTypeRepository;
 
 /**
  *
@@ -16,15 +17,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class SslProviderController extends AbstractController
 {
 
+    private SslProviderRepository $repository;
+
+    public function __construct(SslProviderRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="ssl_provider_index", methods={"GET"})
      */
     public function index(): Response
     {
-        $sslProviders = $this->getDoctrine()
-            ->getRepository(SslProvider::class)
-            ->findAll();
+        $sslProviders = $this->repository->findAll();
 
         return $this->render('ssl_provider/index.html.twig', [
             'ssl_providers' => $sslProviders
@@ -44,7 +50,7 @@ class SslProviderController extends AbstractController
      *
      * @Route("/new", name="ssl_provider_new", methods={"GET","POST"})
      */
-    public function new(Request $request, SslProviderRepository $repository): Response
+    public function new(Request $request, CreationTypeRepository $creationTypeRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -53,7 +59,8 @@ class SslProviderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($sslProvider);
+            $sslProvider->setCreationType($creationTypeRepository->findByName('Manual'));            
+            $this->repository->save($sslProvider);
 
             $this->addFlash('success', sprintf('SSL Provider %s Added', $sslProvider->getName()));
             return $this->redirectToRoute('ssl_provider_index');
@@ -101,12 +108,12 @@ class SslProviderController extends AbstractController
      *
      * @Route("/{id}", name="ssl_provider_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, SslProvider $sslProvider, SslProviderRepository $repository): Response
+    public function delete(Request $request, SslProvider $sslProvider): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $sslProvider->getId(), $request->request->get('_token'))) {
-            $repository->remove($sslProvider);
+            $this->repository->remove($sslProvider);
             $this->addFlash('success', sprintf('SSL Provider %s Deleted', $sslProvider->getName()));
         }
 

@@ -5,11 +5,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
  * IpAddresses
  *
- * @ORM\Table(name="ip_addresses")
  * @ORM\Entity
  */
 class IpAddress
@@ -84,37 +85,14 @@ class IpAddress
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;
 
     public function __construct()
     {
         $this->domains = new ArrayCollection();
         $this->sslCerts = new ArrayCollection();
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -150,11 +128,6 @@ class IpAddress
         return $this->creationType;
     }
 
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
-    }
-
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -185,17 +158,6 @@ class IpAddress
         return $this;
     }
 
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return sprintf("%s (%s)", $this->name, $this->ip);
-    }
-
     public function getDomains(): Collection
     {
         return $this->domains;
@@ -216,5 +178,10 @@ class IpAddress
     {
         $this->sslCerts = $sslCerts;
         return $this;
+    }
+
+    public function __toString()
+    {
+        return sprintf("%s (%s)", $this->name, $this->ip);
     }
 }

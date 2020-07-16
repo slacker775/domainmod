@@ -7,6 +7,7 @@ use App\Form\SystemDefaultsType;
 use App\Repository\SettingRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\SystemSettingsType;
+use App\Service\SettingsResolver;
 
 /**
  *
@@ -16,6 +17,16 @@ use App\Form\SystemSettingsType;
  */
 class AdminController extends AbstractController
 {
+
+    private SettingRepository $repository;
+
+    private SettingsResolver $resolver;
+
+    public function __construct(SettingRepository $repository, SettingsResolver $resolver)
+    {
+        $this->repository = $repository;
+        $this->resolver = $resolver;
+    }
 
     /**
      *
@@ -34,17 +45,17 @@ class AdminController extends AbstractController
      *
      * @Route("/defaults", name="admin_defaults")
      */
-    public function defaults(Request $request, SettingRepository $repository)
+    public function defaults(Request $request)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $setting = $repository->findOneBy([]);
+        $setting = $this->repository->findOneBy([]);
         $form = $this->createForm(SystemDefaultsType::class, $setting);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($setting);
-
+            $this->repository->save($setting);
+            $this->container->get('session')->set('settings', $this->resolver->resolveSettings($this->getUser()));
             $this->addFlash('success', 'The System Defaults were updated');
             return $this->redirectToRoute('admin_index');
         }
@@ -57,17 +68,17 @@ class AdminController extends AbstractController
      *
      * @Route("/settings", name="admin_settings")
      */
-    public function settings(Request $request, SettingRepository $repository)
+    public function settings(Request $request)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $setting = $repository->getSettings();
+        $setting = $this->repository->getSettings();
         $form = $this->createForm(SystemSettingsType::class, $setting);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($setting);
-
+            $this->repository->save($setting);
+            $this->container->get('session')->set('settings', $this->resolver->resolveSettings($this->getUser()));
             $this->addFlash('success', 'The System Settings were updated');
             $request->getSession()->set('settings', $setting);
             return $this->redirectToRoute('admin_index');

@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Registrars
  *
- * @ORM\Table(name="registrars", indexes={@ORM\Index(name="registrars_name", columns={"name"})})
  * @ORM\Entity
  */
 class Registrar
@@ -30,6 +32,7 @@ class Registrar
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @Assert\NotBlank
      */
     private $name;
 
@@ -38,6 +41,7 @@ class Registrar
      * @var string
      *
      * @ORM\Column(name="url", type="string", length=100, nullable=true)
+     * @Assert\Url
      */
     private $url;
 
@@ -91,38 +95,15 @@ class Registrar
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;
 
     public function __construct()
     {
         $this->domains = new ArrayCollection();
         $this->accounts = new ArrayCollection();
         $this->fees = new ArrayCollection();
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -215,20 +196,9 @@ class Registrar
         return $this->creationType;
     }
 
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
-    }
-
     public function setCreationType(CreationType $creationType): self
     {
         $this->creationType = $creationType;
-        return $this;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
         return $this;
     }
 }

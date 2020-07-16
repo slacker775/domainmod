@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * CreationTypes
  *
- * @ORM\Table(name="creation_types")
  * @ORM\Entity
  */
 class CreationType
@@ -32,18 +32,11 @@ class CreationType
      */
     private $name;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
+    use TimestampableEntity;    
 
     public function __construct(string $name)
     {
         $this->name = $name;
-        $this->created = new \DateTime();
     }
 
     public function getId(): int
@@ -54,11 +47,6 @@ class CreationType
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getCreated(): \DateTime
-    {
-        return $this->created;
     }
 
     public function setName(string $name): self

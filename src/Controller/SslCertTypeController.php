@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\SslCertTypeRepository;
 
 /**
  *
@@ -15,15 +16,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class SslCertTypeController extends AbstractController
 {
 
+    private SslCertTypeRepository $repository;
+
+    public function __construct(SslCertTypeRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="ssl_cert_type_index", methods={"GET"})
      */
     public function index(): Response
     {
-        $sslCertTypes = $this->getDoctrine()
-            ->getRepository(SslCertType::class)
-            ->findAll();
+        $sslCertTypes = $this->repository->findAll();
 
         return $this->render('ssl_cert_type/index.html.twig', [
             'ssl_cert_types' => $sslCertTypes
@@ -43,9 +49,7 @@ class SslCertTypeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($sslCertType);
-            $entityManager->flush();
+            $this->repository->save($sslCertType);
 
             $this->addFlash('success', sprintf('SSL Type %s Added', $sslCertType->getType()));
             return $this->redirectToRoute('ssl_cert_type_index');
@@ -78,9 +82,6 @@ class SslCertTypeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
 
             $this->addFlash('success', sprintf('SSL Type %s Updated', $sslCertType->getType()));
             return $this->redirectToRoute('ssl_cert_type_index');
@@ -101,9 +102,7 @@ class SslCertTypeController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $sslCertType->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($sslCertType);
-            $entityManager->flush();
+            $this->repository->remove($sslCertType);
             $this->addFlash('success', sprintf('SSL Type %s Deleted', $sslCertType->getType()));
         }
 

@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * ApiRegistrars
  *
- * @ORM\Table(name="api_registrars")
  * @ORM\Entity
  */
 class ApiRegistrar
@@ -36,7 +36,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="req_account_username", type="boolean", nullable=false)
      */
-    private $reqAccountUsername = '0';
+    private $reqAccountUsername;
 
     /**
      *
@@ -44,7 +44,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="req_account_password", type="boolean", nullable=false)
      */
-    private $reqAccountPassword = '0';
+    private $reqAccountPassword;
 
     /**
      *
@@ -52,7 +52,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="req_reseller_id", type="boolean", nullable=false)
      */
-    private $reqResellerId = '0';
+    private $reqResellerId;
 
     /**
      *
@@ -60,7 +60,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="req_api_app_name", type="boolean", nullable=false)
      */
-    private $reqApiAppName = '0';
+    private $reqApiAppName;
 
     /**
      *
@@ -68,7 +68,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="req_api_key", type="boolean", nullable=false)
      */
-    private $reqApiKey = '0';
+    private $reqApiKey;
 
     /**
      *
@@ -76,7 +76,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="req_api_secret", type="boolean", nullable=false)
      */
-    private $reqApiSecret = '0';
+    private $reqApiSecret;
 
     /**
      *
@@ -84,7 +84,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="req_ip_address", type="boolean", nullable=false)
      */
-    private $reqIpAddress = '0';
+    private $reqIpAddress;
 
     /**
      *
@@ -92,7 +92,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="lists_domains", type="boolean", nullable=false)
      */
-    private $listsDomains = '0';
+    private $listsDomains;
 
     /**
      *
@@ -100,7 +100,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="ret_expiry_date", type="boolean", nullable=false)
      */
-    private $retExpiryDate = '0';
+    private $retExpiryDate;
 
     /**
      *
@@ -108,7 +108,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="ret_dns_servers", type="boolean", nullable=false)
      */
-    private $retDnsServers = '0';
+    private $retDnsServers;
 
     /**
      *
@@ -116,7 +116,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="ret_privacy_status", type="boolean", nullable=false)
      */
-    private $retPrivacyStatus = '0';
+    private $retPrivacyStatus;
 
     /**
      *
@@ -124,7 +124,7 @@ class ApiRegistrar
      *
      * @ORM\Column(name="ret_autorenewal_status", type="boolean", nullable=false)
      */
-    private $retAutorenewalStatus = '0';
+    private $retAutorenewalStatus;
 
     /**
      *
@@ -134,21 +134,7 @@ class ApiRegistrar
      */
     private $notes;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;
 
     public function __construct()
     {
@@ -163,9 +149,7 @@ class ApiRegistrar
         $this->retExpiryDate = false;
         $this->retDnsServers = false;
         $this->retPrivacyStatus = false;
-        $this->retAutorenewalStatus = false;        
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
+        $this->retAutorenewalStatus = false;
     }
 
     public function getId(): int
@@ -315,7 +299,7 @@ class ApiRegistrar
     {
         return $this->name;
     }
-    
+
     public function getNotes(): ?string
     {
         return $this->notes;

@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CreationTypeRepository;
 use App\Entity\Registrar;
 use App\Entity\Owner;
+use App\Repository\RegistrarAccountRepository;
 
 /**
  *
@@ -18,6 +19,13 @@ use App\Entity\Owner;
  */
 class RegistrarAccountController extends AbstractController
 {
+
+    private RegistrarAccountRepository $repository;
+
+    public function __construct(RegistrarAccountRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      *
@@ -45,9 +53,7 @@ class RegistrarAccountController extends AbstractController
                 ->getRepository(Owner::class)
                 ->find($ownerId);
         }
-        $registrarAccounts = $this->getDoctrine()
-            ->getRepository(RegistrarAccount::class)
-            ->findBy($filters);
+        $registrarAccounts = $this->repository->findBy($filters);
 
         return $this->render('registrar_account/index.html.twig', [
             'registrar_accounts' => $registrarAccounts,
@@ -70,9 +76,7 @@ class RegistrarAccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $registrarAccount->setCreationType($creationTypeRepository->findByName('Manual'));
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($registrarAccount);
-            $entityManager->flush();
+            $this->repository->save($registrarAccount);
 
             $this->addFlash('success', sprintf('Registrar Account %s Added', $registrarAccount->getUsername()));
             return $this->redirectToRoute('registrar_account_index');
@@ -105,9 +109,6 @@ class RegistrarAccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
 
             $this->addFlash('success', sprintf('Registrar Account %s Updated', $registrarAccount->getUsername()));
             return $this->redirectToRoute('registrar_account_index');
@@ -128,9 +129,8 @@ class RegistrarAccountController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $registrarAccount->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($registrarAccount);
-            $entityManager->flush();
+            $this->repository->remove($registrarAccount);
+
             $this->addFlash('success', sprintf('Registrar Account %s Deleted', $registrarAccount->getUsername()));
         }
 

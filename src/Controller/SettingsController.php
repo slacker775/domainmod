@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Form\UserDefaultsType;
 use App\Repository\SettingRepository;
 use App\Form\UserDisplayType;
+use App\Service\SettingsResolver;
 
 /**
  *
@@ -19,9 +20,12 @@ class SettingsController extends AbstractController
 
     private SettingRepository $repository;
 
-    public function __construct(SettingRepository $repository)
+    private SettingsResolver $resolver;
+
+    public function __construct(SettingRepository $repository, SettingsResolver $resolver)
     {
         $this->repository = $repository;
+        $this->resolver = $resolver;
     }
 
     /**
@@ -44,7 +48,7 @@ class SettingsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $this->container->get('session')->set('settings', $this->resolver->resolveSettings($this->getUser()));
             $this->addFlash('success', 'Your Defaults were updated');
         }
 
@@ -64,7 +68,7 @@ class SettingsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $this->container->get('session')->set('settings', $this->resolver->resolveSettings($this->getUser()));            
             $this->addFlash('success', 'Your display preferences were updated');
         }
         return $this->render('settings/display.html.twig', [

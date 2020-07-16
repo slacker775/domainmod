@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * SslFees
  *
- * @ORM\Table(name="ssl_fees")
  * @ORM\Entity
  */
 class SslFee
@@ -81,27 +81,11 @@ class SslFee
      */
     private $feeFixed;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
         $this->feeFixed = false;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -137,16 +121,6 @@ class SslFee
     public function isFeeFixed(): bool
     {
         return $this->feeFixed;
-    }
-
-    public function getCreated(): \DateTimeInterface
-    {
-        return $this->created;
-    }
-
-    public function getUpdated(): \DateTimeInterface
-    {
-        return $this->updated;
     }
 
     public function setSslProvider(SslProvider $sslProvider): self

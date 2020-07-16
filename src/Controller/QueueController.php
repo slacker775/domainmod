@@ -42,10 +42,10 @@ class QueueController extends AbstractController
     {
         return $this->render('queue/index.html.twig', [
             'domainsInQueue' => $this->domainQueueRepository->findBy([], [
-                'created' => 'DESC'
+                'createdAt' => 'DESC'
             ]),
             'domainsInListQueue' => $this->domainQueueListRepository->findBy([], [
-                'created' => 'ASC'
+                'createdAt' => 'ASC'
             ])
         ]);
     }
@@ -81,9 +81,7 @@ class QueueController extends AbstractController
                 ->setOwner($account->getOwner())
                 ->setApiRegistrar($account->getRegistrar()
                 ->getApiRegistrar());
-            $this->getDoctrine()
-                ->getManager()
-                ->persist($queueItem);
+            $this->domainQueueListRepository->save($queueItem);
             return $this->redirectToRoute('queue');
         }
         $accounts = $this->accountRepository->getAccountsWithApi();

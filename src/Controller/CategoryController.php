@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CreationTypeRepository;
 use App\Repository\UserRepository;
+use App\Repository\CategoryRepository;
 
 /**
  *
@@ -16,6 +17,12 @@ use App\Repository\UserRepository;
  */
 class CategoryController extends AbstractController
 {
+    private CategoryRepository $repository;
+    
+    public function __construct(CategoryRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      *
@@ -23,8 +30,7 @@ class CategoryController extends AbstractController
      */
     public function index(): Response
     {
-        $categories = $this->getDoctrine()
-            ->getRepository(Category::class)
+        $categories = $this->repository
             ->findAll();
 
         return $this->render('category/index.html.twig', [
@@ -45,10 +51,8 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $category->setCreationType($creationTypeRespository->findByName('Manual'));
-            $entityManager->persist($category);
-            $entityManager->flush();
+            $this->repository->save($category);
 
             $this->addFlash('success', sprintf('Category %s Added', $category->getName()));
             return $this->redirectToRoute('category_index');
@@ -81,9 +85,6 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
 
             return $this->redirectToRoute('category_index');
         }
@@ -103,9 +104,7 @@ class CategoryController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($category);
-            $entityManager->flush();
+            $this->repository->remove($category);
 
             $this->addFlash('success', sprintf('Category %s Deleted', $category->getName()));
         }

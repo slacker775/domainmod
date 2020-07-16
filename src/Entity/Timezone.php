@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Timezones
  *
- * @ORM\Table(name="timezones")
  * @ORM\Entity
  */
 class Timezone
@@ -30,18 +30,7 @@ class Timezone
      */
     private $timezone;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-    }
+    use TimestampableEntity;   
 
     public function getId(): int
     {

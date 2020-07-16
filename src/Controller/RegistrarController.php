@@ -17,19 +17,26 @@ use App\Repository\SettingRepository;
 class RegistrarController extends AbstractController
 {
 
+    private RegistrarRepository $repository;
+
+    public function __construct(RegistrarRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="registrar_index", methods={"GET"})
      */
-    public function index(RegistrarRepository $repository, SettingRepository $settingRepository): Response
+    public function index(SettingRepository $settingRepository): Response
     {
-        $registrars = $repository->findAll();
+        $registrars = $this->repository->findAll();
         $settings = $settingRepository->findOneBy([]);
 
         return $this->render('registrar/index.html.twig', [
             'registrars' => $registrars,
-            'displayInactiveAssets' => true,
-            'defaultRegistrar' => $settings->getDefaultRegistrar()
+            //'displayInactiveAssets' => true,
+            //'defaultRegistrar' => $settings->getDefaultRegistrar()
         ]);
     }
 
@@ -46,9 +53,9 @@ class RegistrarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($registrar);
-            $entityManager->flush();
+            $this->repository->save($registrar);
+
+            $this->addFlash('success', sprintf('Registrar %s Added', $registrar->getName()));
 
             return $this->redirectToRoute('registrar_index');
         }
@@ -80,9 +87,7 @@ class RegistrarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
+            $this->addFlash('success', sprintf('Registrar %s Updated', $registrar->getName()));
 
             return $this->redirectToRoute('registrar_index');
         }
@@ -102,9 +107,8 @@ class RegistrarController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $registrar->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($registrar);
-            $entityManager->flush();
+            $this->repository->remove($registrar);
+            $this->addFlash('success', sprintf('Registrar %s Deleted', $registrar->getName()));
         }
 
         return $this->redirectToRoute('registrar_index');

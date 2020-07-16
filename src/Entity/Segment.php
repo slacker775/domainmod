@@ -4,11 +4,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Segments
  *
- * @ORM\Table(name="segments")
  * @ORM\Entity
  */
 class Segment
@@ -81,36 +82,13 @@ class Segment
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
         $this->segmentData = new ArrayCollection();
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -146,11 +124,6 @@ class Segment
     public function getCreationType(): CreationType
     {
         return $this->creationType;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
     }
 
     public function getNumberOfDomains(): int
@@ -216,9 +189,4 @@ class Segment
         return $this;
     }
 
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
 }

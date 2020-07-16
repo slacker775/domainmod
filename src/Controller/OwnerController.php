@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CreationTypeRepository;
+use App\Repository\OwnerRepository;
 
 /**
  *
@@ -16,15 +17,20 @@ use App\Repository\CreationTypeRepository;
 class OwnerController extends AbstractController
 {
 
+    private OwnerRepository $repository;
+
+    public function __construct(OwnerRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="owner_index", methods={"GET"})
      */
     public function index(): Response
     {
-        $owners = $this->getDoctrine()
-            ->getRepository(Owner::class)
-            ->findAll();
+        $owners = $this->repository->findAll();
 
         return $this->render('owner/index.html.twig', [
             'owners' => $owners
@@ -45,9 +51,7 @@ class OwnerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $owner->setCreationType($creationTypeRepository->findByName('Manual'));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($owner);
-            $entityManager->flush();
+            $this->repository->save($owner);
 
             $this->addFlash('success', sprintf('Owner %s Added', $owner->getName()));
             return $this->redirectToRoute('owner_index');
@@ -80,9 +84,7 @@ class OwnerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
+            $this->addFlash('success', sprintf('Owner %s Updated', $owner->getName()));
 
             return $this->redirectToRoute('owner_index');
         }
@@ -102,9 +104,8 @@ class OwnerController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $owner->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($owner);
-            $entityManager->flush();
+            $this->repository->remove($owner);
+            $this->addFlash('success', sprintf('Owner %s Deleted', $owner->getName()));
         }
 
         return $this->redirectToRoute('owner_index');

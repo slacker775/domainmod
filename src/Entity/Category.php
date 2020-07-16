@@ -4,11 +4,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
  * Categories
  *
- * @ORM\Table(name="categories")
  * @ORM\Entity
  */
 class Category
@@ -71,37 +72,14 @@ class Category
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
         $this->domains = new ArrayCollection();
         $this->sslCerts = new ArrayCollection();
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public static function create(string $name, string $stakeholder): self
@@ -136,21 +114,6 @@ class Category
         return $this->creationType;
     }
 
-    public function getCreatedBy(): ?User
-    {
-        return $this->createdBy;
-    }
-
-    public function getCreated(): \DateTimeInterface
-    {
-        return $this->created;
-    }
-
-    public function getUpdated(): \DateTimeInterface
-    {
-        return $this->updated;
-    }
-
     public function setStakeholder(?string $stakeholder): self
     {
         $stakeholder = $stakeholder ?? '';
@@ -168,12 +131,6 @@ class Category
     public function setCreationType(CreationType $creationType): self
     {
         $this->creationType = $creationType;
-        return $this;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
         return $this;
     }
 

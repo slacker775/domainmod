@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\SslAccountRepository;
 
 /**
  *
@@ -15,15 +16,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class SslAccountController extends AbstractController
 {
 
+    private SslAccountRepository $repository;
+
+    public function __construct(SslAccountRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="ssl_account_index", methods={"GET"})
      */
     public function index(): Response
     {
-        $sslAccounts = $this->getDoctrine()
-            ->getRepository(SslAccount::class)
-            ->findAll();
+        $sslAccounts = $this->repository->findAll();
 
         return $this->render('ssl_account/index.html.twig', [
             'ssl_accounts' => $sslAccounts
@@ -43,9 +49,9 @@ class SslAccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($sslAccount);
-            $entityManager->flush();
+            $this->repository->save($sslAccount);
+
+            $this->addFlash('success', sprintf('SSL Account %s Added', $sslAccount->getUsername()));
 
             return $this->redirectToRoute('ssl_account_index');
         }
@@ -68,9 +74,7 @@ class SslAccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
+            $this->addFlash('success', sprintf('SSL Account %s Updated', $sslAccount->getUsername()));
 
             return $this->redirectToRoute('ssl_account_index');
         }
@@ -90,9 +94,9 @@ class SslAccountController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $sslAccount->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($sslAccount);
-            $entityManager->flush();
+            $this->repository->remove($sslAccount);
+
+            $this->addFlash('success', sprintf('SSL Account %s Deleted', $sslAccount->getUsername()));
         }
 
         return $this->redirectToRoute('ssl_account_index');

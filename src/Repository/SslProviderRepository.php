@@ -17,12 +17,6 @@ class SslProviderRepository extends ServiceEntityRepository
 
     public function save(SslProvider $provider)
     {
-        $provider->setCreationType($this->getEntityManager()
-            ->getRepository(CreationType::class)
-            ->findOneByName('Manual'));
-        $provider->setCreatedBy($this->getEntityManager()
-            ->getRepository(User::class)
-            ->findOneByUsername('admin'));
         $this->getEntityManager()->persist($provider);
     }
 

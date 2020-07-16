@@ -2,11 +2,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
  * DomainQueueListHistory
  *
- * @ORM\Table(name="domain_queue_list_history")
  * @ORM\Entity
  */
 class DomainQueueListHistory
@@ -66,27 +67,13 @@ class DomainQueueListHistory
      */
     private $account;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;   
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
+    use TimestampableEntity;    
 
     public function __construct()
     {
         $this->domainCount = 0;
-        $this->created = new \DateTime();
     }
 
     public function getId(): int
@@ -119,16 +106,6 @@ class DomainQueueListHistory
         return $this->account;
     }
 
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
-    }
-
-    public function getCreated(): \DateTimeInterface
-    {
-        return $this->created;
-    }
-
     public function setDomainCount(int $domainCount): self
     {
         $this->domainCount = $domainCount;
@@ -152,10 +129,5 @@ class DomainQueueListHistory
     public function setAccount(RegistrarAccount $account): self
     {
         $this->account = $account;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
     }
 }

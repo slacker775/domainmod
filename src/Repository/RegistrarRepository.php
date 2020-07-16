@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 namespace App\Repository;
 
+use App\Entity\Fee;
 use App\Entity\Registrar;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use App\Entity\Fee;
 use Doctrine\ORM\NoResultException;
 
 class RegistrarRepository extends ServiceEntityRepository
@@ -15,6 +16,16 @@ class RegistrarRepository extends ServiceEntityRepository
         parent::__construct($registry, Registrar::class);
     }
 
+    public function save(Registrar $registrar)
+    {
+        $this->getEntityManager()->persist($registrar);
+    }
+    
+    public function remove(Registrar $registrar)
+    {
+        $this->getEntityManager()->remove($registrar);
+    }
+    
     public function getFeeByTld(Registrar $registrar, string $tld): ?Fee
     {
         $query = $this->getEntityManager()

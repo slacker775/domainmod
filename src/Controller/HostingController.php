@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CreationTypeRepository;
+use App\Repository\HostingRepository;
 
 /**
  *
@@ -16,15 +17,20 @@ use App\Repository\CreationTypeRepository;
 class HostingController extends AbstractController
 {
 
+    private HostingRepository $repository;
+
+    public function __construct(HostingRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      *
      * @Route("/", name="hosting_index", methods={"GET"})
      */
     public function index(): Response
     {
-        $hostings = $this->getDoctrine()
-            ->getRepository(Hosting::class)
-            ->findAll();
+        $hostings = $this->repository->findAll();
 
         return $this->render('hosting/index.html.twig', [
             'hostings' => $hostings
@@ -45,9 +51,7 @@ class HostingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hosting->setCreationType($creationTypeRepository->findByName('Manual'));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($hosting);
-            $entityManager->flush();
+            $this->repository->save($hosting);
 
             return $this->redirectToRoute('hosting_index');
         }
@@ -79,9 +83,6 @@ class HostingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
 
             return $this->redirectToRoute('hosting_index');
         }
@@ -101,9 +102,7 @@ class HostingController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         if ($this->isCsrfTokenValid('delete' . $hosting->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($hosting);
-            $entityManager->flush();
+            $this->repository->remove($hosting);
         }
 
         return $this->redirectToRoute('hosting_index');

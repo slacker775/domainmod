@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Fees
  *
- * @ORM\Table(name="fees")
  * @ORM\Entity
  */
 class Fee
@@ -96,21 +96,7 @@ class Fee
      */
     private $feeFixed;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;   
 
     public function __construct()
     {
@@ -121,8 +107,6 @@ class Fee
         $this->privacyFee = 0.0;
         $this->miscFee = 0.0;
         $this->feeFixed = false;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int

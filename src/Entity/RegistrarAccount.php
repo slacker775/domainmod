@@ -5,18 +5,17 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Doctrine\CleanAssociationsTrait;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * RegistrarAccounts
  *
- * @ORM\Table(name="registrar_accounts", indexes={@ORM\Index(name="registrar_id", columns={"registrar_id"})})
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
 class RegistrarAccount
 {
-    //use CleanAssociationsTrait;
 
     /**
      *
@@ -51,6 +50,7 @@ class RegistrarAccount
      * @var string
      *
      * @ORM\Column(name="email_address", type="string", length=100, nullable=true)
+     * @Assert\Email
      */
     private $emailAddress;
 
@@ -59,6 +59,7 @@ class RegistrarAccount
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=100, nullable=true)
+     * @Assert\NotBlank
      */
     private $username;
 
@@ -142,37 +143,14 @@ class RegistrarAccount
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
         $this->domains = new ArrayCollection();
         $this->reseller = false;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -287,11 +265,6 @@ class RegistrarAccount
         return $this->creationType;
     }
 
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
-    }
-
     public function setEmailAddress(?string $emailAddress): self
     {
         $this->emailAddress = $emailAddress;
@@ -343,12 +316,6 @@ class RegistrarAccount
     public function setCreationType(CreationType $creationType): self
     {
         $this->creationType = $creationType;
-        return $this;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
         return $this;
     }
 

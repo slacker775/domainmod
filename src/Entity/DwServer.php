@@ -2,11 +2,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
  * DwServers
  *
- * @ORM\Table(name="dw_servers")
  * @ORM\Entity
  */
 class DwServer
@@ -198,33 +199,7 @@ class DwServer
      */
     private $creationTypeId = '2';
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="created_by", type="integer", nullable=false, options={"unsigned"=true})
-     */
-    private $createdBy = '0';
+    use BlameableEntity;   
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
-
-    public function __construct()
-    {
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
-    }
+    use TimestampableEntity;
 }

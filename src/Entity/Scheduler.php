@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Scheduler
  *
- * @ORM\Table(name="scheduler")
  * @ORM\Entity
  */
 class Scheduler
@@ -110,21 +110,7 @@ class Scheduler
      */
     private $active;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
@@ -133,8 +119,6 @@ class Scheduler
         $this->sortOrder = 1;
         $this->isRunning = false;
         $this->active = true;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int

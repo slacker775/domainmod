@@ -4,11 +4,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * SslCertTypes
  *
- * @ORM\Table(name="ssl_cert_types")
  * @ORM\Entity
  */
 class SslCertType
@@ -56,37 +57,14 @@ class SslCertType
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct(string $name = null)
     {
         $this->type = $name;
         $this->sslCerts = new ArrayCollection();
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -109,11 +87,6 @@ class SslCertType
         return $this->creationType;
     }
 
-    public function getCreatedBy(): ?User
-    {
-        return $this->createdBy;
-    }
-
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -130,22 +103,6 @@ class SslCertType
     {
         $this->creationType = $creationType;
         return $this;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
-
-    public function getCreated(): \DateTimeInterface
-    {
-        return $this->created;
-    }
-
-    public function getUpdated(): \DateTimeInterface
-    {
-        return $this->updated;
     }
 
     public function getSslCerts(): Collection

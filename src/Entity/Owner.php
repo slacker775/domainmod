@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
  * Owners
  *
- * @ORM\Table(name="owners", indexes={@ORM\Index(name="name", columns={"name"})})
  * @ORM\Entity
  */
 class Owner
@@ -73,30 +74,9 @@ class Owner
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
@@ -104,8 +84,6 @@ class Owner
         $this->registrarAccounts = new ArrayCollection();
         $this->sslCerts = new ArrayCollection();
         $this->sslAccounts = new ArrayCollection();
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -123,11 +101,6 @@ class Owner
         return $this->creationType;
     }
 
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
-    }
-
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
@@ -137,12 +110,6 @@ class Owner
     public function setCreationType(CreationType $creationType): self
     {
         $this->creationType = $creationType;
-        return $this;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
         return $this;
     }
 

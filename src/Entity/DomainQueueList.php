@@ -2,11 +2,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
  * DomainQueueList
  *
- * @ORM\Table(name="domain_queue_list")
  * @ORM\Entity
  */
 class DomainQueueList
@@ -98,22 +99,9 @@ class DomainQueueList
      */
     private $copiedToHistory;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
+    use TimestampableEntity;    
 
     public function __construct()
     {
@@ -122,7 +110,6 @@ class DomainQueueList
         $this->readyToImport = false;
         $this->finished = false;
         $this->copiedToHistory = false;
-        $this->created = new \DateTime();
     }
 
     public function getId(): int
@@ -173,16 +160,6 @@ class DomainQueueList
     public function isCopiedToHistory(): bool
     {
         return $this->copiedToHistory;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
-    }
-
-    public function getCreated(): \DateTimeInterface
-    {
-        return $this->created;
     }
 
     public function setApiRegistrar(ApiRegistrar $apiRegistrar): self
@@ -239,9 +216,4 @@ class DomainQueueList
         return $this;
     }
 
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
 }

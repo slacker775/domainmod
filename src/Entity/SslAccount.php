@@ -4,11 +4,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * SslAccounts
  *
- * @ORM\Table(name="ssl_accounts", indexes={@ORM\Index(name="ssl_provider_id", columns={"ssl_provider_id"})})
  * @ORM\Entity
  */
 class SslAccount
@@ -47,6 +49,7 @@ class SslAccount
      * @var string
      *
      * @ORM\Column(name="email_address", type="string", length=100, nullable=true)
+     * @Assert\Email
      */
     private $emailAddress;
 
@@ -106,37 +109,14 @@ class SslAccount
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;    
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;   
 
     public function __construct()
     {
         $this->reseller = false;
         $this->certs = new ArrayCollection();
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int
@@ -187,11 +167,6 @@ class SslAccount
     public function getCreationType(): CreationType
     {
         return $this->creationType;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
     }
 
     public function setOwner($owner): self
@@ -246,22 +221,6 @@ class SslAccount
     {
         $this->creationType = $creationType;
         return $this;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-        return $this;
-    }
-
-    public function getCreated(): \DateTimeInterface
-    {
-        return $this->created;
-    }
-
-    public function getUpdated(): \DateTimeInterface
-    {
-        return $this->updated;
     }
     
     public function getCerts(): Collection

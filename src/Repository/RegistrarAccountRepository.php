@@ -12,11 +12,20 @@ class RegistrarAccountRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RegistrarAccount::class);
     }
-    
+
+    public function save(RegistrarAccount $account)
+    {
+        $this->getEntityManager()->persist($account);
+    }
+
+    public function remove(RegistrarAccount $account)
+    {
+        $this->getEntityManager()->remove($account);
+    }
+
     public function getAccountsWithApi(): array
     {
-        $query = $this->getEntityManager()->createQuery('SELECT a FROM App\Entity\RegistrarAccount a JOIN a.registrar r JOIN r.apiRegistrar api ' . 
-            'WHERE r.apiRegistrar IS NOT null ORDER BY r.name,a.owner,a.username');
+        $query = $this->getEntityManager()->createQuery('SELECT a FROM App\Entity\RegistrarAccount a JOIN a.registrar r JOIN r.apiRegistrar api ' . 'WHERE r.apiRegistrar IS NOT null ORDER BY r.name,a.owner,a.username');
         return $query->getResult();
     }
 }

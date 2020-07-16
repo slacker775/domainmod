@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Domain{% endblock %}
+{% block title %}
+Edit Domain
+{% endblock %}
 
 {% block breadcrumbs %}
 <li class="breadcrumb-item"><a href="{{ path('domain_index') }}">Domains</a></li>
@@ -8,12 +10,20 @@
 {% endblock %}
 
 {% block body %}
-<strong>Domain</strong><br>
-{{ domain.domain|e('html') }}<br><br>
-    {{ include('domain/_form.html.twig', {'button_label': 'Save'}) }}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				<strong>Domain</strong> <br>
+				{{ domain.domain|e('html') }}
+				<br> <br>
+				{{ include('domain/_form.html.twig', {'button_label': 'Save'}) }}
 
-    {{ include('domain/_delete_form.html.twig') }}
-    
+				{{ include('domain/_delete_form.html.twig') }}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

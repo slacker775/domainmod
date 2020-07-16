@@ -2,11 +2,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * SegmentData
  *
- * @ORM\Table(name="segment_data")
  * @ORM\Entity
  */
 class SegmentData
@@ -71,21 +71,7 @@ class SegmentData
      */
     private $filtered;
 
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;    
 
     public function __construct()
     {
@@ -93,8 +79,6 @@ class SegmentData
         $this->inactive = false;
         $this->missing = false;
         $this->filtered = false;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getId(): int

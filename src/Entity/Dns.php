@@ -1,17 +1,17 @@
 <?php
-declare(strict_types=1);
-
+declare(strict_types = 1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Dns
  *
- * @ORM\Table(name="dns")
  * @ORM\Entity
  */
 class Dns
@@ -238,37 +238,14 @@ class Dns
      */
     private $creationType;
 
-    /**
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
-     */
-    private $createdBy;
+    use BlameableEntity;
 
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="insert_time", type="datetime", nullable=false)
-     */
-    private $created;
-
-    /**
-     *
-     * @var \DateTimeInterface
-     *
-     * @ORM\Column(name="update_time", type="datetime", nullable=false)
-     */
-    private $updated;
+    use TimestampableEntity;
 
     public function __construct()
     {
         $this->domains = new ArrayCollection();
         $this->numberOfServers = 0;
-        $this->created = new \DateTime();
-        $this->updated = new \DateTime();
     }
 
     public function getName(): ?string
@@ -399,11 +376,6 @@ class Dns
     public function getCreationType(): CreationType
     {
         return $this->creationType;
-    }
-
-    public function getCreatedBy(): User
-    {
-        return $this->createdBy;
     }
 
     public function setName(string $name): self
@@ -547,12 +519,6 @@ class Dns
     public function setCreationType(CreationType $creationType): self
     {
         $this->creationType = $creationType;
-        return $this;
-    }
-
-    public function setCreatedBy(User $createdBy): self
-    {
-        $this->createdBy = $createdBy;
         return $this;
     }
 

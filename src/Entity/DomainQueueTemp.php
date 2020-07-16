@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * DomainQueueTemp
  *
- * @ORM\Table(name="domain_queue_temp", indexes={@ORM\Index(name="domain", columns={"domain"})})
  * @ORM\Entity
  */
 class DomainQueueTemp

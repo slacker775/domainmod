@@ -5,40 +5,55 @@
 {% block title %}SSL Certificate Types{% endblock %}
 
 {% block breadcrumbs %}
-<li><a href="{{ path('asset') }}">Assets</a></li>
-<li class='active'>SSL Types</li>
+<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
+<li class='breadcrumb-item active'>SSL Types</li>
 {% endblock %}
 
 {% block body %}
-Below is a list of all the SSL Certificates Types that are stored in DomainMOD.<BR><BR>
-<a href="{{ path('ssl_cert_type_new') }}">{{ _self.showButton('button','Add SSL Type') }}</a>
-<a href="{{ path('ssl_cert_type_export') }}">{{ _self.showButton('button','Export') }}</a><BR><BR>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				Below is a list of all the SSL Certificates Types that are stored in
+				DomainMOD.<BR>
+				<BR> <a href="{{ path('ssl_cert_type_new') }}">{{ _self.showButton('button','Add SSL Type') }}</a>
+				<a href="{{ path('ssl_cert_type_export') }}">{{ _self.showButton('button','Export') }}</a><BR>
+				<BR>
 
-{% if ssl_cert_types %}
-    <table id="assets-ssl-types" class="table table-striped dt-responsive cell-border compact">
-        <thead>
-            <tr>
-            <th width="20px"></th>
-            <th>Type</th>
-            <th>SSL Certs</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for ssl_cert_type in ssl_cert_types %}
-            <tr>
-                <td></td>
-                <td><a href="{{ path('ssl_cert_type_edit', { id: ssl_cert_type.id }) }}">{{ ssl_cert_type.type }}</a>
-                {% if ssl_cert_type.id == app.user.settings.defaultSslType.id %}*{% endif %}
-                </td>
-                <td>{{ ssl_cert_type.sslCerts|length ?: '-' }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-        <strong>*</strong> = Default (<a href="{{ path('settings_defaults') }}">set defaults</a>)<BR><BR>    
-{% else %}
-    <BR>You don't currently have any SSL Types. <a href="{{ path('ssl_cert_type_new') }}">Click here to add one</a>.
-{% endif %}
+				{% if ssl_cert_types %}
+				<table id="assets-ssl-types"
+					class="table table-striped dt-responsive cell-border compact">
+					<thead>
+						<tr>
+							<th width="20px"></th>
+							<th>Type</th>
+							<th>SSL Certs</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for ssl_cert_type in ssl_cert_types %}
+						<tr>
+							<td></td>
+							<td><a
+								href="{{ path('ssl_cert_type_edit', { id: ssl_cert_type.id }) }}">{{ ssl_cert_type.type }}</a>
+								{% if ssl_cert_type.id == app.user.settings.defaultSslType.id|default(false) %}*{% endif %}
+							</td>
+							<td>{{ ssl_cert_type.sslCerts|length ?: '-' }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<strong>*</strong> = Default (<a
+					href="{{ path('settings_defaults') }}">set defaults</a>)<BR>
+				<BR>
+				{% else %}
+				<BR>You don't currently have any SSL Types. <a
+					href="{{ path('ssl_cert_type_new') }}">Click here to add one</a>.
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block stylesheets %}
@@ -50,35 +65,5 @@ Below is a list of all the SSL Certificates Types that are stored in DomainMOD.<
 {% endblock %}
 
 {% block datatable_options %}
-var oldStart = 0;
-$('#assets-ssl-types').DataTable({
-    "paging": true,
-    "lengthChange": true,
-    "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50, 75, 100, "All"] ],
-    "searching": true,
-    "info": true,
-    "autoWidth": true,
-    "bAutoWidth": false,
-    "responsive": {
-         details: {
-                   type: "column"
-                  }
-                  },
-    "columnDefs": [ {
-                     className: "control",
-                     orderable: false,
-                     targets:   0
-                     } ],
-    "ordering": true,
-    "order": [[ 1, "asc" ]],
-    "bSortClasses": false,
-    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
-    "fnDrawCallback": function (o) {
-      if ( o._iDisplayStart != oldStart ) {
-          var targetOffset = $("#assets-ssl-types").offset().top;
-          $("html,body").animate({scrollTop: targetOffset}, 0);
-          oldStart = o._iDisplayStart;
-      }
-    }
-});
+$('#assets-ssl-types').DataTable();
 {% endblock %}

@@ -21,10 +21,10 @@
 				{{ _self.navLink('SSL Certificates','ssl_cert_index','fa-lock') }}
 				{{ _self.navLink('Assets','asset','fa-cubes') }}
 				{{ _self.navLink('Segments','segment','fa-filter') }}
-				{{ _self.navLink('Bulk Updater','bulk_index','fa-copy') }}
+				{# {{ _self.navLink('Bulk Updater','bulk_index','fa-copy') }} #}
 				{{ _self.navLink('Reporting','reporting_index','fa-chart-bar') }}
 				{% if is_granted('ROLE_ADMIN') %}
-				{{ _self.navLink('Data Warehouse','segment','fa-database') }}
+				{# {{ _self.navLink('Data Warehouse','segment','fa-database') }} #}
 				{% endif %}
 
 				<li class="nav-item has-treeview"><a href="#" class="nav-link"><i
@@ -39,6 +39,7 @@
 						{{ _self.navLink('Change Password','settings_password','fa-key') }}
 					</ul></li>
 
+{#
 				<li class="nav-item has-treeview"><a href="#" class="nav-link"><i
 						class="nav-icon fa fa-check"></i>
 						<p>
@@ -49,7 +50,7 @@
 						{{ _self.navLink('Update Domain Fees','segment','fa-money-bill-wave') }}
 						{{ _self.navLink('Update SSL Fees','segment','fa-money-bill-alt') }}
 					</ul></li>
-
+#}
 				{% if is_granted('ROLE_ADMIN') %}
 				<li class="nav-item has-treeview"><a href="#" class="nav-link"><i
 						class="nav-icon fa fa-wrench"></i>
@@ -60,13 +61,17 @@
 						{{ _self.navLink('System Settings','admin_settings','fa-cog') }}
 						{{ _self.navLink('System Defaults','admin_defaults','fa-tasks') }}
 						{{ _self.navLink('Users','user_index','fa-users-cog') }}
+						{#
 						{{ _self.navLink('Custom Domain Fields','segment','fa-building') }}
 						{{ _self.navLink('Custom SSL Fields','segment','fa-key') }}
+						#}
 						{{ _self.navLink('Task Scheduler','scheduler_index','fa-calendar-alt') }}
 						{{ _self.navLink('Maintenance','segment','fa-tools') }}
+						{#
 						{{ _self.navLink('Backup & Restore','segment','fa-archive') }}
 						{{ _self.navLink('Debug Log','segment','fa-bug') }}
 						{{ _self.navLink('System Information','segment','fa-info') }}
+						#}
 					</ul></li>
 				{% endif %}
 			</ul>
