@@ -28,15 +28,12 @@ class RegistrarController extends AbstractController
      *
      * @Route("/", name="registrar_index", methods={"GET"})
      */
-    public function index(SettingRepository $settingRepository): Response
+    public function index(): Response
     {
         $registrars = $this->repository->findAll();
-        $settings = $settingRepository->findOneBy([]);
 
         return $this->render('registrar/index.html.twig', [
             'registrars' => $registrars,
-            //'displayInactiveAssets' => true,
-            //'defaultRegistrar' => $settings->getDefaultRegistrar()
         ]);
     }
 
