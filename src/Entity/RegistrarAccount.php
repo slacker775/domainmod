@@ -1,161 +1,133 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * RegistrarAccounts
  *
  * @ORM\Entity
  */
 class RegistrarAccount
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
-     *
-     * @var Owner
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="registrarAccounts")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $owner;
+    private ?Owner $owner;
 
     /**
-     *
-     * @var Registrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Registrar", inversedBy="accounts")
-     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrar;
+    private ?Registrar $registrar;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="email_address", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Email
      */
-    private $emailAddress;
+    private ?string $emailAddress;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\NotBlank
      */
-    private $username;
+    private ?string $username;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $password;
+    private ?string $password;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="reseller", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $reseller;
+    private bool $reseller;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="reseller_id", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $resellerId;
+    private ?string $resellerId;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="api_app_name", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $apiAppName;
+    private ?string $apiAppName;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="api_key", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $apiKey;
+    private ?string $apiKey;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="api_secret", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $apiSecret;
+    private ?string $apiSecret;
 
     /**
      *
-     * @var IpAddress
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $apiToken;
+
+    /**
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
-     * @ORM\JoinColumn(name="api_ip_id", referencedColumnName="id")
      */
-    private $apiIp;
+    private ?IpAddress $apiIp;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $notes;
+    private ?string $notes;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="account")
-     * @var Collection
      */
-    private $domains;
+    private Collection $domains;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
-    use BlameableEntity;    
+    use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->domains = new ArrayCollection();
         $this->reseller = false;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
+        $this->registrar = null;
+        $this->owner = null;
+        $this->emailAddress = null;
+        $this->username = null;
+        $this->password = null;
+        $this->resellerId = null;
+        $this->apiAppName = null;
+        $this->apiKey = null;
+        $this->apiSecret = null;
+        $this->apiToken = null;
+        $this->apiIp = null;
+        $this->notes = null;
     }
 
     public function isReseller(): bool
@@ -163,15 +135,15 @@ class RegistrarAccount
         return $this->reseller;
     }
 
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
     public function setReseller(bool $reseller = true): self
     {
         $this->reseller = $reseller;
         return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 
     public function setNotes(?string $notes): self
@@ -213,98 +185,17 @@ class RegistrarAccount
         return $this;
     }
 
+    public function getActiveDomainCount(): int
+    {
+        return count($this->getDomains()
+            ->filter(function (Domain $domain) {
+                return $domain->getStatus() != Domain::STATUS_EXPIRED && $domain->getStatus() != Domain::STATUS_SOLD;
+            }));
+    }
+
     public function getDomains(): Collection
     {
         return $this->domains;
-    }
-
-    public function getActiveDomainCount(): int
-    {
-        return count($this->getDomains()->filter(function (Domain $domain) {
-            return $domain->getStatus() != Domain::STATUS_EXPIRED && $domain->getStatus() != Domain::STATUS_SOLD;
-        }));
-    }
-
-    public function getEmailAddress(): ?string
-    {
-        return $this->emailAddress;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function getResellerId(): ?string
-    {
-        return $this->resellerId;
-    }
-
-    public function getApiAppName()
-    {
-        return $this->apiAppName;
-    }
-
-    public function getApiKey(): ?string
-    {
-        return $this->apiKey;
-    }
-
-    public function getApiSecret(): ?string
-    {
-        return $this->apiSecret;
-    }
-
-    public function getApiIp(): ?IpAddress
-    {
-        return $this->apiIp;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
-    }
-
-    public function setEmailAddress(?string $emailAddress): self
-    {
-        $this->emailAddress = $emailAddress;
-        return $this;
-    }
-
-    public function setPassword(?string $password): self
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    public function setResellerId(?string $resellerId): self
-    {
-        $this->resellerId = $resellerId;
-        return $this;
-    }
-
-    public function setApiAppName(?string $apiAppName): self
-    {
-        $this->apiAppName = $apiAppName;
-        return $this;
-    }
-
-    public function setApiKey(?string $apiKey): self
-    {
-        $this->apiKey = $apiKey;
-        return $this;
-    }
-
-    public function setApiSecret(?string $apiSecret): self
-    {
-        $this->apiSecret = $apiSecret;
-        return $this;
-    }
-
-    public function setApiIp(?IpAddress $ip): self
-    {
-        $this->apiIp = $ip;
-        return $this;
     }
 
     public function setDomains(Collection $domains): self
@@ -313,9 +204,80 @@ class RegistrarAccount
         return $this;
     }
 
-    public function setCreationType(CreationType $creationType): self
+    public function getEmailAddress(): ?string
     {
-        $this->creationType = $creationType;
+        return $this->emailAddress;
+    }
+
+    public function setEmailAddress(?string $emailAddress): self
+    {
+        $this->emailAddress = $emailAddress;
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function getResellerId(): ?string
+    {
+        return $this->resellerId;
+    }
+
+    public function setResellerId(?string $resellerId): self
+    {
+        $this->resellerId = $resellerId;
+        return $this;
+    }
+
+    public function getApiAppName()
+    {
+        return $this->apiAppName;
+    }
+
+    public function setApiAppName(?string $apiAppName): self
+    {
+        $this->apiAppName = $apiAppName;
+        return $this;
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->apiKey;
+    }
+
+    public function setApiKey(?string $apiKey): self
+    {
+        $this->apiKey = $apiKey;
+        return $this;
+    }
+
+    public function getApiSecret(): ?string
+    {
+        return $this->apiSecret;
+    }
+
+    public function setApiSecret(?string $apiSecret): self
+    {
+        $this->apiSecret = $apiSecret;
+        return $this;
+    }
+
+    public function getApiIp(): ?IpAddress
+    {
+        return $this->apiIp;
+    }
+
+    public function setApiIp(?IpAddress $ip): self
+    {
+        $this->apiIp = $ip;
         return $this;
     }
 
@@ -324,4 +286,14 @@ class RegistrarAccount
         return sprintf("%s, %s (%s)", $this->registrar->getName(), $this->owner->getName(), $this->username);
     }
 
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
+
+    public function setApiToken(string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
+        return $this;
+    }
 }

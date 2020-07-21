@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
@@ -12,94 +15,69 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Fee
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
-     *
-     * @var Registrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Registrar", inversedBy="fees")
-     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrar;
+    private Registrar $registrar;
 
     /**
-     *
-     * @var string
      *
      * @ORM\Column(name="tld", type="string", length=50, nullable=false)
      */
-    private $tld;
+    private string $tld;
 
     /**
-     *
-     * @var float
      *
      * @ORM\Column(name="initial_fee", type="float", nullable=false)
      */
-    private $initialFee;
+    private float $initialFee;
 
     /**
-     *
-     * @var float
      *
      * @ORM\Column(name="renewal_fee", type="float", nullable=false)
      */
-    private $renewalFee;
+    private float $renewalFee;
 
     /**
-     *
-     * @var float
      *
      * @ORM\Column(name="transfer_fee", type="float", nullable=false)
      */
-    private $transferFee;
+    private float $transferFee;
 
     /**
-     *
-     * @var float
      *
      * @ORM\Column(name="privacy_fee", type="float", nullable=false)
      */
-    private $privacyFee;
+    private float $privacyFee;
 
     /**
-     *
-     * @var float
      *
      * @ORM\Column(name="misc_fee", type="float", nullable=false)
      */
-    private $miscFee;
+    private float $miscFee;
 
     /**
-     *
-     * @var Currency
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
-     * @ORM\JoinColumn(name="currency_id", referencedColumnName="id")
      */
-    private $currency;
+    private ?Currency $currency;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="fee_fixed", type="boolean", nullable=false)
      */
-    private $feeFixed;
+    private bool $feeFixed;
 
-    use TimestampableEntity;   
+    use BlameableEntity;
+
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->fixedFee = false;
         $this->initialFee = 0;
         $this->renewalFee = 0.0;
@@ -107,62 +85,12 @@ class Fee
         $this->privacyFee = 0.0;
         $this->miscFee = 0.0;
         $this->feeFixed = false;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getRegistrar(): Registrar
-    {
-        return $this->registrar;
+        $this->currency = null;
     }
 
     public function getTld(): ?string
     {
         return $this->tld;
-    }
-
-    public function getInitialFee(): float
-    {
-        return $this->initialFee;
-    }
-
-    public function getRenewalFee(): float
-    {
-        return $this->renewalFee;
-    }
-
-    public function getTransferFee(): float
-    {
-        return $this->transferFee;
-    }
-
-    public function getPrivacyFee(): float
-    {
-        return $this->privacyFee;
-    }
-
-    public function getMiscFee(): float
-    {
-        return $this->miscFee;
-    }
-
-    public function getCurrency(): ?Currency
-    {
-        return $this->currency;
-    }
-
-    public function isFeeFixed(): bool
-    {
-        return $this->feeFixed;
-    }
-
-    public function setRegistrar(Registrar $registrar): self
-    {
-        $this->registrar = $registrar;
-        return $this;
     }
 
     public function setTld(string $tld): self
@@ -171,10 +99,20 @@ class Fee
         return $this;
     }
 
+    public function getInitialFee(): float
+    {
+        return $this->initialFee;
+    }
+
     public function setInitialFee(float $initialFee): self
     {
         $this->initialFee = $initialFee;
         return $this;
+    }
+
+    public function getRenewalFee(): float
+    {
+        return $this->renewalFee;
     }
 
     public function setRenewalFee(float $renewalFee): self
@@ -183,10 +121,20 @@ class Fee
         return $this;
     }
 
+    public function getTransferFee(): float
+    {
+        return $this->transferFee;
+    }
+
     public function setTransferFee(float $transferFee): self
     {
         $this->transferFee = $transferFee;
         return $this;
+    }
+
+    public function getPrivacyFee(): float
+    {
+        return $this->privacyFee;
     }
 
     public function setPrivacyFee(float $privacyFee): self
@@ -195,16 +143,31 @@ class Fee
         return $this;
     }
 
+    public function getMiscFee(): float
+    {
+        return $this->miscFee;
+    }
+
     public function setMiscFee(float $miscFee): self
     {
         $this->miscFee = $miscFee;
         return $this;
     }
 
-    public function setCurrency(Currency $currency): self
+    public function getCurrency(): ?Currency
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?Currency $currency): self
     {
         $this->currency = $currency;
         return $this;
+    }
+
+    public function isFeeFixed(): bool
+    {
+        return $this->feeFixed;
     }
 
     public function setFeeFixed(bool $feeFixed = true): self
@@ -215,6 +178,18 @@ class Fee
 
     public function __toString()
     {
-        return sprintf("%s - %s", $this->getRegistrar()->getName(), $this->tld);
+        return sprintf("%s - %s", $this->getRegistrar()
+            ->getName(), $this->tld);
+    }
+
+    public function getRegistrar(): Registrar
+    {
+        return $this->registrar;
+    }
+
+    public function setRegistrar(Registrar $registrar): self
+    {
+        $this->registrar = $registrar;
+        return $this;
     }
 }

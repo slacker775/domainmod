@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -15,21 +16,13 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Segment
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=35, nullable=false)
+     * @ORM\Column(type="string", length=35, nullable=false)
      */
     private $name;
 
@@ -37,7 +30,7 @@ class Segment
      *
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=0, nullable=false)
+     * @ORM\Column(type="text", length=0, nullable=false)
      */
     private $description;
 
@@ -45,7 +38,7 @@ class Segment
      *
      * @var string
      *
-     * @ORM\Column(name="segment", type="text", length=0, nullable=false)
+     * @ORM\Column(type="text", length=0, nullable=false)
      */
     private $segment;
 
@@ -61,7 +54,7 @@ class Segment
      *
      * @var int
      *
-     * @ORM\Column(name="number_of_domains", type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $numberOfDomains;
 
@@ -69,66 +62,25 @@ class Segment
      *
      * @var string
      *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=false)
+     * @ORM\Column(type="text", length=0, nullable=false)
      */
     private $notes;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
-    use BlameableEntity;    
+    use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->segmentData = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getSegment(): string
-    {
-        return $this->segment;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function getSegmentData(): Collection
-    {
-        return $this->segmentData;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
-    }
-
-    public function getNumberOfDomains(): int
-    {
-        return $this->numberOfDomains;
     }
 
     public function setName(string $name): self
@@ -137,10 +89,20 @@ class Segment
         return $this;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;
+    }
+
+    public function getSegment(): string
+    {
+        return $this->segment;
     }
 
     public function setSegment(string $segment): self
@@ -149,21 +111,36 @@ class Segment
         return $this;
     }
 
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
         return $this;
     }
 
-    public function setNumberOfDomains(int $numberOfDomains): self
+    public function getSegmentData(): Collection
     {
-        $this->numberOfDomains = $numberOfDomains;
-        return $this;
+        return $this->segmentData;
     }
 
     public function setSegmentData(Collection $segmentData): self
     {
         $this->segmentData = $segmentData;
+        return $this;
+    }
+
+    public function getNumberOfDomains(): int
+    {
+        return $this->numberOfDomains;
+    }
+
+    public function setNumberOfDomains(int $numberOfDomains): self
+    {
+        $this->numberOfDomains = $numberOfDomains;
         return $this;
     }
 
@@ -183,10 +160,5 @@ class Segment
         return $this;
     }
 
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
-        return $this;
-    }
 
 }

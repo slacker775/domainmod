@@ -7,7 +7,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * GoalActivity
  *
- * @ORM\Entity
  */
 class GoalActivity
 {

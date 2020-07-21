@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,20 +8,10 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * CurrencyConversions
  *
- * @ORM\Entity
  */
 class CurrencyConversion
 {
-
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -50,9 +41,9 @@ class CurrencyConversion
 
     use TimestampableEntity;    
 
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $this->generateId();
     }
 
     public function getCurrency(): Currency

@@ -7,7 +7,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * SslCertFieldData
  *
- * @ORM\Entity
  */
 class SslCertFieldData
 {

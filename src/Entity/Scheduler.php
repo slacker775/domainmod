@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Scheduler
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+use EntityIdTrait;
 
     /**
      *
@@ -114,16 +107,12 @@ class Scheduler
 
     public function __construct()
     {
+        $this->generateId();
         $this->interval = 'Daily';
         $this->expression = '\'0 7 * * * *\'';
         $this->sortOrder = 1;
         $this->isRunning = false;
         $this->active = true;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): string

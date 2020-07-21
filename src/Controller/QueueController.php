@@ -145,6 +145,8 @@ class QueueController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        $this->domainQueueRepository->remove($queue);
+
         return $this->redirectToRoute('queue');
     }
 }

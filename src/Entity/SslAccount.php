@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,15 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SslAccount
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -99,74 +92,23 @@ class SslAccount
      * @var Collection
      */
     private $certs;
-    
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
 
-    use BlameableEntity;    
+    use CreationTypeTrait;
 
-    use TimestampableEntity;   
+    use BlameableEntity;
+
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->reseller = false;
         $this->certs = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getOwner(): ?Owner
     {
         return $this->owner;
-    }
-
-    public function getSslProvider(): ?SslProvider
-    {
-        return $this->sslProvider;
-    }
-
-    public function getEmailAddress(): ?string
-    {
-        return $this->emailAddress;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function isReseller(): bool
-    {
-        return $this->reseller;
-    }
-
-    public function getResellerId(): ?string
-    {
-        return $this->resellerId;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
     }
 
     public function setOwner($owner): self
@@ -175,10 +117,9 @@ class SslAccount
         return $this;
     }
 
-    public function setSslProvider(SslProvider $sslProvider): self
+    public function getEmailAddress(): ?string
     {
-        $this->sslProvider = $sslProvider;
-        return $this;
+        return $this->emailAddress;
     }
 
     public function setEmailAddress(?string $emailAddress): self
@@ -187,10 +128,20 @@ class SslAccount
         return $this;
     }
 
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
     public function setUsername(string $username): self
     {
         $this->username = $username;
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 
     public function setPassword(?string $password): self
@@ -199,10 +150,20 @@ class SslAccount
         return $this;
     }
 
+    public function isReseller(): bool
+    {
+        return $this->reseller;
+    }
+
     public function setReseller(bool $reseller = true): self
     {
         $this->reseller = $reseller;
         return $this;
+    }
+
+    public function getResellerId(): ?string
+    {
+        return $this->resellerId;
     }
 
     public function setResellerId(?string $resellerId): self
@@ -211,25 +172,36 @@ class SslAccount
         return $this;
     }
 
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
         return $this;
     }
 
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
-        return $this;
-    }
-    
     public function getCerts(): Collection
     {
         return $this->certs;
     }
-    
+
     public function __toString()
     {
-        return sprintf("%s (%s)", $this->getSslProvider()->getName(), $this->username);
+        return sprintf("%s (%s)", $this->getSslProvider()
+            ->getName(), $this->username);
+    }
+
+    public function getSslProvider(): ?SslProvider
+    {
+        return $this->sslProvider;
+    }
+
+    public function setSslProvider(SslProvider $sslProvider): self
+    {
+        $this->sslProvider = $sslProvider;
+        return $this;
     }
 }

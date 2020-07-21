@@ -1,8 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * ApiRegistrars
@@ -11,158 +14,121 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  */
 class ApiRegistrar
 {
+    use EntityIdTrait;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $id;
+    private string $name;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $name;
+    private bool $reqAccountUsername;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="req_account_username", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $reqAccountUsername;
+    private bool $reqAccountPassword;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="req_account_password", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $reqAccountPassword;
+    private bool $reqResellerId;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="req_reseller_id", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $reqResellerId;
+    private bool $reqApiAppName;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="req_api_app_name", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $reqApiAppName;
+    private bool $reqApiKey;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="req_api_key", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $reqApiKey;
+    private bool $reqApiSecret;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="req_api_secret", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false, options={"default":false})
      */
-    private $reqApiSecret;
+    private bool $reqApiToken;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="req_ip_address", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $reqIpAddress;
+    private bool $reqIpAddress;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="lists_domains", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $listsDomains;
+    private bool $listsDomains;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="ret_expiry_date", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $retExpiryDate;
+    private bool $retExpiryDate;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="ret_dns_servers", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $retDnsServers;
+    private bool $retDnsServers;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="ret_privacy_status", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $retPrivacyStatus;
+    private bool $retPrivacyStatus;
 
     /**
      *
      * @ORM\Column(type="boolean", options={"default"=false})
-     *
-     * @var bool
      */
-    private $retTransferLock;
+    private bool $retTransferLock;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="ret_autorenewal_status", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $retAutorenewalStatus;
+    private bool $retAutorenewalStatus;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $notes;
+    private ?string $notes;
 
     use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->reqAccountUsername = false;
         $this->reqAccountPassword = false;
         $this->reqResellerId = false;
         $this->reqApiAppName = false;
         $this->reqApiKey = false;
-        $this->reqpApiSecret = false;
+        $this->reqApiSecret = false;
         $this->reqIpAddress = false;
         $this->listsDomains = false;
         $this->retExpiryDate = false;
         $this->retDnsServers = false;
         $this->retPrivacyStatus = false;
         $this->retAutorenewalStatus = false;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function reqAccountUsername(): bool
@@ -223,12 +189,6 @@ class ApiRegistrar
     public function retAutorenewalStatus(): bool
     {
         return $this->retAutorenewalStatus;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
     }
 
     public function setReqAccountUsername(bool $reqAccountUsername = true): self
@@ -308,6 +268,12 @@ class ApiRegistrar
         return $this->name;
     }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     public function getNotes(): ?string
     {
         return $this->notes;
@@ -332,6 +298,17 @@ class ApiRegistrar
     public function setRetTransferLock($retTransferLock = true): self
     {
         $this->retTransferLock = $retTransferLock;
+        return $this;
+    }
+
+    public function isReqApiToken(): bool
+    {
+        return $this->reqApiToken;
+    }
+
+    public function setReqApiToken(bool $reqApiToken = true): self
+    {
+        $this->reqApiToken = $reqApiToken;
         return $this;
     }
 }

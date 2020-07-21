@@ -18,6 +18,7 @@ use App\Entity\IpAddress;
 use App\Entity\Hosting;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityRepository;
 
 class DomainType extends AbstractType
 {
@@ -30,7 +31,7 @@ class DomainType extends AbstractType
 
             if (! $domain || null == $domain->getId()) {
 
-                $form->add('domain', TextType::class, [
+                $form->add('name', TextType::class, [
                     'label' => 'Domain (255)',
                     'attr' => [
                         'placeholder' => 'Domain (255)'
@@ -53,11 +54,21 @@ class DomainType extends AbstractType
         ])
             ->add('account', EntityType::class, [
             'class' => RegistrarAccount::class,
-            'label' => 'Registrar Account'
+            'label' => 'Registrar Account',
+            'query_builder' => function (EntityRepository $repository) {
+                return $repository->createQueryBuilder('a')
+                    ->orderBy('a.registrar')
+                    ->addOrderBy('a.owner')
+                    ->addOrderBy('a.username');
+            }
         ])
             ->add('dns', EntityType::class, [
             'class' => Dns::class,
-            'label' => 'DNS Profile'
+            'label' => 'DNS Profile',
+            'query_builder' => function (EntityRepository $repository) {
+                return $repository->createQueryBuilder('a')
+                    ->orderBy('a.name');
+            }
         ])
             ->add('ip', EntityType::class, [
             'class' => IpAddress::class,
@@ -92,10 +103,10 @@ class DomainType extends AbstractType
         ])
             ->add('notes', TextareaType::class, [
             'label' => 'Notes',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Notes'
-                ]
+            'required' => false,
+            'attr' => [
+                'placeholder' => 'Notes'
+            ]
         ]);
     }
 

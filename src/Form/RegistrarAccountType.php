@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use App\Entity\Registrar;
 use App\Entity\Owner;
 use App\Entity\IpAddress;
+use Doctrine\ORM\EntityRepository;
 
 class RegistrarAccountType extends AbstractType
 {
@@ -20,11 +21,19 @@ class RegistrarAccountType extends AbstractType
     {
         $builder->add('registrar', EntityType::class, [
             'label' => 'Registrar',
-            'class' => Registrar::class
+            'class' => Registrar::class,
+            'query_builder' => function (EntityRepository $repository) {
+                return $repository->createQueryBuilder('a')
+                    ->orderBy('a.name');
+            }
         ])
             ->add('owner', EntityType::class, [
             'label' => 'Account Owner',
-            'class' => Owner::class
+            'class' => Owner::class,
+            'query_builder' => function (EntityRepository $repository) {
+                return $repository->createQueryBuilder('a')
+                    ->orderBy('a.name');
+            }
         ])
             ->add('emailAddress', TextType::class, [
             'label' => 'Email Address (100)',
@@ -55,6 +64,10 @@ class RegistrarAccountType extends AbstractType
         ])
             ->add('apiSecret', TextType::class, [
             'label' => 'API Secret',
+            'required' => false
+        ])
+        ->add('apiToken', TextareaType::class, [
+            'label' => 'API Token',
             'required' => false
         ])
             ->add('apiIp', EntityType::class, [

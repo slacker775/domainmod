@@ -1,7 +1,13 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Command;
 
+use App\Entity\Category;
+use App\Entity\Dns;
 use App\Entity\Domain;
+use App\Entity\Hosting;
+use App\Entity\IpAddress;
 use App\Entity\Owner;
 use App\Entity\Registrar;
 use App\Entity\RegistrarAccount;
@@ -14,13 +20,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use App\Entity\Dns;
-use App\Entity\Category;
 
 class LoadDomainsCommand extends Command
 {
 
-    protected static $defaultName = 'app:load-domains';
+    protected static $defaultName = 'app:load:domain';
 
     private EntityManagerInterface $entityManager;
 
@@ -53,7 +57,8 @@ class LoadDomainsCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Load domain data from a CSV')->addArgument('file', InputArgument::REQUIRED, 'Filename to import');
+        $this->setDescription('Load domain data from a CSV')
+            ->addArgument('file', InputArgument::REQUIRED, 'Filename to import');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -61,8 +66,13 @@ class LoadDomainsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $filename = $input->getArgument('file');
 
-        $category = $this->entityManager->getRepository(Category::class)->findOneByName('[no category]');
-        
+        $category = $this->entityManager->getRepository(Category::class)
+            ->findOneByName('[no category]');
+        $ipAddress = $this->entityManager->getRepository(IpAddress::class)
+            ->findOneByName(['[no ip address]']);
+        $hosting = $this->entityManager->getRepository(Hosting::class)
+            ->findOneByName(['[no hosting]']);
+
         $this->creationType = $this->creationTypeRepository->findByName('Import');
         $csv = Reader::createFromPath($filename, 'r');
         $csv->setHeaderOffset(0);
@@ -70,7 +80,7 @@ class LoadDomainsCommand extends Command
         $header = $csv->getHeader();
         foreach ($csv->getRecords($header) as $row) {
             $domain = $this->domainRepository->findOneBy([
-                'domain' => $row['domain']
+                'name' => $row['domain']
             ]);
             if ($domain === null) {
                 $io->writeln(sprintf("Adding domain %s", $row['domain']));
@@ -81,13 +91,17 @@ class LoadDomainsCommand extends Command
                 $dns = $this->getDns($row['nameservers']);
 
                 $domain = new Domain();
-                $domain->setDomain($row['domain'])
+                $domain->setName($row['domain'])
                     ->setCreationType($this->creationType)
                     ->setOwner($owner)
                     ->setAccount($registrarAccount)
                     ->setRegistrar($registrar)
                     ->setTld()
-                    ->setDns($dns)->setCategory($category);
+                    ->setDns($dns)
+                    ->setCategory($category)
+                    ->setIp($ipAddress)
+                    ->setHostingProvider($hosting)
+                    ->setCreatedBy('import');
 
                 if ($row['expires'] !== '') {
                     $expiry = new \DateTime($row['expires']);
@@ -101,7 +115,7 @@ class LoadDomainsCommand extends Command
             }
         }
         $this->entityManager->flush();
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Domains successfully imported');
 
         return 0;
     }
@@ -112,12 +126,14 @@ class LoadDomainsCommand extends Command
             if (isset($this->owners['[no owner]']) == true) {
                 return $this->owners['[no owner]'];
             }
-            $obj = $this->entityManager->getRepository(Owner::class)->findOneByName('[no owner]');
+            $obj = $this->entityManager->getRepository(Owner::class)
+                ->findOneByName('[no owner]');
             return $obj;
         }
 
         if (isset($this->owners[$owner]) == false) {
-            $obj = $this->entityManager->getRepository(Owner::class)->findOneByName($owner);
+            $obj = $this->entityManager->getRepository(Owner::class)
+                ->findOneByName($owner);
             if ($obj !== null) {
                 $this->owners[$owner] = $obj;
             }
@@ -128,7 +144,8 @@ class LoadDomainsCommand extends Command
         }
 
         $obj = new Owner();
-        $obj->setName($owner)->setCreationType($this->creationType);
+        $obj->setName($owner)
+            ->setCreationType($this->creationType);
         $this->owners[$owner] = $obj;
         $this->entityManager->persist($obj);
         return $obj;
@@ -140,7 +157,8 @@ class LoadDomainsCommand extends Command
             $registrar = '[no registrar]';
         }
         if (isset($this->registrars[$registrar]) == false) {
-            $obj = $this->entityManager->getRepository(Registrar::class)->findOneByName($registrar);
+            $obj = $this->entityManager->getRepository(Registrar::class)
+                ->findOneByName($registrar);
             if ($obj !== null) {
                 $this->registrars[$registrar] = $obj;
             }
@@ -151,7 +169,8 @@ class LoadDomainsCommand extends Command
         }
 
         $obj = new Registrar();
-        $obj->setName($registrar)->setCreationType($this->creationType);
+        $obj->setName($registrar)
+            ->setCreationType($this->creationType);
         $this->registrars[$registrar] = $obj;
         $this->entityManager->persist($obj);
 
@@ -193,12 +212,14 @@ class LoadDomainsCommand extends Command
 
         if (isset($this->dns[$slug]) == false) {
             if ($slug == '[no dns]') {
-                $obj = $this->entityManager->getRepository(Dns::class)->findOneByName($slug);
+                $obj = $this->entityManager->getRepository(Dns::class)
+                    ->findOneByName($slug);
             } else {
-                $obj = $this->entityManager->getRepository(Dns::class)->findOneBy([
-                    'dns1' => $hosts[0],
-                    'dns2' => $hosts[1]
-                ]);
+                $obj = $this->entityManager->getRepository(Dns::class)
+                    ->findOneBy([
+                        'dns1' => $hosts[0],
+                        'dns2' => $hosts[1]
+                    ]);
             }
             if ($obj !== null) {
                 $this->dns[$slug] = $obj;

@@ -1,6 +1,7 @@
 {
 	"name" : "domainmod/domainmod",
 	"require" : {
+		"aws/aws-sdk-php-symfony": "^2.2",
 		"brick/money": "^0.4.5",
 		"hackzilla/password-generator-bundle": "^4.0",
 		"ifsnop/mysqldump-php": "~2.9",
@@ -21,6 +22,7 @@
 		"symfony/security-csrf": "^5.0",
 		"symfony/serializer": "^5.0",
 		"symfony/stopwatch": "^5.0",
+		"symfony/uid": "^5.0",
 		"symfony/validator": "^5.0",
 		"symfony/webpack-encore-bundle": "^1.7",
 		"symfony/yaml": "^5.0",

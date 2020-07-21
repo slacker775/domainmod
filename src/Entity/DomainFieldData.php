@@ -7,20 +7,12 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * DomainFieldData
  *
- * @ORM\Entity
+ * Todo - determine if this entity is still needed
  */
 class DomainFieldData
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+use EntityIdTrait;
 
     /**
      *
@@ -33,9 +25,9 @@ class DomainFieldData
 
     use TimestampableEntity;    
 
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $this->generateId();
     }
 
     public function getDomain(): Domain

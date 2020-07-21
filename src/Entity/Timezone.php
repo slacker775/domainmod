@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Timezone
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -30,11 +23,11 @@ class Timezone
      */
     private $timezone;
 
-    use TimestampableEntity;   
+    use TimestampableEntity;
 
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $this->generateId();
     }
 
     public function getTimezone(): string

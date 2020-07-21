@@ -16,15 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SslProvider
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+use EntityIdTrait;
 
     /**
      *
@@ -73,14 +65,7 @@ class SslProvider
      */
     private $certs;
     
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+use CreationTypeTrait;
 
     use BlameableEntity;    
 
@@ -88,6 +73,7 @@ class SslProvider
 
     public function __construct()
     {
+        $this->generateId();
         $this->accounts = new ArrayCollection();
         $this->certs = new ArrayCollection();
     }
@@ -113,11 +99,6 @@ class SslProvider
         return $this;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -131,11 +112,6 @@ class SslProvider
     public function getNotes(): ?string
     {
         return $this->notes;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
     }
 
     public function setName(string $name): self
@@ -153,12 +129,6 @@ class SslProvider
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-        return $this;
-    }
-
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
         return $this;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,16 +12,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  */
 class UserSetting
 {
-
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -359,6 +351,7 @@ class UserSetting
 
     public function __construct()
     {
+        $this->generateId();
         $this->defaultCurrency = 'USD';
         $this->defaultTimezone = 'America/New_York';
         $this->defaultCategoryDomains = null;
@@ -416,14 +409,15 @@ class UserSetting
         return $this->expirationEmails;
     }
 
+    public function setExpirationEmails(bool $expirationEmails = true): self
+    {
+        $this->expirationEmails = $expirationEmails;
+        return $this;
+    }
+
     public function getDefaultCurrency(): string
     {
         return $this->defaultCurrency;
-    }
-
-    public function getDefaultTimezone(): string
-    {
-        return $this->defaultTimezone;
     }
 
     public function setDefaultCurrency(string $defaultCurrency): self
@@ -432,21 +426,14 @@ class UserSetting
         return $this;
     }
 
+    public function getDefaultTimezone(): string
+    {
+        return $this->defaultTimezone;
+    }
+
     public function setDefaultTimezone(string $defaultTimezone): self
     {
         $this->defaultTimezone = $defaultTimezone;
-        return $this;
-    }
-
-    public function setExpirationEmails(bool $expirationEmails = true): self
-    {
-        $this->expirationEmails = $expirationEmails;
-        return $this;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
         return $this;
     }
 
@@ -455,64 +442,15 @@ class UserSetting
         return $this->user;
     }
 
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
     public function getDefaultCategoryDomains(): ?Category
     {
         return $this->defaultCategoryDomains;
-    }
-
-    public function getDefaultCategorySsl(): ?Category
-    {
-        return $this->defaultCategorySsl;
-    }
-
-    public function getDefaultDns(): ?Dns
-    {
-        return $this->defaultDns;
-    }
-
-    public function getDefaultHost(): ?Hosting
-    {
-        return $this->defaultHost;
-    }
-
-    public function getDefaultIpAddressDomains(): ?IpAddress
-    {
-        return $this->defaultIpAddressDomains;
-    }
-
-    public function getDefaultIpAddressSsl(): ?IpAddress
-    {
-        return $this->defaultIpAddressSsl;
-    }
-
-    public function getDefaultOwnerDomains(): ?Owner
-    {
-        return $this->defaultOwnerDomains;
-    }
-
-    public function getDefaultOwnerSsl(): ?Owner
-    {
-        return $this->defaultOwnerSsl;
-    }
-
-    public function getDefaultRegistrarAccount(): ?RegistrarAccount
-    {
-        return $this->defaultRegistrarAccount;
-    }
-
-    public function getDefaultSslProviderAccount(): ?SslAccount
-    {
-        return $this->defaultSslProviderAccount;
-    }
-
-    public function getDefaultSslType(): ?SslCertType
-    {
-        return $this->defaultSslType;
-    }
-
-    public function getDefaultSslProvider(): ?SslProvider
-    {
-        return $this->defaultSslProvider;
     }
 
     public function setDefaultCategoryDomains(Category $defaultCategoryDomains): self
@@ -521,10 +459,20 @@ class UserSetting
         return $this;
     }
 
+    public function getDefaultCategorySsl(): ?Category
+    {
+        return $this->defaultCategorySsl;
+    }
+
     public function setDefaultCategorySsl(Category $defaultCategorySsl): self
     {
         $this->defaultCategorySsl = $defaultCategorySsl;
         return $this;
+    }
+
+    public function getDefaultDns(): ?Dns
+    {
+        return $this->defaultDns;
     }
 
     public function setDefaultDns(Dns $defaultDns): self
@@ -533,10 +481,20 @@ class UserSetting
         return $this;
     }
 
+    public function getDefaultHost(): ?Hosting
+    {
+        return $this->defaultHost;
+    }
+
     public function setDefaultHost(Hosting $defaultHost): self
     {
         $this->defaultHost = $defaultHost;
         return $this;
+    }
+
+    public function getDefaultIpAddressDomains(): ?IpAddress
+    {
+        return $this->defaultIpAddressDomains;
     }
 
     public function setDefaultIpAddressDomains(IpAddress $defaultIpAddressDomains): self
@@ -545,10 +503,20 @@ class UserSetting
         return $this;
     }
 
+    public function getDefaultIpAddressSsl(): ?IpAddress
+    {
+        return $this->defaultIpAddressSsl;
+    }
+
     public function setDefaultIpAddressSsl(IpAddress $defaultIpAddressSsl): self
     {
         $this->defaultIpAddressSsl = $defaultIpAddressSsl;
         return $this;
+    }
+
+    public function getDefaultOwnerDomains(): ?Owner
+    {
+        return $this->defaultOwnerDomains;
     }
 
     public function setDefaultOwnerDomains(Owner $defaultOwnerDomains): self
@@ -557,10 +525,20 @@ class UserSetting
         return $this;
     }
 
+    public function getDefaultOwnerSsl(): ?Owner
+    {
+        return $this->defaultOwnerSsl;
+    }
+
     public function setDefaultOwnerSsl(Owner $defaultOwnerSsl): self
     {
         $this->defaultOwnerSsl = $defaultOwnerSsl;
         return $this;
+    }
+
+    public function getDefaultRegistrarAccount(): ?RegistrarAccount
+    {
+        return $this->defaultRegistrarAccount;
     }
 
     public function setDefaultRegistrarAccount(RegistrarAccount $defaultRegistrarAccount): self
@@ -569,16 +547,31 @@ class UserSetting
         return $this;
     }
 
+    public function getDefaultSslProviderAccount(): ?SslAccount
+    {
+        return $this->defaultSslProviderAccount;
+    }
+
     public function setDefaultSslProviderAccount(SslAccount $defaultSslProviderAccount): self
     {
         $this->defaultSslProviderAccount = $defaultSslProviderAccount;
         return $this;
     }
 
+    public function getDefaultSslType(): ?SslCertType
+    {
+        return $this->defaultSslType;
+    }
+
     public function setDefaultSslType(SslCertType $defaultSslType): self
     {
         $this->defaultSslType = $defaultSslType;
         return $this;
+    }
+
+    public function getDefaultSslProvider(): ?SslProvider
+    {
+        return $this->defaultSslProvider;
     }
 
     public function setDefaultSslProvider(SslProvider $defaultSslProvider): self
@@ -592,55 +585,15 @@ class UserSetting
         return $this->displaySslOwner;
     }
 
-    public function isDisplaySslProvider(): bool
-    {
-        return $this->displaySslProvider;
-    }
-
-    public function isDisplaySslAccount(): bool
-    {
-        return $this->displaySslAccount;
-    }
-
-    public function isDisplaySslDomain(): bool
-    {
-        return $this->displaySslDomain;
-    }
-
-    public function isDisplaySslType(): bool
-    {
-        return $this->displaySslType;
-    }
-
-    public function isDisplaySslExpiryDate(): bool
-    {
-        return $this->displaySslExpiryDate;
-    }
-
-    public function isDisplaySslIp(): bool
-    {
-        return $this->displaySslIp;
-    }
-
-    public function isDisplaySslCategory(): bool
-    {
-        return $this->displaySslCategory;
-    }
-
-    public function isDisplaySslFee(): bool
-    {
-        return $this->displaySslFee;
-    }
-
-    public function isDisplayInactiveAssets(): bool
-    {
-        return $this->displayInactiveAssets;
-    }
-
     public function setDisplaySslOwner(bool $displaySslOwner): bool
     {
         $this->displaySslOwner = $displaySslOwner;
         return $this;
+    }
+
+    public function isDisplaySslProvider(): bool
+    {
+        return $this->displaySslProvider;
     }
 
     public function setDisplaySslProvider(bool $displaySslProvider): self
@@ -649,10 +602,20 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplaySslAccount(): bool
+    {
+        return $this->displaySslAccount;
+    }
+
     public function setDisplaySslAccount(bool $displaySslAccount): self
     {
         $this->displaySslAccount = $displaySslAccount;
         return $this;
+    }
+
+    public function isDisplaySslDomain(): bool
+    {
+        return $this->displaySslDomain;
     }
 
     public function setDisplaySslDomain(bool $displaySslDomain): self
@@ -661,10 +624,20 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplaySslType(): bool
+    {
+        return $this->displaySslType;
+    }
+
     public function setDisplaySslType(bool $displaySslType): self
     {
         $this->displaySslType = $displaySslType;
         return $this;
+    }
+
+    public function isDisplaySslExpiryDate(): bool
+    {
+        return $this->displaySslExpiryDate;
     }
 
     public function setDisplaySslExpiryDate(bool $displaySslExpiryDate): self
@@ -673,10 +646,20 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplaySslIp(): bool
+    {
+        return $this->displaySslIp;
+    }
+
     public function setDisplaySslIp(bool $displaySslIp): self
     {
         $this->displaySslIp = $displaySslIp;
         return $this;
+    }
+
+    public function isDisplaySslCategory(): bool
+    {
+        return $this->displaySslCategory;
     }
 
     public function setDisplaySslCategory(bool $displaySslCategory): self
@@ -685,10 +668,20 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplaySslFee(): bool
+    {
+        return $this->displaySslFee;
+    }
+
     public function setDisplaySslFee(bool $displaySslFee): self
     {
         $this->displaySslFee = $displaySslFee;
         return $this;
+    }
+
+    public function isDisplayInactiveAssets(): bool
+    {
+        return $this->displayInactiveAssets;
     }
 
     public function setDisplayInactiveAssets(bool $displayInactiveAssets = true): self
@@ -702,15 +695,15 @@ class UserSetting
         return $this->numberOfDomains;
     }
 
-    public function getNumberOfSslCerts(): int
-    {
-        return $this->numberOfSslCerts;
-    }
-
     public function setNumberOfDomains(int $numberOfDomains): self
     {
         $this->numberOfDomains = $numberOfDomains;
         return $this;
+    }
+
+    public function getNumberOfSslCerts(): int
+    {
+        return $this->numberOfSslCerts;
     }
 
     public function setNumberOfSslCerts(int $numberOfSslCerts): self
@@ -724,60 +717,15 @@ class UserSetting
         return $this->displayDomainOwner;
     }
 
-    public function isDisplayDomainRegistrar(): bool
-    {
-        return $this->displayDomainRegistrar;
-    }
-
-    public function isDisplayDomainAccount(): bool
-    {
-        return $this->displayDomainAccount;
-    }
-
-    public function isDisplayDomainExpiryDate(): bool
-    {
-        return $this->displayDomainExpiryDate;
-    }
-
-    public function isDisplayDomainCategory(): bool
-    {
-        return $this->displayDomainCategory;
-    }
-
-    public function isDisplayDomainDns(): bool
-    {
-        return $this->displayDomainDns;
-    }
-
-    public function isDisplayDomainHost(): bool
-    {
-        return $this->displayDomainHost;
-    }
-
-    public function isDisplayDomainIp(): bool
-    {
-        return $this->displayDomainIp;
-    }
-
-    public function isDisplayDomainTld(): bool
-    {
-        return $this->displayDomainTld;
-    }
-
-    public function isDisplayDomainFee(): bool
-    {
-        return $this->displayDomainFee;
-    }
-
-    public function isDisplayDwIntroPage(): bool
-    {
-        return $this->displayDwIntroPage;
-    }
-
     public function setDisplayDomainOwner(bool $displayDomainOwner): self
     {
         $this->displayDomainOwner = $displayDomainOwner;
         return $this;
+    }
+
+    public function isDisplayDomainRegistrar(): bool
+    {
+        return $this->displayDomainRegistrar;
     }
 
     public function setDisplayDomainRegistrar(bool $displayDomainRegistrar): self
@@ -786,10 +734,20 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplayDomainAccount(): bool
+    {
+        return $this->displayDomainAccount;
+    }
+
     public function setDisplayDomainAccount(bool $displayDomainAccount): self
     {
         $this->displayDomainAccount = $displayDomainAccount;
         return $this;
+    }
+
+    public function isDisplayDomainExpiryDate(): bool
+    {
+        return $this->displayDomainExpiryDate;
     }
 
     public function setDisplayDomainExpiryDate(bool $displayDomainExpiryDate): self
@@ -798,10 +756,20 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplayDomainCategory(): bool
+    {
+        return $this->displayDomainCategory;
+    }
+
     public function setDisplayDomainCategory(bool $displayDomainCategory): self
     {
         $this->displayDomainCategory = $displayDomainCategory;
         return $this;
+    }
+
+    public function isDisplayDomainDns(): bool
+    {
+        return $this->displayDomainDns;
     }
 
     public function setDisplayDomainDns(bool $displayDomainDns): self
@@ -810,10 +778,20 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplayDomainHost(): bool
+    {
+        return $this->displayDomainHost;
+    }
+
     public function setDisplayDomainHost(bool $displayDomainHost): self
     {
         $this->displayDomainHost = $displayDomainHost;
         return $this;
+    }
+
+    public function isDisplayDomainIp(): bool
+    {
+        return $this->displayDomainIp;
     }
 
     public function setDisplayDomainIp(bool $displayDomainIp): self
@@ -822,16 +800,31 @@ class UserSetting
         return $this;
     }
 
+    public function isDisplayDomainTld(): bool
+    {
+        return $this->displayDomainTld;
+    }
+
     public function setDisplayDomainTld(bool $displayDomainTld): self
     {
         $this->displayDomainTld = $displayDomainTld;
         return $this;
     }
 
+    public function isDisplayDomainFee(): bool
+    {
+        return $this->displayDomainFee;
+    }
+
     public function setDisplayDomainFee(bool $displayDomainFee): self
     {
         $this->displayDomainFee = $displayDomainFee;
         return $this;
+    }
+
+    public function isDisplayDwIntroPage(): bool
+    {
+        return $this->displayDwIntroPage;
     }
 
     public function setDisplayDwIntroPage(bool $displayDwIntroPage): self

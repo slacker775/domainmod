@@ -15,7 +15,7 @@ Edit Domain
 		<div class="card">
 			<div class="card-body">
 				<strong>Domain</strong> <br>
-				{{ domain.domain|e('html') }}
+				{{ domain.name|e('html') }}
 				<br> <br>
 				{{ include('domain/_form.html.twig', {'button_label': 'Save'}) }}
 

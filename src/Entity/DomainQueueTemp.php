@@ -8,7 +8,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * DomainQueueTemp
  *
- * @ORM\Entity
  */
 class DomainQueueTemp
 {

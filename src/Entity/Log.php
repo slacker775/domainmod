@@ -7,7 +7,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * Log
  *
- * @ORM\Entity
  */
 class Log
 {

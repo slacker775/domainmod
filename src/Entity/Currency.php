@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,16 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  */
 class Currency
 {
-
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -70,10 +63,11 @@ class Currency
      */
     private $notes;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->symbolOrder = false;
         $this->symbolSpace = false;
     }
@@ -83,39 +77,9 @@ class Currency
         return $this->name;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getCurrency(): string
     {
         return $this->currency;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getSymbol(): string
-    {
-        return $this->symbol;
-    }
-
-    public function isSymbolOrder(): bool
-    {
-        return $this->symbolOrder;
-    }
-
-    public function isSymbolSpace(): bool
-    {
-        return $this->symbolSpace;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
     }
 
     public function setCurrency(string $currency): self
@@ -124,10 +88,20 @@ class Currency
         return $this;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
+    }
+
+    public function getSymbol(): string
+    {
+        return $this->symbol;
     }
 
     public function setSymbol(string $symbol): self
@@ -136,16 +110,31 @@ class Currency
         return $this;
     }
 
+    public function isSymbolOrder(): bool
+    {
+        return $this->symbolOrder;
+    }
+
     public function setSymbolOrder(bool $symbolOrder): self
     {
         $this->symbolOrder = $symbolOrder;
         return $this;
     }
 
+    public function isSymbolSpace(): bool
+    {
+        return $this->symbolSpace;
+    }
+
     public function setSymbolSpace(bool $symbolSpace): self
     {
         $this->symbolSpace = $symbolSpace;
         return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 
     public function setNotes(string $notes): self

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class SslFee
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -81,52 +74,17 @@ class SslFee
      */
     private $feeFixed;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->feeFixed = false;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getSslProvider(): SslProvider
-    {
-        return $this->sslProvider;
     }
 
     public function getInitialFee(): float
     {
         return $this->initialFee;
-    }
-
-    public function getRenewalFee(): float
-    {
-        return $this->renewalFee;
-    }
-
-    public function getMiscFee(): float
-    {
-        return $this->miscFee;
-    }
-
-    public function getCurrency(): Currency
-    {
-        return $this->currency;
-    }
-
-    public function isFeeFixed(): bool
-    {
-        return $this->feeFixed;
-    }
-
-    public function setSslProvider(SslProvider $sslProvider): self
-    {
-        $this->sslProvider = $sslProvider;
-        return $this;
     }
 
     public function setInitialFee(float $initialFee): self
@@ -135,10 +93,20 @@ class SslFee
         return $this;
     }
 
+    public function getRenewalFee(): float
+    {
+        return $this->renewalFee;
+    }
+
     public function setRenewalFee(float $renewalFee): self
     {
         $this->renewalFee = $renewalFee;
         return $this;
+    }
+
+    public function getMiscFee(): float
+    {
+        return $this->miscFee;
     }
 
     public function setMiscFee(float $miscFee): self
@@ -147,10 +115,20 @@ class SslFee
         return $this;
     }
 
+    public function getCurrency(): Currency
+    {
+        return $this->currency;
+    }
+
     public function setCurrency(Currency $currency): self
     {
         $this->currency = $currency;
         return $this;
+    }
+
+    public function isFeeFixed(): bool
+    {
+        return $this->feeFixed;
     }
 
     public function setFeeFixed(bool $feeFixed = true): self
@@ -158,9 +136,21 @@ class SslFee
         $this->feeFixed = $feeFixed;
         return $this;
     }
-    
+
     public function __toString()
     {
-        return sprintf("%s", $this->getSslProvider()->getName());
+        return sprintf("%s", $this->getSslProvider()
+            ->getName());
+    }
+
+    public function getSslProvider(): SslProvider
+    {
+        return $this->sslProvider;
+    }
+
+    public function setSslProvider(SslProvider $sslProvider): self
+    {
+        $this->sslProvider = $sslProvider;
+        return $this;
     }
 }

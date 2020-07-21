@@ -1,16 +1,19 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Domains
  *
  * @ORM\Entity
+ * @ORM\Table(indexes={@ORM\Index(name="domain_name_idx", columns={"name"})})
  */
 class Domain
 {
@@ -29,187 +32,125 @@ class Domain
 
     const STATUS_SOLD = 10;
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
-     * @var Owner
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="domains")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
-     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="domains")*
      */
-    private $owner;
+    private Owner $owner;
 
     /**
-     *
-     * @var Registrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Registrar", inversedBy="domains")
-     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrar;
+    private ?Registrar $registrar;
 
     /**
-     *
-     * @var RegistrarAccount
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount", inversedBy="domains")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
-    private $account;
+    private ?RegistrarAccount $account;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="domain", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\Hostname
      * @Assert\NotBlank
      */
-    private $domain;
+    private string $name;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="tld", type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=50, nullable=false)
      */
-    private $tld;
+    private ?string $tld;
 
     /**
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false)
+     * @ORM\Column(type="date", nullable=false)
      */
-    private $expiryDate;
+    private DateTimeInterface $expiryDate;
 
     /**
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="domains")
-     * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
-     *
-     * @var Category
      */
-    private $category;
+    private ?Category $category;
 
     /**
-     *
-     * @var Fee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Fee")
-     * @ORM\JoinColumn(name="fee_id", referencedColumnName="id")
      */
-    private $fee;
+    private ?Fee $fee;
 
     /**
      *
-     * @var float
-     *
-     * @ORM\Column(name="total_cost", type="float", nullable=false)
+     * @ORM\Column(type="float", nullable=false)
      */
-    private $totalCost;
+    private float $totalCost;
 
     /**
-     *
-     * @var Dns
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Dns", inversedBy="domains")
-     * @ORM\JoinColumn(name="dns_id", referencedColumnName="id")
      */
-    private $dns;
+    private ?Dns $dns;
 
     /**
-     *
-     * @var IpAddress
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress", inversedBy="domains")
-     * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
-    private $ip;
+    private ?IpAddress $ip;
 
     /**
-     *
-     * @var Hosting
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Hosting", inversedBy="domains")
-     * @ORM\JoinColumn(name="hosting_id", referencedColumnName="id")
      */
-    private $hostingProvider;
+    private ?Hosting $hostingProvider;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="function", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $function;
+    private ?string $function;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $notes;
+    private ?string $notes;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="autorenew", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $autorenew;
+    private bool $autorenew;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="privacy", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $privacy;
+    private bool $privacy;
 
     /**
      *
      * @ORM\Column(type="boolean", options={"default"=false})
-     *
-     * @var bool
      */
-    private $transferLock;
+    private bool $transferLock;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="active", type="string", length=2, nullable=false, options={"default"="1"})
+     * @ORM\Column(type="string", length=2, nullable=false, options={"default"="1"})
      */
-    private $status;
+    private string $status;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="fee_fixed", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $feeFixed;
+    private bool $feeFixed;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
     use BlameableEntity;
 
@@ -217,112 +158,23 @@ class Domain
 
     public function __construct()
     {
+        $this->generateId();
         $this->status = '1';
         $this->totalCost = 0;
         $this->feeFixed = false;
         $this->autorenew = false;
         $this->privacy = false;
         $this->transferLock = false;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->function = null;
+        $this->notes = null;
+        $this->tld = null;
+        $this->name = '';
+        $this->expiryDate = (new \DateTime())->add(new \DateInterval('P1Y'));
     }
 
     public function getOwner(): ?Owner
     {
         return $this->owner;
-    }
-
-    public function getRegistrar(): ?Registrar
-    {
-        return $this->registrar;
-    }
-
-    public function getAccount(): ?RegistrarAccount
-    {
-        return $this->account;
-    }
-
-    public function getDomain(): ?string
-    {
-        return $this->domain;
-    }
-
-    public function getTld(): string
-    {
-        return $this->tld;
-    }
-
-    public function getExpiryDate(): ?\DateTime
-    {
-        return $this->expiryDate;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function getFee(): ?Fee
-    {
-        return $this->fee;
-    }
-
-    public function getTotalCost(): float
-    {
-        return $this->totalCost;
-    }
-
-    public function getDns(): ?Dns
-    {
-        return $this->dns;
-    }
-
-    public function getIp(): ?IpAddress
-    {
-        return $this->ip;
-    }
-
-    public function getHostingProvider(): ?Hosting
-    {
-        return $this->hostingProvider;
-    }
-
-    public function getFunction(): ?string
-    {
-        return $this->function;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function isAutorenew(): bool
-    {
-        return $this->autorenew;
-    }
-
-    public function isPrivacy(): bool
-    {
-        return $this->privacy;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function isFeeFixed(): bool
-    {
-        return $this->feeFixed;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
     }
 
     public function setOwner(Owner $owner): self
@@ -331,10 +183,20 @@ class Domain
         return $this;
     }
 
+    public function getRegistrar(): ?Registrar
+    {
+        return $this->registrar;
+    }
+
     public function setRegistrar(?Registrar $registrar): self
     {
         $this->registrar = $registrar;
         return $this;
+    }
+
+    public function getAccount(): ?RegistrarAccount
+    {
+        return $this->account;
     }
 
     public function setAccount(?RegistrarAccount $account): self
@@ -343,25 +205,45 @@ class Domain
         return $this;
     }
 
-    public function setDomain(string $domain): self
+    public function getName(): string
     {
-        $this->domain = $domain;
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
         return $this;
+    }
+
+    public function getTld(): string
+    {
+        return $this->tld;
     }
 
     public function setTld(string $tld = null): self
     {
-        if ($tld === null and $this->domain !== null) {
-            $tld = preg_replace("/^((.*?)\.)(.*)$/", "\\3", $this->domain);
+        if ($tld === null and $this->name !== null) {
+            $tld = preg_replace("/^((.*?)\.)(.*)$/", "\\3", $this->name);
         }
         $this->tld = $tld;
         return $this;
     }
 
-    public function setExpiryDate(\DateTime $expiryDate): self
+    public function getExpiryDate(): ?DateTimeInterface
+    {
+        return $this->expiryDate;
+    }
+
+    public function setExpiryDate(DateTimeInterface $expiryDate): self
     {
         $this->expiryDate = $expiryDate;
         return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
     }
 
     public function setCategory(?Category $category): self
@@ -370,10 +252,20 @@ class Domain
         return $this;
     }
 
+    public function getFee(): ?Fee
+    {
+        return $this->fee;
+    }
+
     public function setFee(?Fee $fee): self
     {
         $this->fee = $fee;
         return $this;
+    }
+
+    public function getTotalCost(): float
+    {
+        return $this->totalCost;
     }
 
     public function setTotalCost(float $totalCost): self
@@ -382,10 +274,20 @@ class Domain
         return $this;
     }
 
+    public function getDns(): ?Dns
+    {
+        return $this->dns;
+    }
+
     public function setDns(?Dns $dns): self
     {
         $this->dns = $dns;
         return $this;
+    }
+
+    public function getIp(): ?IpAddress
+    {
+        return $this->ip;
     }
 
     public function setIp(?IpAddress $ip): self
@@ -394,10 +296,20 @@ class Domain
         return $this;
     }
 
+    public function getHostingProvider(): ?Hosting
+    {
+        return $this->hostingProvider;
+    }
+
     public function setHostingProvider(?Hosting $hostingProvider): self
     {
         $this->hostingProvider = $hostingProvider;
         return $this;
+    }
+
+    public function getFunction(): ?string
+    {
+        return $this->function;
     }
 
     public function setFunction(?string $function): self
@@ -407,11 +319,21 @@ class Domain
         return $this;
     }
 
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
     public function setNotes(?string $notes): self
     {
         $notes = $notes ?? '';
         $this->notes = $notes;
         return $this;
+    }
+
+    public function isAutorenew(): bool
+    {
+        return $this->autorenew;
     }
 
     public function setAutorenew(bool $autorenew = false): self
@@ -420,10 +342,20 @@ class Domain
         return $this;
     }
 
+    public function isPrivacy(): bool
+    {
+        return $this->privacy;
+    }
+
     public function setPrivacy(bool $privacy = false): self
     {
         $this->privacy = $privacy;
         return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 
     public function setStatus(string $status): self
@@ -432,21 +364,20 @@ class Domain
         return $this;
     }
 
+    public function isFeeFixed(): bool
+    {
+        return $this->feeFixed;
+    }
+
     public function setFeeFixed(bool $feeFixed = false): self
     {
         $this->feeFixed = $feeFixed;
         return $this;
     }
 
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
-        return $this;
-    }
-
     public function __toString()
     {
-        return $this->domain;
+        return $this->name;
     }
 
     public function isTransferLock(): bool

@@ -43,9 +43,9 @@ class Maintenance implements LoggerAwareInterface
 
         $domains = $this->domainRepository->findAll();
         foreach ($domains as $d) {
-            $d->setDomain(strtolower($d->getDomain()));
+            $d->setName(strtolower($d->getName()));
 
-            $d->setTld($this->getTld($d->getDomain()));
+            $d->setTld($this->getTld($d->getName()));
 
             $this->domainRepository->save($d);
         }

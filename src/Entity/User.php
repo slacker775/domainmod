@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Users
@@ -15,15 +17,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class User implements UserInterface
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -120,21 +114,15 @@ class User implements UserInterface
      */
     private $settings;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
-    
+    use CreationTypeTrait;
+
     use BlameableEntity;
 
     use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->newPassword = true;
         $this->admin = false;
         $this->readOnly = true;
@@ -145,69 +133,9 @@ class User implements UserInterface
         $this->settings->setUser($this);
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getFirstName(): ?string
     {
         return $this->firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function getEmailAddress(): ?string
-    {
-        return $this->emailAddress;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function isNewPassword(): bool
-    {
-        return $this->newPassword;
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->admin;
-    }
-
-    public function isReadOnly(): bool
-    {
-        return $this->readOnly;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    public function getNumberOfLogins(): int
-    {
-        return $this->numberOfLogins;
-    }
-
-    public function getLastLogin(): ?\DateTime
-    {
-        return $this->lastLogin;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
     }
 
     public function setFirstName(string $firstName): self
@@ -216,10 +144,20 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
         return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
     }
 
     public function setUsername(string $username): self
@@ -228,10 +166,20 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getEmailAddress(): ?string
+    {
+        return $this->emailAddress;
+    }
+
     public function setEmailAddress(string $emailAddress): self
     {
         $this->emailAddress = $emailAddress;
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -240,22 +188,20 @@ class User implements UserInterface
         return $this;
     }
 
+    public function isNewPassword(): bool
+    {
+        return $this->newPassword;
+    }
+
     public function setNewPassword(bool $newPassword = true): self
     {
         $this->newPassword = $newPassword;
         return $this;
     }
 
-    public function setAdmin(bool $admin = true): self
+    public function isActive(): bool
     {
-        $this->admin = $admin;
-        return $this;
-    }
-
-    public function setReadOnly(bool $readOnly = true): self
-    {
-        $this->readOnly = $readOnly;
-        return $this;
+        return $this->active;
     }
 
     public function setActive(bool $active = true): self
@@ -264,21 +210,25 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getNumberOfLogins(): int
+    {
+        return $this->numberOfLogins;
+    }
+
     public function setNumberOfLogins(int $numberOfLogins): self
     {
         $this->numberOfLogins = $numberOfLogins;
         return $this;
     }
 
+    public function getLastLogin(): ?\DateTime
+    {
+        return $this->lastLogin;
+    }
+
     public function setLastLogin(\DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
-        return $this;
-    }
-
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
         return $this;
     }
 
@@ -299,6 +249,28 @@ class User implements UserInterface
             $roles[] = 'ROLE_READ_ONLY';
         }
         return $roles;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(bool $admin = true): self
+    {
+        $this->admin = $admin;
+        return $this;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return $this->readOnly;
+    }
+
+    public function setReadOnly(bool $readOnly = true): self
+    {
+        $this->readOnly = $readOnly;
+        return $this;
     }
 
     public function getSalt()

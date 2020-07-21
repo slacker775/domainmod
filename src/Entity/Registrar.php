@@ -1,99 +1,69 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Registrars
  *
  * @ORM\Entity
  */
 class Registrar
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @ORM\Column(type="string", length=100, nullable=false)
      * @Assert\NotBlank
      */
-    private $name;
+    private ?string $name;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Url
      */
-    private $url;
+    private ?string $url;
 
     /**
-     *
-     * @var ApiRegistrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ApiRegistrar")
-     * @ORM\JoinColumn(name="api_registrar_id", referencedColumnName="id")
      */
-    private $apiRegistrar;
+    private ?ApiRegistrar $apiRegistrar;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $notes;
+    private ?string $notes;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="registrar")
-     *
-     * @var Collection
      */
-    private $domains;
+    private Collection $domains;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\RegistrarAccount", mappedBy="registrar")
-     *
-     * @var Collection
      */
-    private $accounts;
+    private Collection $accounts;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Fee", mappedBy="registrar")
-     *
-     * @var Fee
      */
-    private $fees;
+    private Collection $fees;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
     use BlameableEntity;
 
@@ -101,29 +71,19 @@ class Registrar
 
     public function __construct()
     {
+        $this->generateId();
+        $this->name = null;
+        $this->url = null;
+        $this->apiRegistrar = null;
+        $this->notes = null;
         $this->domains = new ArrayCollection();
         $this->accounts = new ArrayCollection();
         $this->fees = new ArrayCollection();
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
     }
 
     public function setName(string $name): self
@@ -132,10 +92,20 @@ class Registrar
         return $this;
     }
 
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
     public function setUrl(string $url): self
     {
         $this->url = $url;
         return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 
     public function setNotes(?string $notes): self
@@ -189,16 +159,5 @@ class Registrar
     public function __toString()
     {
         return $this->name;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
-    }
-
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
-        return $this;
     }
 }

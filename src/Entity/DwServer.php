@@ -8,7 +8,6 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 /**
  * DwServers
  *
- * @ORM\Entity
  */
 class DwServer
 {

@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Categories
@@ -15,69 +16,47 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 class Category
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
-     *
-     * @var string
      *
      * @ORM\Column(name="name", type="string", length=150, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
-     *
-     * @var string
      *
      * @ORM\Column(name="stakeholder", type="string", length=100, nullable=true)
      */
-    private $stakeholder;
+    private string $stakeholder;
 
     /**
      *
-     * @var string
-     *
      * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
-    private $notes;
+    private string $notes;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="category")
-     * @var Collection
      */
-    private $domains;
+    private Collection $domains;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\SslCert", mappedBy="category")
-     * @var Collection
      */
-    private $sslCerts;
+    private Collection $sslCerts;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
-    use BlameableEntity;    
+    use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->domains = new ArrayCollection();
         $this->sslCerts = new ArrayCollection();
     }
@@ -85,13 +64,9 @@ class Category
     public static function create(string $name, string $stakeholder): self
     {
         $obj = new self();
-        $obj->setName($name)->setStakeholder($stakeholder);
+        $obj->setName($name)
+            ->setStakeholder($stakeholder);
         return $obj;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -99,19 +74,15 @@ class Category
         return $this->name;
     }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     public function getStakeholder(): ?string
     {
         return $this->stakeholder;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function getCreationType(): ?CreationType
-    {
-        return $this->creationType;
     }
 
     public function setStakeholder(?string $stakeholder): self
@@ -121,22 +92,15 @@ class Category
         return $this;
     }
 
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
     public function setNotes(?string $notes): self
     {
         $notes = $notes ?? '';
         $this->notes = $notes;
-        return $this;
-    }
-
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
-        return $this;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
         return $this;
     }
 
@@ -150,15 +114,15 @@ class Category
         return $this->domains;
     }
 
-    public function getSslCerts(): Collection
-    {
-        return $this->sslCerts;
-    }
-
     public function setDomains(Collection $domains): self
     {
         $this->domains = $domains;
         return $this;
+    }
+
+    public function getSslCerts(): Collection
+    {
+        return $this->sslCerts;
     }
 
     public function setSslCerts(Collection $sslCerts): self

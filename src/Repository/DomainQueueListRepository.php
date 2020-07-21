@@ -25,7 +25,7 @@ class DomainQueueListRepository extends ServiceEntityRepository
 
     public function getAllReadyToProcess(): array
     {
-        $query = $this->getEntityManager()->createQuery('SELECT d FROM App\Entity\DomainQueueList d WHERE ' . 'd.processing=false AND d.readyToImport=false AND d.finished=false AND d.copiedToHistory=false ORDER BY d.created DESC');
+        $query = $this->getEntityManager()->createQuery('SELECT d FROM App\Entity\DomainQueueList d WHERE ' . 'd.processing=false AND d.readyToImport=false AND d.finished=false AND d.copiedToHistory=false ORDER BY d.createdAt DESC');
         return $query->getResult();
     }
 
@@ -37,7 +37,7 @@ class DomainQueueListRepository extends ServiceEntityRepository
 
     public function markCopiedToHistory()
     {
-        $query = $this->getEntityManager()->createQuery('UPDATE App\Entity\DomainQueueList d SET d.copiedToHistry=true WHERE ' . 'd.finished=true AND d.copiedToHistory=false');
+        $query = $this->getEntityManager()->createQuery('UPDATE App\Entity\DomainQueueList d SET d.copiedToHistory=true WHERE d.finished=true AND d.copiedToHistory=false');
         $query->getResult();
     }
 }

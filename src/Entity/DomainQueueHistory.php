@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * DomainQueueHistory
@@ -13,145 +15,287 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 class DomainQueueHistory
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="api_registrar_id", type="smallint", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\ApiRegistrar")
      */
-    private $apiRegistrarId = '0';
+    private ApiRegistrar $apiRegistrar;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="domain_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Domain")
+     * @ORM\JoinColumn(name="domain_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $domainId = '0';
+    private Domain $domain;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="owner_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
      */
-    private $ownerId = '0';
+    private Owner $owner;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="registrar_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Registrar")
      */
-    private $registrarId = '0';
+    private Registrar $registrar;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="account_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
      */
-    private $accountId = '0';
+    private RegistrarAccount $account;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="domain", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
-    private $domain;
+    private string $domainName;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="tld", type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", length=50, nullable=false)
      */
-    private $tld;
+    private string $tld;
 
     /**
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false)
+     * @ORM\Column(type="date", nullable=false)
      */
-    private $expiryDate = '\'1970-01-01\'';
+    private \DateTimeInterface $expiryDate;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="cat_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      */
-    private $catId = '0';
+    private Category $category;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="dns_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Dns")
      */
-    private $dnsId = '0';
+    private Dns $dns;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="ip_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
      */
-    private $ipId = '0';
+    private IpAddress $ipAddress;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="hosting_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hosting")
      */
-    private $hostingId = '0';
+    private $hosting;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="autorenew", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $autorenew = '0';
+    private bool $autoRenew;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="privacy", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $privacy = '0';
+    private bool $privacy;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="already_in_domains", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $alreadyInDomains = '0';
+    private bool $alreadyInDomains;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="already_in_queue", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $alreadyInQueue = '0';
+    private bool $alreadyInQueue;
 
-    use BlameableEntity;   
+    use BlameableEntity;
 
     use TimestampableEntity;
+
+    public function __construct()
+    {
+        $this->generateId();
+    }
+
+    public function getApiRegistrar(): ApiRegistrar
+    {
+        return $this->apiRegistrar;
+    }
+
+    public function setApiRegistrar(ApiRegistrar $apiRegistrar): self
+    {
+        $this->apiRegistrar = $apiRegistrar;
+        return $this;
+    }
+
+    public function getDomain(): Domain
+    {
+        return $this->domain;
+    }
+
+    public function setDomain(Domain $domain): self
+    {
+        $this->domain = $domain;
+        return $this;
+    }
+
+    public function getOwner(): Owner
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(Owner $owner): self
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+
+    public function getRegistrar(): Registrar
+    {
+        return $this->registrar;
+    }
+
+    public function setRegistrar(Registrar $registrar): self
+    {
+        $this->registrar = $registrar;
+        return $this;
+    }
+
+    public function getAccount(): RegistrarAccount
+    {
+        return $this->account;
+    }
+
+    public function setAccount(RegistrarAccount $account): self
+    {
+        $this->account = $account;
+        return $this;
+    }
+
+    public function getDomainName(): string
+    {
+        return $this->domainName;
+    }
+
+    public function setDomainName(string $domainName): self
+    {
+        $this->domainName = $domainName;
+        return $this;
+    }
+
+    public function getTld(): string
+    {
+        return $this->tld;
+    }
+
+    public function setTld(string $tld): self
+    {
+        $this->tld = $tld;
+        return $this;
+    }
+
+    public function getExpiryDate(): \DateTimeInterface
+    {
+        return $this->expiryDate;
+    }
+
+    public function setExpiryDate(\DateTimeInterface $expiryDate): self
+    {
+        $this->expiryDate = $expiryDate;
+        return $this;
+    }
+
+    public function getCategory(): Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(Category $category): self
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    public function getDns(): Dns
+    {
+        return $this->dns;
+    }
+
+    public function setDns(Dns $dns): self
+    {
+        $this->dns = $dns;
+        return $this;
+    }
+
+    public function getIpAddress(): IpAddress
+    {
+        return $this->ipAddress;
+    }
+
+    public function setIpAddress(IpAddress $ipAddress): self
+    {
+        $this->ipAddress = $ipAddress;
+        return $this;
+    }
+
+    public function getHosting(): Hosting
+    {
+        return $this->hosting;
+    }
+
+    public function setHosting(Hosting $hosting): self
+    {
+        $this->hosting = $hosting;
+        return $this;
+    }
+
+    public function getAutoRenew(): bool
+    {
+        return $this->autoRenew;
+    }
+
+    public function setAutoRenew(bool $autoRenew): self
+    {
+        $this->autoRenew = $autoRenew;
+        return $this;
+    }
+
+    public function getPrivacy(): bool
+    {
+        return $this->privacy;
+    }
+
+    public function setPrivacy(bool $privacy): self
+    {
+        $this->privacy = $privacy;
+        return $this;
+    }
+
+    public function getAlreadyInDomains(): bool
+    {
+        return $this->alreadyInDomains;
+    }
+
+    public function setAlreadyInDomains(bool $alreadyInDomains): self
+    {
+        $this->alreadyInDomains = $alreadyInDomains;
+        return $this;
+    }
+
+    public function getAlreadyInQueue(): bool
+    {
+        return $this->alreadyInQueue;
+    }
+
+    public function setAlreadyInQueue(bool $alreadyInQueue): self
+    {
+        $this->alreadyInQueue = $alreadyInQueue;
+        return $this;
+    }
 }

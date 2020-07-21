@@ -1,27 +1,19 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * DomainFields
  *
- * @ORM\Entity
  */
 class DomainField
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -63,22 +55,15 @@ class DomainField
      */
     private $notes;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
     use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $this->generateId();
     }
 
     public function getName(): string
@@ -106,10 +91,6 @@ class DomainField
         return $this->notes;
     }
 
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
-    }
 
     public function setName(string $name): self
     {
@@ -138,12 +119,6 @@ class DomainField
     public function setNotes(string $notes): self
     {
         $this->notes = $notes;
-        return $this;
-    }
-
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
         return $this;
     }
 

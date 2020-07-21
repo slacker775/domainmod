@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * DomainQueueListHistory
@@ -13,21 +15,13 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 class DomainQueueListHistory
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
      * @var int
      *
-     * @ORM\Column(name="domain_count", type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $domainCount;
 
@@ -36,7 +30,6 @@ class DomainQueueListHistory
      * @var ApiRegistrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ApiRegistrar")
-     * @ORM\JoinColumn(name="api_registrar_id", referencedColumnName="id")
      */
     private $apiRegistrar;
 
@@ -45,7 +38,6 @@ class DomainQueueListHistory
      * @var Owner
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
     private $owner;
 
@@ -54,7 +46,6 @@ class DomainQueueListHistory
      * @var Registrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Registrar")
-     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
     private $registrar;
 
@@ -63,22 +54,17 @@ class DomainQueueListHistory
      * @var RegistrarAccount
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
     private $account;
 
-    use BlameableEntity;   
+    use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->domainCount = 0;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getDomainCount(): int
@@ -86,9 +72,21 @@ class DomainQueueListHistory
         return $this->domainCount;
     }
 
+    public function setDomainCount(int $domainCount): self
+    {
+        $this->domainCount = $domainCount;
+        return $this;
+    }
+
     public function getApiRegistrar(): ApiRegistrar
     {
         return $this->apiRegistrar;
+    }
+
+    public function setApiRegistrar(ApiRegistrar $apiRegistrar): self
+    {
+        $this->apiRegistrar = $apiRegistrar;
+        return $this;
     }
 
     public function getOwner(): Owner
@@ -96,9 +94,21 @@ class DomainQueueListHistory
         return $this->owner;
     }
 
+    public function setOwner(Owner $owner): self
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+
     public function getRegistrar(): Registrar
     {
         return $this->registrar;
+    }
+
+    public function setRegistrar(Registrar $registrar): self
+    {
+        $this->registrar = $registrar;
+        return $this;
     }
 
     public function getAccount(): RegistrarAccount
@@ -106,28 +116,9 @@ class DomainQueueListHistory
         return $this->account;
     }
 
-    public function setDomainCount(int $domainCount): self
-    {
-        $this->domainCount = $domainCount;
-    }
-
-    public function setApiRegistrar(ApiRegistrar $apiRegistrar): self
-    {
-        $this->apiRegistrar = $apiRegistrar;
-    }
-
-    public function setOwner(Owner $owner): self
-    {
-        $this->owner = $owner;
-    }
-
-    public function setRegistrar(Registrar $registrar): self
-    {
-        $this->registrar = $registrar;
-    }
-
     public function setAccount(RegistrarAccount $account): self
     {
         $this->account = $account;
+        return $this;
     }
 }

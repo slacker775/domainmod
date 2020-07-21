@@ -149,7 +149,7 @@ Domains
 								{% elseif domain.status == "4" %} echo "<a title=\"Pending (Other)\"><strong>PO</strong></a>&nbsp;";
 								{% elseif domain.status == "5" %} echo "<a title=\"Pending (Registration)\"><strong>PRg</strong></a>&nbsp;";
 								{% elseif domain.status == "10" %} echo "<a title=\"Sold\"><strong>S</strong></a>&nbsp;";
-								{% endif %} <a href="{{ path('domain_edit',{id: domain.id}) }}">{{ domain.domain }}</a>
+								{% endif %} <a href="{{ path('domain_edit',{id: domain.id}) }}">{{ domain.name }}</a>
 								{% if domain.privacy %} &nbsp;<a
 								title="Private WHOIS Registration"><strong>prv</strong></a> {% endif %}</td>
 							{% if app.user.settings.displayDomainExpiryDate %}

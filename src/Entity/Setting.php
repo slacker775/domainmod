@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Setting
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -279,6 +272,7 @@ class Setting
 
     public function __construct()
     {
+        $this->generateId();
         $this->upgradeAvailable = false;
         $this->largeMode = false;
         $this->expirationDays = 60;
@@ -291,74 +285,20 @@ class Setting
         $this->localPhpLog = false;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getFullUrl(): string
     {
         return $this->fullUrl;
     }
 
+    public function setFullUrl(string $fullUrl): self
+    {
+        $this->fullUrl = $fullUrl;
+        return $this;
+    }
+
     public function isLargeMode(): bool
     {
         return $this->largeMode;
-    }
-
-    public function getEmailSignature(): User
-    {
-        return $this->emailSignature;
-    }
-
-    public function getCurrencyConverter(): string
-    {
-        return $this->currencyConverter;
-    }
-
-    public function isUseSmtp(): bool
-    {
-        return $this->useSmtp;
-    }
-
-    public function getSmtpServer(): ?string
-    {
-        return $this->smtpServer;
-    }
-
-    public function getSmtpProtocol(): ?string
-    {
-        return $this->smtpProtocol;
-    }
-
-    public function getSmtpPort(): ?string
-    {
-        return $this->smtpPort;
-    }
-
-    public function getSmtpEmailAddress(): ?string
-    {
-        return $this->smtpEmailAddress;
-    }
-
-    public function getSmtpUsername(): ?string
-    {
-        return $this->smtpUsername;
-    }
-
-    public function getSmtpPassword(): ?string
-    {
-        return $this->smtpPassword;
-    }
-
-    public function isDebugMode(): bool
-    {
-        return $this->debugMode;
-    }
-
-    public function isLocalPhpLog(): bool
-    {
-        return $this->localPhpLog;
     }
 
     public function setLargeMode(bool $largeMode): self
@@ -367,10 +307,20 @@ class Setting
         return $this;
     }
 
+    public function getEmailSignature(): User
+    {
+        return $this->emailSignature;
+    }
+
     public function setEmailSignature(User $emailSignature): self
     {
         $this->emailSignature = $emailSignature;
         return $this;
+    }
+
+    public function getCurrencyConverter(): string
+    {
+        return $this->currencyConverter;
     }
 
     public function setCurrencyConverter(string $currencyConverter): self
@@ -379,10 +329,20 @@ class Setting
         return $this;
     }
 
+    public function isUseSmtp(): bool
+    {
+        return $this->useSmtp;
+    }
+
     public function setUseSmtp(bool $useSmtp): self
     {
         $this->useSmtp = $useSmtp;
         return $this;
+    }
+
+    public function getSmtpServer(): ?string
+    {
+        return $this->smtpServer;
     }
 
     public function setSmtpServer(string $smtpServer): self
@@ -391,10 +351,20 @@ class Setting
         return $this;
     }
 
+    public function getSmtpProtocol(): ?string
+    {
+        return $this->smtpProtocol;
+    }
+
     public function setSmtpProtocol(string $smtpProtocol): self
     {
         $this->smtpProtocol = $smtpProtocol;
         return $this;
+    }
+
+    public function getSmtpPort(): ?string
+    {
+        return $this->smtpPort;
     }
 
     public function setSmtpPort(string $smtpPort): self
@@ -403,10 +373,20 @@ class Setting
         return $this;
     }
 
+    public function getSmtpEmailAddress(): ?string
+    {
+        return $this->smtpEmailAddress;
+    }
+
     public function setSmtpEmailAddress(string $smtpEmailAddress): self
     {
         $this->smtpEmailAddress = $smtpEmailAddress;
         return $this;
+    }
+
+    public function getSmtpUsername(): ?string
+    {
+        return $this->smtpUsername;
     }
 
     public function setSmtpUsername(string $smtpUsername): self
@@ -415,16 +395,31 @@ class Setting
         return $this;
     }
 
+    public function getSmtpPassword(): ?string
+    {
+        return $this->smtpPassword;
+    }
+
     public function setSmtpPassword(string $smtpPassword): self
     {
         $this->smtpPassword = $smtpPassword;
         return $this;
     }
 
+    public function isDebugMode(): bool
+    {
+        return $this->debugMode;
+    }
+
     public function setDebugMode(bool $debugMode): self
     {
         $this->debugMode = $debugMode;
         return $this;
+    }
+
+    public function isLocalPhpLog(): bool
+    {
+        return $this->localPhpLog;
     }
 
     public function setLocalPhpLog(bool $localPhpLog): self
@@ -438,21 +433,15 @@ class Setting
         return $this->dbVersion;
     }
 
-    public function getEmailAddress(): string
-    {
-        return $this->emailAddress;
-    }
-
-    public function setFullUrl(string $fullUrl): self
-    {
-        $this->fullUrl = $fullUrl;
-        return $this;
-    }
-
     public function setDbVersion(string $dbVersion): self
     {
         $this->dbVersion = $dbVersion;
         return $this;
+    }
+
+    public function getEmailAddress(): string
+    {
+        return $this->emailAddress;
     }
 
     public function setEmailAddress(string $emailAddress): self
@@ -477,15 +466,15 @@ class Setting
         return $this->defaultOwnerDomains;
     }
 
-    public function getDefaultOwnerSsl(): ?Owner
-    {
-        return $this->defaultOwnerSsl;
-    }
-
     public function setDefaultOwnerDomains(Owner $defaultOwnerDomains)
     {
         $this->defaultOwnerDomains = $defaultOwnerDomains;
         return $this;
+    }
+
+    public function getDefaultOwnerSsl(): ?Owner
+    {
+        return $this->defaultOwnerSsl;
     }
 
     public function setDefaultOwnerSsl(Owner $defaultOwnerSsl)
@@ -499,60 +488,15 @@ class Setting
         return $this->defaultCategoryDomains;
     }
 
-    public function getDefaultCategorySsl(): ?Category
-    {
-        return $this->defaultCategorySsl;
-    }
-
-    public function getDefaultDns(): ?Dns
-    {
-        return $this->defaultDns;
-    }
-
-    public function getDefaultHost(): ?Hosting
-    {
-        return $this->defaultHost;
-    }
-
-    public function getDefaultIpAddressDomains(): ?IpAddress
-    {
-        return $this->defaultIpAddressDomains;
-    }
-
-    public function getDefaultIpAddressSsl(): ?IpAddress
-    {
-        return $this->defaultIpAddressSsl;
-    }
-
-    public function getDefaultRegistrarAccount(): ?RegistrarAccount
-    {
-        return $this->defaultRegistrarAccount;
-    }
-
-    public function getDefaultSslProviderAccount(): ?SslAccount
-    {
-        return $this->defaultSslProviderAccount;
-    }
-
-    public function getDefaultSslType(): ?SslCertType
-    {
-        return $this->defaultSslType;
-    }
-
-    public function getDefaultSslProvider(): ?SslProvider
-    {
-        return $this->defaultSslProvider;
-    }
-
-    public function getExpirationDays(): int
-    {
-        return $this->expirationDays;
-    }
-
     public function setDefaultCategoryDomains(Category $defaultCategoryDomains): self
     {
         $this->defaultCategoryDomains = $defaultCategoryDomains;
         return $this;
+    }
+
+    public function getDefaultCategorySsl(): ?Category
+    {
+        return $this->defaultCategorySsl;
     }
 
     public function setDefaultCategorySsl(Category $defaultCategorySsl): self
@@ -561,10 +505,20 @@ class Setting
         return $this;
     }
 
+    public function getDefaultDns(): ?Dns
+    {
+        return $this->defaultDns;
+    }
+
     public function setDefaultDns(Dns $defaultDns): self
     {
         $this->defaultDns = $defaultDns;
         return $this;
+    }
+
+    public function getDefaultHost(): ?Hosting
+    {
+        return $this->defaultHost;
     }
 
     public function setDefaultHost(Hosting $defaultHost): self
@@ -573,10 +527,20 @@ class Setting
         return $this;
     }
 
+    public function getDefaultIpAddressDomains(): ?IpAddress
+    {
+        return $this->defaultIpAddressDomains;
+    }
+
     public function setDefaultIpAddressDomains(IpAddress $defaultIpAddressDomains): self
     {
         $this->defaultIpAddressDomains = $defaultIpAddressDomains;
         return $this;
+    }
+
+    public function getDefaultIpAddressSsl(): ?IpAddress
+    {
+        return $this->defaultIpAddressSsl;
     }
 
     public function setDefaultIpAddressSsl(IpAddress $defaultIpAddressSsl): self
@@ -585,10 +549,20 @@ class Setting
         return $this;
     }
 
+    public function getDefaultRegistrarAccount(): ?RegistrarAccount
+    {
+        return $this->defaultRegistrarAccount;
+    }
+
     public function setDefaultRegistrarAccount(RegistrarAccount $defaultRegistrarAccount): self
     {
         $this->defaultRegistrarAccount = $defaultRegistrarAccount;
         return $this;
+    }
+
+    public function getDefaultSslProviderAccount(): ?SslAccount
+    {
+        return $this->defaultSslProviderAccount;
     }
 
     public function setDefaultSslProviderAccount(SslAccount $defaultSslProviderAccount): self
@@ -597,16 +571,31 @@ class Setting
         return $this;
     }
 
+    public function getDefaultSslType(): ?SslCertType
+    {
+        return $this->defaultSslType;
+    }
+
     public function setDefaultSslType(SslCertType $defaultSslType): self
     {
         $this->defaultSslType = $defaultSslType;
         return $this;
     }
 
+    public function getDefaultSslProvider(): ?SslProvider
+    {
+        return $this->defaultSslProvider;
+    }
+
     public function setDefaultSslProvider(SslProvider $defaultSslProvider): self
     {
         $this->defaultSslProvider = $defaultSslProvider;
         return $this;
+    }
+
+    public function getExpirationDays(): int
+    {
+        return $this->expirationDays;
     }
 
     public function setExpirationDays(int $expirationDays): self

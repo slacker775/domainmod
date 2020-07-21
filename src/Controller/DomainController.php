@@ -47,7 +47,7 @@ class DomainController extends AbstractController
     private function getDomains(array $filters): ?array
     {
         $domains = $this->repository->findBy($filters, [
-            'domain' => 'ASC'
+            'name' => 'ASC'
         ]);
         return $domains;
     }
@@ -150,7 +150,7 @@ class DomainController extends AbstractController
                 ->setCreationType($creationTypeRepository->findByName('Manual'));
             $this->repository->save($domain);
 
-            $this->addFlash('success', sprintf('Domain %s Added', $domain->getDomain()));
+            $this->addFlash('success', sprintf('Domain %s Added', $domain->getName()));
             return $this->redirectToRoute('domain_index');
         }
 
@@ -226,7 +226,7 @@ class DomainController extends AbstractController
                 ->getRegistrar())
                 ->setFee($registrarRepository->getFeeByTld($domain->getAccount()
                 ->getRegistrar(), $domain->getTld()));
-            $this->addFlash('success', sprintf('Domain %s Updated', $domain->getDomain()));
+            $this->addFlash('success', sprintf('Domain %s Updated', $domain->getName()));
             return $this->redirectToRoute('domain_index');
         }
 
@@ -248,7 +248,7 @@ class DomainController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete' . $domain->getId(), $request->request->get('_token'))) {
             $this->repository->remove($domain);
-            $this->addFlash('success', sprintf('Domain %s Deleted', $domain->getDomain()));
+            $this->addFlash('success', sprintf('Domain %s Deleted', $domain->getName()));
         }
 
         return $this->redirectToRoute('domain_index');

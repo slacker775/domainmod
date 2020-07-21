@@ -68,10 +68,10 @@ DomainMOD. For more information please see the
                {{ dql.domainCount != 0 ? dql.domainCount : 'Pending' }}
             </td>
             <td>
-               {{ dql.createdBy.firstname ~ ' ' ~ dql.createdBy.lastname }}
+               {{ dql.createdBy }}
             </td>
             <td>
-            {{ dql.created|date }}
+            {{ dql.createdAt|date('Y-m-d H:i:s') }}
             </td>
             <td>
                 <a href="{{ path('queue_delete_list', { id: dql.id }) }}"><i class="fa fa-times" style="padding-top: 3px;"></i></a>
@@ -130,19 +130,19 @@ DomainMOD. For more information please see the
             <td>
                 {{ dq.account }}
             </td>
-            <td>{% if dq.expiryDate|date('m/d/Y') == '1/1/1970' %} {{ dq.expiryDate|date }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
+            <td>{% if dq.expiryDate|date('m/d/Y') != '1/1/1970' %} {{ dq.expiryDate|date('Y-m-d') }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
 				- {% else %} Pending {% endif %} {% endif %}
             </td>
             <td>{% if dq.dns %} {{ dq.dns }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
 				- {% else %} Pending {% endif %} {% endif %}
             </td>
-            <td>{% if dq.ip %} {{ dq.ip }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
+            <td>{% if dq.ipAddress %} {{ dq.ipAddress }} {% else %} {% if dq.alreadyInDomains or dq.alreadyInQueue or dq.invalidDomain %}
 				- {% else %} Pending {% endif %} {% endif %}</td>
             <td>
-               {{ dq.createdBy.firstname ~ ' ' ~ dq.createdBy.lastname }}
+               {{ dq.createdBy }}
             </td>
             <td>
-               {{ dq.created|date }}
+               {{ dq.createdAt|date('Y-m-d H:i:s') }}
             </td>
             <td>
                 <a href="{{ path('queue_delete_domain', { id: dq.id }) }}"><i class="fa fa-times" style="padding-top: 3px;"></i></a>

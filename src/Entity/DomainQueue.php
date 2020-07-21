@@ -1,10 +1,11 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * DomainQueue
@@ -14,199 +15,141 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 class DomainQueue
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
-     *
-     * @var ApiRegistrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ApiRegistrar")
-     * @ORM\JoinColumn(name="api_registrar_id", referencedColumnName="id")
      */
-    private $apiRegistrar;
+    private ApiRegistrar $apiRegistrar;
 
     /**
      *
-     * @var Domain
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Domain")
-     * @ORM\JoinColumn(name="domain_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Domain", cascade={"persist"})
      */
-    private $domain;
+    private Domain $domain;
 
     /**
-     *
-     * @var Owner
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $owner;
+    private Owner $owner;
 
     /**
-     *
-     * @var Registrar
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Registrar")
-     * @ORM\JoinColumn(name="registrar_id", referencedColumnName="id")
      */
-    private $registrar;
+    private Registrar $registrar;
 
     /**
-     *
-     * @var RegistrarAccount
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\RegistrarAccount")
-     * @ORM\JoinColumn(name="account_id",referencedColumnName="id")
      */
-    private $account;
+    private RegistrarAccount $account;
 
     /**
-     *
-     * @var string
      *
      * @ORM\Column(name="domain", type="string", length=255, nullable=false)
      */
-    private $domainName;
+    private string $domainName;
 
     /**
-     *
-     * @var string
      *
      * @ORM\Column(name="tld", type="string", length=50, nullable=false)
      */
-    private $tld;
+    private string $tld;
 
     /**
-     *
-     * @var \DateTimeInterface
      *
      * @ORM\Column(name="expiry_date", type="date", nullable=true)
      */
-    private $expiryDate;
+    private \DateTimeInterface $expiryDate;
 
     /**
-     *
-     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
-     * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
      */
-    private $category;
+    private Category $category;
 
     /**
-     *
-     * @var Dns
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Dns")
-     * @ORM\JoinColumn(name="dns_id", referencedColumnName="id")
      */
-    private $dns;
+    private Dns $dns;
 
     /**
-     *
-     * @var IpAddress
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress")
-     * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
-    private $ip;
+    private IpAddress $ip;
 
     /**
-     *
-     * @var Hosting
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Hosting")
-     * @ORM\JoinColumn(name="hosting_id", referencedColumnName="id")
      */
-    private $hosting;
+    private Hosting $hosting;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="autorenew", type="boolean", nullable=false)
      */
-    private $autorenew;
+    private bool $autorenew;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="privacy", type="boolean", nullable=false)
      */
-    private $privacy;
+    private bool $privacy;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="processing", type="boolean", nullable=false)
      */
-    private $processing;
+    private bool $processing;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="ready_to_import", type="boolean", nullable=false)
      */
-    private $readyToImport;
+    private bool $readyToImport;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="finished", type="boolean", nullable=false)
      */
-    private $finished;
+    private bool $finished;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="already_in_domains", type="boolean", nullable=false)
      */
-    private $alreadyInDomains;
+    private bool $alreadyInDomains;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="already_in_queue", type="boolean", nullable=false)
      */
-    private $alreadyInQueue;
+    private bool $alreadyInQueue;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="invalid_domain", type="boolean", nullable=false)
      */
-    private $invalidDomain;
+    private bool $invalidDomain;
 
     /**
      *
-     * @var bool
-     *
      * @ORM\Column(name="copied_to_history", type="boolean", nullable=false)
      */
-    private $copiedToHistory;
+    private bool $copiedToHistory;
 
-    use BlameableEntity;    
+    use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->autorenew = false;
         $this->privacy = false;
         $this->processing = false;
@@ -219,14 +162,15 @@ class DomainQueue
         $this->expiryDate = new \DateTime('1/1/1970');
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getApiRegistrar(): ApiRegistrar
     {
         return $this->apiRegistrar;
+    }
+
+    public function setApiRegistrar(ApiRegistrar $apiRegistrar): self
+    {
+        $this->apiRegistrar = $apiRegistrar;
+        return $this;
     }
 
     public function getDomain(): Domain
@@ -234,9 +178,21 @@ class DomainQueue
         return $this->domain;
     }
 
+    public function setDomain(Domain $domain): self
+    {
+        $this->domain = $domain;
+        return $this;
+    }
+
     public function getOwner(): Owner
     {
         return $this->owner;
+    }
+
+    public function setOwner(Owner $owner): self
+    {
+        $this->owner = $owner;
+        return $this;
     }
 
     public function getRegistrar(): Registrar
@@ -244,9 +200,21 @@ class DomainQueue
         return $this->registrar;
     }
 
+    public function setRegistrar(Registrar $registrar): self
+    {
+        $this->registrar = $registrar;
+        return $this;
+    }
+
     public function getAccount(): RegistrarAccount
     {
         return $this->account;
+    }
+
+    public function setAccount(RegistrarAccount $account): self
+    {
+        $this->account = $account;
+        return $this;
     }
 
     public function getDomainName(): string
@@ -254,9 +222,21 @@ class DomainQueue
         return $this->domainName;
     }
 
+    public function setDomainName(string $domainName): self
+    {
+        $this->domainName = $domainName;
+        return $this;
+    }
+
     public function getTld(): string
     {
         return $this->tld;
+    }
+
+    public function setTld(string $tld): self
+    {
+        $this->tld = $tld;
+        return $this;
     }
 
     public function getExpiryDate(): \DateTimeInterface
@@ -264,9 +244,21 @@ class DomainQueue
         return $this->expiryDate;
     }
 
+    public function setExpiryDate(\DateTimeInterface $expiryDate): self
+    {
+        $this->expiryDate = $expiryDate;
+        return $this;
+    }
+
     public function getCategory(): Category
     {
         return $this->category;
+    }
+
+    public function setCategory(Category $category): self
+    {
+        $this->category = $category;
+        return $this;
     }
 
     public function getDns(): Dns
@@ -274,7 +266,13 @@ class DomainQueue
         return $this->dns;
     }
 
-    public function getIp(): IpAddress
+    public function setDns(Dns $dns): self
+    {
+        $this->dns = $dns;
+        return $this;
+    }
+
+    public function getIpAddress(): IpAddress
     {
         return $this->ip;
     }
@@ -284,121 +282,15 @@ class DomainQueue
         return $this->hosting;
     }
 
-    public function isAutorenew(): bool
-    {
-        return $this->autorenew;
-    }
-
-    public function isPrivacy(): bool
-    {
-        return $this->privacy;
-    }
-
-    public function isProcessing(): bool
-    {
-        return $this->processing;
-    }
-
-    public function isReadyToImport(): bool
-    {
-        return $this->readyToImport;
-    }
-
-    public function isFinished(): bool
-    {
-        return $this->finished;
-    }
-
-    public function isAlreadyInDomains(): bool
-    {
-        return $this->alreadyInDomains;
-    }
-
-    public function isAlreadyInQueue(): bool
-    {
-        return $this->alreadyInQueue;
-    }
-
-    public function isInvalidDomain(): bool
-    {
-        return $this->invalidDomain;
-    }
-
-    public function isCopiedToHistory(): bool
-    {
-        return $this->copiedToHistory;
-    }
-
-    public function setApiRegistrar(ApiRegistrar $apiRegistrar): self
-    {
-        $this->apiRegistrar = $apiRegistrar;
-        return $this;
-    }
-
-    public function setDomain(Domain $domain): self
-    {
-        $this->domain = $domain;
-        return $this;
-    }
-
-    public function setOwner(Owner $owner): self
-    {
-        $this->owner = $owner;
-        return $this;
-    }
-
-    public function setRegistrar(Registrar $registrar): self
-    {
-        $this->registrar = $registrar;
-        return $this;
-    }
-
-    public function setAccount(RegistrarAccount $account): self
-    {
-        $this->account = $account;
-        return $this;
-    }
-
-    public function setDomainName(string $domainName): self
-    {
-        $this->domainName = $domainName;
-        return $this;
-    }
-
-    public function setTld(string $tld): self
-    {
-        $this->tld = $tld;
-        return $this;
-    }
-
-    public function setExpiryDate(\DateTimeInterface $expiryDate): self
-    {
-        $this->expiryDate = $expiryDate;
-        return $this;
-    }
-
-    public function setCategory(Category $category): self
-    {
-        $this->category = $category;
-        return $this;
-    }
-
-    public function setDns(Dns $dns): self
-    {
-        $this->dns = $dns;
-        return $this;
-    }
-
-    public function setIp(IpAddress $ip): self
-    {
-        $this->ip = $ip;
-        return $this;
-    }
-
     public function setHosting(Hosting $hosting): self
     {
         $this->hosting = $hosting;
         return $this;
+    }
+
+    public function isAutorenew(): bool
+    {
+        return $this->autorenew;
     }
 
     public function setAutorenew(bool $autorenew = true): self
@@ -407,10 +299,20 @@ class DomainQueue
         return $this;
     }
 
+    public function isPrivacy(): bool
+    {
+        return $this->privacy;
+    }
+
     public function setPrivacy(bool $privacy = true): self
     {
         $this->privacy = $privacy;
         return $this;
+    }
+
+    public function isProcessing(): bool
+    {
+        return $this->processing;
     }
 
     public function setProcessing(bool $processing = true): self
@@ -419,10 +321,20 @@ class DomainQueue
         return $this;
     }
 
+    public function isReadyToImport(): bool
+    {
+        return $this->readyToImport;
+    }
+
     public function setReadyToImport(bool $readyToImport = true): self
     {
         $this->readyToImport = $readyToImport;
         return $this;
+    }
+
+    public function isFinished(): bool
+    {
+        return $this->finished;
     }
 
     public function setFinished(bool $finished = true): self
@@ -431,10 +343,20 @@ class DomainQueue
         return $this;
     }
 
+    public function isAlreadyInDomains(): bool
+    {
+        return $this->alreadyInDomains;
+    }
+
     public function setAlreadyInDomains(bool $alreadyInDomains = true): self
     {
         $this->alreadyInDomains = $alreadyInDomains;
         return $this;
+    }
+
+    public function isAlreadyInQueue(): bool
+    {
+        return $this->alreadyInQueue;
     }
 
     public function setAlreadyInQueue(bool $alreadyInQueue = true): self
@@ -443,15 +365,31 @@ class DomainQueue
         return $this;
     }
 
+    public function isInvalidDomain(): bool
+    {
+        return $this->invalidDomain;
+    }
+
     public function setInvalidDomain(bool $invalidDomain = true): self
     {
         $this->invalidDomain = $invalidDomain;
         return $this;
     }
 
+    public function isCopiedToHistory(): bool
+    {
+        return $this->copiedToHistory;
+    }
+
     public function setCopiedToHistory(bool $copiedToHistory = true): self
     {
         $this->copiedToHistory = $copiedToHistory;
+        return $this;
+    }
+
+    public function setIp(IpAddress $ip): self
+    {
+        $this->ip = $ip;
         return $this;
     }
 

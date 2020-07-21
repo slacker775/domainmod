@@ -1,12 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * IpAddresses
@@ -15,75 +17,47 @@ use Gedmo\Blameable\Traits\BlameableEntity;
  */
 class IpAddress
 {
+    use EntityIdTrait;
 
     /**
      *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(type="string", length=100, nullable=false)
      */
-    private $id;
+    private string $name;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
-     */
-    private $name;
-
-    /**
-     *
-     * @var string
-     *
-     * @ORM\Column(name="ip", type="string", length=45, nullable=false)
+     * @ORM\Column(type="string", length=45, nullable=false)
      * @Assert\Ip
      */
-    private $ip;
+    private string $ip;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="rdns", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Hostname
      */
-    private $rdns;
+    private string $rdns;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $notes;
+    private ?string $notes;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="ip")
-     *
-     * @var Collection
      */
-    private $domains;
+    private Collection $domains;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="App\Entity\SslCert", mappedBy="ip")
-     *
-     * @var Collection
      */
-    private $sslCerts;
+    private Collection $sslCerts;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
     use BlameableEntity;
 
@@ -91,41 +65,14 @@ class IpAddress
 
     public function __construct()
     {
+        $this->generateId();
         $this->domains = new ArrayCollection();
         $this->sslCerts = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        if (is_string($this->id) === true) {
-            $this->id = intval($this->id);
-        }
-        return $this->id;
     }
 
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function getIp(): ?string
-    {
-        return $this->ip;
-    }
-
-    public function getRdns(): ?string
-    {
-        return $this->rdns;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
     }
 
     public function setName(string $name): self
@@ -134,10 +81,20 @@ class IpAddress
         return $this;
     }
 
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
     public function setIp(string $ip): self
     {
         $this->ip = $ip;
         return $this;
+    }
+
+    public function getRdns(): ?string
+    {
+        return $this->rdns;
     }
 
     public function setRdns(?string $rdns): self
@@ -146,15 +103,14 @@ class IpAddress
         return $this;
     }
 
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-        return $this;
-    }
-
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
         return $this;
     }
 

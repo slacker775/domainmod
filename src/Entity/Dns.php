@@ -1,13 +1,14 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Dns
@@ -16,16 +17,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  */
 class Dns
 {
-
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -229,14 +221,7 @@ class Dns
      */
     private $domains;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
     use BlameableEntity;
 
@@ -244,6 +229,7 @@ class Dns
 
     public function __construct()
     {
+        $this->generateId();
         $this->domains = new ArrayCollection();
         $this->numberOfServers = 0;
     }
@@ -253,135 +239,20 @@ class Dns
         return $this->name;
     }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->name;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getDns1(): ?string
     {
         return $this->dns1;
-    }
-
-    public function getDns2(): ?string
-    {
-        return $this->dns2;
-    }
-
-    public function getDns3(): ?string
-    {
-        return $this->dns3;
-    }
-
-    public function getDns4(): ?string
-    {
-        return $this->dns4;
-    }
-
-    public function getDns5(): ?string
-    {
-        return $this->dns5;
-    }
-
-    public function getDns6(): ?string
-    {
-        return $this->dns6;
-    }
-
-    public function getDns7(): ?string
-    {
-        return $this->dns7;
-    }
-
-    public function getDns8(): ?string
-    {
-        return $this->dns8;
-    }
-
-    public function getDns9(): ?string
-    {
-        return $this->dns9;
-    }
-
-    public function getDns10(): ?string
-    {
-        return $this->dns10;
-    }
-
-    public function getIp1(): ?string
-    {
-        return $this->ip1;
-    }
-
-    public function getIp2(): ?string
-    {
-        return $this->ip2;
-    }
-
-    public function getIp3(): ?string
-    {
-        return $this->ip3;
-    }
-
-    public function getIp4(): ?string
-    {
-        return $this->ip4;
-    }
-
-    public function getIp5(): ?string
-    {
-        return $this->ip5;
-    }
-
-    public function getIp6(): ?string
-    {
-        return $this->ip6;
-    }
-
-    public function getIp7(): ?string
-    {
-        return $this->ip7;
-    }
-
-    public function getIp8(): ?string
-    {
-        return $this->ip8;
-    }
-
-    public function getIp9(): ?string
-    {
-        return $this->ip9;
-    }
-
-    public function getIp10(): ?string
-    {
-        return $this->ip10;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function getNumberOfServers(): int
-    {
-        return $this->numberOfServers;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationType;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
     }
 
     public function setDns1(string $dns1): self
@@ -390,10 +261,20 @@ class Dns
         return $this;
     }
 
+    public function getDns2(): ?string
+    {
+        return $this->dns2;
+    }
+
     public function setDns2(?string $dns): self
     {
         $this->dns2 = $dns ?? '';
         return $this;
+    }
+
+    public function getDns3(): ?string
+    {
+        return $this->dns3;
     }
 
     public function setDns3(?string $dns): self
@@ -402,10 +283,20 @@ class Dns
         return $this;
     }
 
+    public function getDns4(): ?string
+    {
+        return $this->dns4;
+    }
+
     public function setDns4(?string $dns): self
     {
         $this->dns4 = $dns ?? '';
         return $this;
+    }
+
+    public function getDns5(): ?string
+    {
+        return $this->dns5;
     }
 
     public function setDns5(?string $dns): self
@@ -414,10 +305,20 @@ class Dns
         return $this;
     }
 
+    public function getDns6(): ?string
+    {
+        return $this->dns6;
+    }
+
     public function setDns6(?string $dns): self
     {
         $this->dns6 = $dns ?? '';
         return $this;
+    }
+
+    public function getDns7(): ?string
+    {
+        return $this->dns7;
     }
 
     public function setDns7(?string $dns): self
@@ -426,10 +327,20 @@ class Dns
         return $this;
     }
 
+    public function getDns8(): ?string
+    {
+        return $this->dns8;
+    }
+
     public function setDns8(?string $dns): self
     {
         $this->dns8 = $dns ?? '';
         return $this;
+    }
+
+    public function getDns9(): ?string
+    {
+        return $this->dns9;
     }
 
     public function setDns9(?string $dns): self
@@ -438,10 +349,20 @@ class Dns
         return $this;
     }
 
+    public function getDns10(): ?string
+    {
+        return $this->dns10;
+    }
+
     public function setDns10(?string $dns): self
     {
         $this->dns10 = $dns ?? '';
         return $this;
+    }
+
+    public function getIp1(): ?string
+    {
+        return $this->ip1;
     }
 
     public function setIp1(?string $ip): self
@@ -450,10 +371,20 @@ class Dns
         return $this;
     }
 
+    public function getIp2(): ?string
+    {
+        return $this->ip2;
+    }
+
     public function setIp2(?string $ip): self
     {
         $this->ip2 = $ip ?? '';
         return $this;
+    }
+
+    public function getIp3(): ?string
+    {
+        return $this->ip3;
     }
 
     public function setIp3(?string $ip): self
@@ -462,10 +393,20 @@ class Dns
         return $this;
     }
 
+    public function getIp4(): ?string
+    {
+        return $this->ip4;
+    }
+
     public function setIp4(?string $ip): self
     {
         $this->ip4 = $ip ?? '';
         return $this;
+    }
+
+    public function getIp5(): ?string
+    {
+        return $this->ip5;
     }
 
     public function setIp5(?string $ip): self
@@ -474,10 +415,20 @@ class Dns
         return $this;
     }
 
+    public function getIp6(): ?string
+    {
+        return $this->ip6;
+    }
+
     public function setIp6(?string $ip): self
     {
         $this->ip6 = $ip ?? '';
         return $this;
+    }
+
+    public function getIp7(): ?string
+    {
+        return $this->ip7;
     }
 
     public function setIp7(?string $ip): self
@@ -486,10 +437,20 @@ class Dns
         return $this;
     }
 
+    public function getIp8(): ?string
+    {
+        return $this->ip8;
+    }
+
     public function setIp8(?string $ip): self
     {
         $this->ip8 = $ip ?? '';
         return $this;
+    }
+
+    public function getIp9(): ?string
+    {
+        return $this->ip9;
     }
 
     public function setIp9(?string $ip): self
@@ -498,10 +459,20 @@ class Dns
         return $this;
     }
 
+    public function getIp10(): ?string
+    {
+        return $this->ip10;
+    }
+
     public function setIp10(?string $ip): self
     {
         $this->ip10 = $ip ?? '';
         return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 
     public function setNotes(string $notes): self
@@ -510,27 +481,27 @@ class Dns
         return $this;
     }
 
+    public function getNumberOfServers(): int
+    {
+        return $this->numberOfServers;
+    }
+
     public function setNumberOfServers(int $numberOfServers): self
     {
         $this->numberOfServers = $numberOfServers;
         return $this;
     }
 
-    public function setCreationType(CreationType $creationType): self
+    public function getActiveDomains(): Collection
     {
-        $this->creationType = $creationType;
-        return $this;
+        return $this->getDomains()
+            ->filter(function (Domain $domain) {
+                return $domain->getStatus() != '0' && $domain->getStatus() != '10';
+            });
     }
 
     public function getDomains(): Collection
     {
         return $this->domains;
-    }
-
-    public function getActiveDomains(): Collection
-    {
-        return $this->getDomains()->filter(function (Domain $domain) {
-            return $domain->getStatus() != '0' && $domain->getStatus() != '10';
-        });
     }
 }

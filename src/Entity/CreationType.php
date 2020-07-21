@@ -13,35 +13,20 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  */
 class CreationType
 {
+    use EntityIdTrait;
 
     /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     *
-     * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
-    private $name;
+    private string $name;
 
     use TimestampableEntity;    
 
     public function __construct(string $name)
     {
+        $this->generateId();
         $this->name = $name;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): string

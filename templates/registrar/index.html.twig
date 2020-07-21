@@ -46,7 +46,7 @@ Domain Registrars
 								{% if app.session.get('settings').defaultRegistrar.id|default(false) == registrar.id %}<strong>*</strong>
 								{% endif %}</td>
 							<td>{% if registrar.numAccounts >= 1 %} <a
-								href="registrar-accounts.php?rid={{ registrar.id }}">{{ registrar.numAccounts|number_format }}</a><?php
+								href="{{ path('registrar_account_index', { registrar: registrar.id }) }}">{{ registrar.numAccounts|number_format }}</a><?php
 								{% else %} - {% endif %}</td>
 							<td>{% if registrar.numDomains >= 1 %} <a
 								href="{{ path('domain_index', { registrar: registrar.id }) }}">{{ registrar.numDomains|number_format }}</a><?php

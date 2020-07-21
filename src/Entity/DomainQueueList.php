@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * DomainQueueList
@@ -13,15 +15,7 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 class DomainQueueList
 {
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -99,12 +93,13 @@ class DomainQueueList
      */
     private $copiedToHistory;
 
-    use BlameableEntity;    
+    use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->domainCount = 0;
         $this->processing = false;
         $this->readyToImport = false;
@@ -112,54 +107,9 @@ class DomainQueueList
         $this->copiedToHistory = false;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getApiRegistrar(): ApiRegistrar
     {
         return $this->apiRegistrar;
-    }
-
-    public function getOwner(): Owner
-    {
-        return $this->owner;
-    }
-
-    public function getRegistrar(): Registrar
-    {
-        return $this->registrar;
-    }
-
-    public function getAccount(): RegistrarAccount
-    {
-        return $this->account;
-    }
-
-    public function getDomainCount(): int
-    {
-        return $this->domainCount;
-    }
-
-    public function isProcessing(): bool
-    {
-        return $this->processing;
-    }
-
-    public function isReadyToImport(): bool
-    {
-        return $this->readyToImport;
-    }
-
-    public function isFinished(): bool
-    {
-        return $this->finished;
-    }
-
-    public function isCopiedToHistory(): bool
-    {
-        return $this->copiedToHistory;
     }
 
     public function setApiRegistrar(ApiRegistrar $apiRegistrar): self
@@ -168,10 +118,20 @@ class DomainQueueList
         return $this;
     }
 
+    public function getOwner(): Owner
+    {
+        return $this->owner;
+    }
+
     public function setOwner(Owner $owner): self
     {
         $this->owner = $owner;
         return $this;
+    }
+
+    public function getRegistrar(): Registrar
+    {
+        return $this->registrar;
     }
 
     public function setRegistrar(Registrar $registrar): self
@@ -180,10 +140,20 @@ class DomainQueueList
         return $this;
     }
 
+    public function getAccount(): RegistrarAccount
+    {
+        return $this->account;
+    }
+
     public function setAccount(RegistrarAccount $account): self
     {
         $this->account = $account;
         return $this;
+    }
+
+    public function getDomainCount(): int
+    {
+        return $this->domainCount;
     }
 
     public function setDomainCount(int $domainCount): self
@@ -192,10 +162,20 @@ class DomainQueueList
         return $this;
     }
 
+    public function isProcessing(): bool
+    {
+        return $this->processing;
+    }
+
     public function setProcessing(bool $processing = true): self
     {
         $this->processing = $processing;
         return $this;
+    }
+
+    public function isReadyToImport(): bool
+    {
+        return $this->readyToImport;
     }
 
     public function setReadyToImport(bool $readyToImport = true): self
@@ -204,10 +184,20 @@ class DomainQueueList
         return $this;
     }
 
+    public function isFinished(): bool
+    {
+        return $this->finished;
+    }
+
     public function setFinished(bool $finished = true): self
     {
         $this->finished = $finished;
         return $this;
+    }
+
+    public function isCopiedToHistory(): bool
+    {
+        return $this->copiedToHistory;
     }
 
     public function setCopiedToHistory(bool $copiedToHistory = true): self

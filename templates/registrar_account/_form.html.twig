@@ -63,6 +63,12 @@
 				style="color: #a30000"><strong>missing</strong></span>) {% endif %}
 			</li>
 			{% endif %}
+			{% if registrar_account.registrar.apiRegistrar.reqApiToken %}
+			<li>API Token {% if registrar_account.apiToken %} (<span
+				style="color: darkgreen"><strong>saved</strong></span>) {% else %} (<span
+				style="color: #a30000"><strong>missing</strong></span>) {% endif %}
+			</li>
+			{% endif %}
 			{% if registrar_account.registrar.apiRegistrar.reqIpAddress %}
 			<li>Connecting IP Address {% if registrar_account.apiIp %} (<span
 				style="color: darkgreen"><strong>saved</strong></span>) {% else %} (<span
@@ -75,6 +81,7 @@
 		{{ form_row(form.apiAppName) }}
 		{{ form_row(form.apiKey) }}
 		{{ form_row(form.apiSecret) }}
+		{{ form_row(form.apiToken) }}
 		{{ form_row(form.apiIp) }}
 
 	</div>

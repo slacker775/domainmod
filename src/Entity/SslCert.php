@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -23,15 +25,7 @@ class SslCert
 
     const STATUS_PENDING_REGISTRATION = 5;
 
-    /**
-     *
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use EntityIdTrait;
 
     /**
      *
@@ -153,104 +147,23 @@ class SslCert
      */
     private $feeFixed;
 
-    /**
-     *
-     * @var CreationType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CreationType")
-     * @ORM\JoinColumn(name="creation_type_id", referencedColumnName="id")
-     */
-    private $creationType;
+    use CreationTypeTrait;
 
-    use BlameableEntity;    
+    use BlameableEntity;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
+        $this->generateId();
         $this->status = '1';
         $this->total_cost = 0.0;
         $this->feeFixed = false;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getOwner(): ?Owner
     {
         return $this->owner;
-    }
-
-    public function getSslProvider(): ?SslProvider
-    {
-        return $this->sslProvider;
-    }
-
-    public function getAccount(): ?SslAccount
-    {
-        return $this->account;
-    }
-
-    public function getDomain(): ?Domain
-    {
-        return $this->domain;
-    }
-
-    public function getType(): ?SslCertType
-    {
-        return $this->type;
-    }
-
-    public function getIp(): ?IpAddress
-    {
-        return $this->ip;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function getExpiryDate(): ?\DateTimeInterface
-    {
-        return $this->expiryDate;
-    }
-
-    public function getFee(): ?SslFee
-    {
-        return $this->fee;
-    }
-
-    public function getTotalCost(): ?float
-    {
-        return $this->totalCost;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function isFeeFixed(): bool
-    {
-        return $this->feeFixed;
-    }
-
-    public function getCreationType(): CreationType
-    {
-        return $this->creationTypeId;
     }
 
     public function setOwner(Owner $owner): self
@@ -259,10 +172,20 @@ class SslCert
         return $this;
     }
 
+    public function getSslProvider(): ?SslProvider
+    {
+        return $this->sslProvider;
+    }
+
     public function setSslProvider(SslProvider $sslProvider): self
     {
         $this->sslProvider = $sslProvider;
         return $this;
+    }
+
+    public function getAccount(): ?SslAccount
+    {
+        return $this->account;
     }
 
     public function setAccount(SslAccount $account): self
@@ -271,16 +194,31 @@ class SslCert
         return $this;
     }
 
+    public function getDomain(): ?Domain
+    {
+        return $this->domain;
+    }
+
     public function setDomain(Domain $domain): self
     {
         $this->domain = $domain;
         return $this;
     }
 
+    public function getType(): ?SslCertType
+    {
+        return $this->type;
+    }
+
     public function setType(SslCertType $type): self
     {
         $this->type = $type;
         return $this;
+    }
+
+    public function getIp(): ?IpAddress
+    {
+        return $this->ip;
     }
 
     /**
@@ -293,10 +231,20 @@ class SslCert
         return $this;
     }
 
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
     public function setCategory(Category $category): self
     {
         $this->category = $category;
         return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     public function setName(string $name): self
@@ -305,10 +253,20 @@ class SslCert
         return $this;
     }
 
+    public function getExpiryDate(): ?\DateTimeInterface
+    {
+        return $this->expiryDate;
+    }
+
     public function setExpiryDate(\DateTime $expiryDate): self
     {
         $this->expiryDate = $expiryDate;
         return $this;
+    }
+
+    public function getFee(): ?SslFee
+    {
+        return $this->fee;
     }
 
     public function setFee(?SslFee $fee): self
@@ -317,10 +275,20 @@ class SslCert
         return $this;
     }
 
+    public function getTotalCost(): ?float
+    {
+        return $this->totalCost;
+    }
+
     public function setTotalCost(float $totalCost): self
     {
         $this->totalCost = $totalCost;
         return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 
     public function setNotes(?string $notes): self
@@ -329,10 +297,20 @@ class SslCert
         return $this;
     }
 
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
     public function setStatus(string $status): self
     {
         $this->status = $status;
         return $this;
+    }
+
+    public function isFeeFixed(): bool
+    {
+        return $this->feeFixed;
     }
 
     public function setFeeFixed(bool $feeFixed = true): self
@@ -341,10 +319,5 @@ class SslCert
         return $this;
     }
 
-    public function setCreationType(CreationType $creationType): self
-    {
-        $this->creationType = $creationType;
-        return $this;
-    }
 
 }
