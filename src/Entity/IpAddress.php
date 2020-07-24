@@ -37,7 +37,7 @@ class IpAddress
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Hostname
      */
-    private string $rdns;
+    private ?string $rdns;
 
     /**
      *
@@ -66,6 +66,10 @@ class IpAddress
     public function __construct()
     {
         $this->generateId();
+        $this->name = '';
+        $this->ip = '';
+        $this->rdns = null;
+        $this->notes = null;
         $this->domains = new ArrayCollection();
         $this->sslCerts = new ArrayCollection();
     }

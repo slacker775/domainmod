@@ -20,7 +20,7 @@
 				{{ _self.navLink('Queue','queue','fa-hourglass-start') }}
 				{{ _self.navLink('SSL Certificates','ssl_cert_index','fa-lock') }}
 				{{ _self.navLink('Assets','asset','fa-cubes') }}
-				{{ _self.navLink('Segments','segment','fa-filter') }}
+				{{ _self.navLink('Segments','segment_index','fa-filter') }}
 				{# {{ _self.navLink('Bulk Updater','bulk_index','fa-copy') }} #}
 				{{ _self.navLink('Reporting','reporting_index','fa-chart-bar') }}
 				{% if is_granted('ROLE_ADMIN') %}
@@ -62,11 +62,11 @@
 						{{ _self.navLink('System Defaults','admin_defaults','fa-tasks') }}
 						{{ _self.navLink('Users','user_index','fa-users-cog') }}
 						{#
-						{{ _self.navLink('Custom Domain Fields','segment','fa-building') }}
-						{{ _self.navLink('Custom SSL Fields','segment','fa-key') }}
+						{{ _self.navLink('Custom Domain Fields','segment_index','fa-building') }}
+						{{ _self.navLink('Custom SSL Fields','segment_index','fa-key') }}
 						#}
 						{{ _self.navLink('Task Scheduler','scheduler_index','fa-calendar-alt') }}
-						{{ _self.navLink('Maintenance','segment','fa-tools') }}
+						{{ _self.navLink('Maintenance','segment_index','fa-tools') }}
 						{#
 						{{ _self.navLink('Backup & Restore','segment','fa-archive') }}
 						{{ _self.navLink('Debug Log','segment','fa-bug') }}

@@ -4,298 +4,298 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Domains
+    Domains
 {% endblock %}
 
 {% block breadcrumbs %}
-<li class='breadcrumb-item active'>Domains</li>
+    <li class='breadcrumb-item active'>Domains</li>
 {% endblock %}
 
 {% block body %}
-<div class="row">
-	<div class="col-lg-12">
-		<div class="card">
-			<div class="card-body">
+    <div class="row">
+    <div class="col-lg-12">
+    <div class="card">
+    <div class="card-body">
 
-				{% if registrarCount == 0 %}
-				<strong>0</strong> Domain Registrars found<br> <br> Before you can
-				start adding domains to DomainMOD you need to add at least one
-				domain registrar and a domain registrar account.<br> <br> Please see
-				the <a target='_blank' href='/docs/userguide/first-run/'>First
-					Run</a> section of the User Guide for more detailed information.<br> <br> <a href="{{ path('registrar_new') }}">Click here to add a
-					Domain Registrar &raquo;</a><br>
-				{% endif %}
+    {{ include('domain/_filter-form.html.twig') }}
 
-				{% if registrarAccountCount == 0 and registrarCount > 0 %}
-				<strong>0</strong> Domain Registrar Accounts found<br> <br> Before you can
-				start adding domains to DomainMOD you need to add at least one
-				domain registrar and a domain registrar account.<br> <br> Please see
-				the <a target='_blank' href='/docs/userguide/first-run/'>First
-					Run</a> section of the User Guide for more detailed information.<br> <br> <a href="{{ path('registrar_account_new') }}">Click here to add a
-					Domain Registrar Account &raquo;</a><br>
-				{% endif %}
+    {% if registrarCount == 0 %}
+        <strong>0</strong> Domain Registrars found<br> <br> Before you can
+                                                            start adding domains to DomainMOD you need to add at least one
+                                                            domain registrar and a domain registrar account.<br>
+        <br> Please see
+             the <a target='_blank' href='/docs/userguide/first-run/'>First
+        Run</a> section of the User Guide for more detailed information.<br> <br> <a href="{{ path('registrar_new') }}">Click
+        here to add a
+        Domain Registrar &raquo;</a><br>
+    {% endif %}
 
-				{% if domainCount == 0 and registrarCount > 0 and registrarAccountCount > 0 %}
-				<strong>0</strong> Domains found<br> <br> Add a domain
-				<a href='{{ path('domain_new') }}'>manually</a>, add domains using
-				the <a href='{{ path('queue_intro') }}'>Domain
-					Queue</a>, or see the <a target='_blank'
-					href='../docs/userguide/adding-domains/'>Adding Domains</a> section
-				of the User Guide for more options.<br>
-				{% endif %}
+    {% if registrarAccountCount == 0 and registrarCount > 0 %}
+        <strong>0</strong> Domain Registrar Accounts found<br> <br> Before you can
+                                                                    start adding domains to DomainMOD you need to add at least one
+                                                                    domain registrar and a domain registrar account.<br>
+        <br> Please see
+             the <a target='_blank' href='/docs/userguide/first-run/'>First
+        Run</a> section of the User Guide for more detailed information.<br> <br> <a
+            href="{{ path('registrar_account_new') }}">Click here to add a
+        Domain Registrar Account &raquo;</a><br>
+    {% endif %}
 
-				<a href="{{ path('domain_new') }}">{{ _self.showButton('button','Add Domain') }}</a>
-				<a href="{{ path('queue_intro') }}">{{ _self.showButton('button','Add Domains to Queue') }}</a>
-				<a target="_blank" href="{{ path('domain_raw') }}">{{ _self.showButton('button','Raw List') }}</a>
-				<a href="{{ path('domain_export') }}">{{ _self.showButton('button','Export') }}</a>
+    {% if domainCount == 0 and registrarCount > 0 and registrarAccountCount > 0 %}
+        <strong>0</strong> Domains found<br> <br> Add a domain
+        <a href='{{ path('domain_new') }}'>manually</a>, add domains using
+                                                       the <a href='{{ path('queue_intro') }}'>Domain
+        Queue</a>, or see the <a target='_blank'
+                                 href='../docs/userguide/adding-domains/'>Adding Domains</a> section
+                                                                                             of the User Guide for more options.
+        <br>
+    {% endif %}
 
-				<br> <br> <strong>Total Cost:</strong>
-				{{ totalCost |format_currency(app.user.settings.defaultCurrency) }}
-				{{ app.user.settings.defaultCurrency }}
-				<br> <strong>Number of Domains:</strong>
-				{{ domains|length }}
-				<br> <br>
+    <a href="{{ path('domain_new') }}">{{ _self.showButton('button','Add Domain') }}</a>
+    <a href="{{ path('queue_intro') }}">{{ _self.showButton('button','Add Domains to Queue') }}</a>
+    <a target="_blank" href="{{ path('domain_raw') }}">{{ _self.showButton('button','Raw List') }}</a>
+    <a href="{{ path('domain_export') }}">{{ _self.showButton('button','Export') }}</a>
 
-				{% if domains is empty %}
-				Your search returned zero results.
-				{% else %}
-				<table id="domains-main"
-					class="table table-striped dt-responsive cell-border compact">
-					<thead>
-						<tr>
-							{% if not systemLargeMode %}
-							<th width="20px"></th>
-							{% endif %}
+    <br> <br> <strong>Total Cost:</strong>
+    {{ totalCost |format_currency(app.user.settings.defaultCurrency) }}
+    {{ app.user.settings.defaultCurrency }}
+    <br> <strong>Number of Domains:</strong>
+    {{ domains|length }}
+    <br> <br>
 
-							<th class="all">{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Domain</a> {% else %} Domain {% endif %}</th>
-							{% if app.user.settings.displayDomainExpiryDate %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Expiry</a> {% else %} Expiry {% endif %}
-							</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainFee %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Fee ({{ app.user.settings.defaultCurrency }})
-							</a> {% else %} Fee ({{ app.user.settings.defaultCurrency }}) {% endif %}
-							</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainTld %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">TLD</a> {% else %} TLD {% endif %}</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainRegistrar %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Registrar</a> {% else %} Registrar {% endif %}
-							</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainAccount %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Account</a> {% else %} Account {% endif %}
-							</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainDns %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">DNS</a> {% else %} DNS {% endif %}</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainIp %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">IP</a> {% else %} IP {% endif %}</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainHost %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Host</a> {% else %} Host {% endif %}</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainCategory %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Category</a> {% else %} Category {% endif %}
-							</th>
-							{% endif %}
-							{% if app.user.settings.displayDomainOwner %}
-							<th {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}>{% if systemLargeMode %} <a href=""
-								style="color: #000000;">Owner</a> {% else %} Owner {% endif %}</th>
-							{% endif %}
-							{#<?php if ($_SESSION['s_cdf_data']) { foreach
-							($_SESSION['s_cdf_data'] as $field) { if ($field['value'] == '1'
-							&& $field['type_id'] != '3') { // Don't show column for Text
-							Areas ?> <th<?php if ($_SESSION['s_system_large_mode'] == '1') {
-							echo ' style="padding-left:20px;"'; } ?>> <?php if
-							($_SESSION['s_system_large_mode'] == '1') { ?> <span
-							style="color:#000000;"><?php echo $field['name']; ?></span> <?php
-							} else { ?> <?php echo $field['name']; ?> <?php } ?> </th><?php }
-							} } ?>#}
-						</tr>
-					</thead>
-					<tbody>
-						{% for domain in domains %}
-						<tr>
-							{% if not systemLargeMode %}
-							<td></td>
-							{% endif %}
+    {% if domains is empty %}
+        Your search returned zero results.
+    {% else %}
+        <table id="domains-main"
+               class="table table-striped dt-responsive cell-border compact">
+            <thead>
+            <tr>
+                {% if not systemLargeMode %}
+                    <th width="20px"></th>
+                {% endif %}
 
-							<td>{% if domain.status == "0" %} <a title="Inactive Domain"><strong>x</strong></a>&nbsp;
-								{% elseif domain.status == "2" %} <a title="Pending (Transfer)"><strong>T</strong></a>&nbsp;
-								{% elseif domain.status == "3" %} echo "<a title=\"Pending (Renewal)\"><strong>PRn</strong></a>&nbsp;";
-								{% elseif domain.status == "4" %} echo "<a title=\"Pending (Other)\"><strong>PO</strong></a>&nbsp;";
-								{% elseif domain.status == "5" %} echo "<a title=\"Pending (Registration)\"><strong>PRg</strong></a>&nbsp;";
-								{% elseif domain.status == "10" %} echo "<a title=\"Sold\"><strong>S</strong></a>&nbsp;";
-								{% endif %} <a href="{{ path('domain_edit',{id: domain.id}) }}">{{ domain.name }}</a>
-								{% if domain.privacy %} &nbsp;<a
-								title="Private WHOIS Registration"><strong>prv</strong></a> {% endif %}</td>
-							{% if app.user.settings.displayDomainExpiryDate %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('domain_edit', { id: domain.id }) }}">{{ domain.getExpiryDate|date('Y-m-d') }}</a>
-							</td>
-							{% endif %}
-							{% if app.user.settings.displayDomainFee %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a href=""> {{ domain.totalCost|format_currency(app.user.settings.defaultCurrency) }}</a>
-							</td>
-							{% endif %}
-							{% if app.user.settings.displayDomainTld %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a href="">.{{ domain.tld }}</a></td>
-							{% endif %}
-							{% if app.user.settings.displayDomainRegistrar %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">
-									{{ domain.registrar.name }}
-							</a></td>
-							{% endif %}
-							{% if app.user.settings.displayDomainAccount %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">{{ domain.registrar.name }}</a>,
-								<a href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner }}</a>
-								(<a
-								href="{{ path('registrar_account_edit', { id: domain.account.id }) }}">{{ domain.account.username }}</a>)
-							</td>
-							{% endif %}
-							{% if app.user.settings.displayDomainDns %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('dns_edit', { id: domain.dns.id }) }}">{{ domain.dns.name }}</a>
-							</td>
-							{% endif %}
-							{% if app.user.settings.displayDomainIp %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('ip_address_edit', { id: domain.ip.id }) }}">{{ domain.ip }}
-							</a></td>
-							{% endif %}
-							{% if app.user.settings.displayDomainHost %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('hosting_edit', { id: domain.hostingProvider.id }) }}">{{ domain.hostingProvider }}</a>
-							</td>
-							{% endif %}
-							{% if app.user.settings.displayDomainCategory %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('category_edit', { id: domain.category.id }) }}">{{ domain.category }}</a>
-							</td>
-							{% endif %}
-							{% if app.user.settings.displayDomainOwner %}
-							<td {% if systemLargeMode %} style="padding-left: 20px;"
-								{% endif %}><a
-								href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner.name }}</a>
-							</td>
-							{% endif %}
+                <th class="all">{% if systemLargeMode %} <a href=""
+                                                            style="color: #000000;">Domain</a> {% else %} Domain {% endif %}
+                </th>
+                {% if app.user.settings.displayDomainExpiryDate %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">Expiry</a> {% else %} Expiry {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainFee %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">Fee
+                            ({{ app.user.settings.defaultCurrency }})
+                        </a> {% else %} Fee ({{ app.user.settings.defaultCurrency }}) {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainTld %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">TLD</a> {% else %} TLD {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainRegistrar %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">Registrar</a> {% else %} Registrar {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainAccount %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">Account</a> {% else %} Account {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainDns %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">DNS</a> {% else %} DNS {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainIp %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">IP</a> {% else %} IP {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainHost %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">Host</a> {% else %} Host {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainCategory %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">Category</a> {% else %} Category {% endif %}
+                    </th>
+                {% endif %}
+                {% if app.user.settings.displayDomainOwner %}
+                    <th {% if systemLargeMode %} style="padding-left: 20px;"
+                            {% endif %}>{% if systemLargeMode %} <a href=""
+                                                                    style="color: #000000;">Owner</a> {% else %} Owner {% endif %}
+                    </th>
+                {% endif %}
+                {#<?php if ($_SESSION['s_cdf_data']) { foreach
+                ($_SESSION['s_cdf_data'] as $field) { if ($field['value'] == '1'
+                && $field['type_id'] != '3') { // Don't show column for Text
+                Areas ?> <th<?php if ($_SESSION['s_system_large_mode'] == '1') {
+                echo ' style="padding-left:20px;"'; } ?>> <?php if
+                ($_SESSION['s_system_large_mode'] == '1') { ?> <span
+                style="color:#000000;"><?php echo $field['name']; ?></span> <?php
+                } else { ?> <?php echo $field['name']; ?> <?php } ?> </th><?php }
+                } } ?>#}
+            </tr>
+            </thead>
+            <tbody>
+            {% for domain in domains %}
+                <tr>
+                    {% if not systemLargeMode %}
+                        <td></td>
+                    {% endif %}
 
-							{#<?php if ($_SESSION['s_cdf_data']) { foreach
-							($_SESSION['s_cdf_data'] as $field) { if ($field['value'] == '1'
-							&& $field['type_id'] != '3') { // Don't show data for Text Areas
-							?> <td<?php if ($_SESSION['s_system_large_mode'] == '1') { echo '
-							style="padding-left:20px;"'; } ?>><?php if ($field['type_id'] ==
-							'1') { // Check Box echo ($row->{$field['field']} == '1' ? 'Yes'
-							: 'No'); } elseif ($field['type_id'] == '2') { // Text echo
-							$row->{$field['field']}; } elseif ($field['type_id'] == '4') { //
-							Date if ($row->{$field['field']} == '1970-01-01') { echo ''; }
-							else { echo $row->{$field['field']}; } } elseif
-							($field['type_id'] == '5') { // Time Stamp if
-							($row->{$field['field']} == '1970-01-01 00:00:00') { echo ''; }
-							else { echo $row->{$field['field']}; } } ?> </td><?php } } } ?>#}
+                    <td>{% if domain.status == "0" %} <a title="Inactive Domain"><strong>x</strong></a>&nbsp;
+                        {% elseif domain.status == "2" %} <a title="Pending (Transfer)"><strong>T</strong></a>&nbsp;
+                        {% elseif domain.status == "3" %} echo "<a title=\"Pending (Renewal)\">
+                            <strong>PRn</strong></a>&nbsp;";
+                        {% elseif domain.status == "4" %} echo "<a title=\"Pending (Other)\">
+                            <strong>PO</strong></a>&nbsp;";
+                        {% elseif domain.status == "5" %} echo "<a title=\"Pending (Registration)\">
+                            <strong>PRg</strong></a>&nbsp;";
+                        {% elseif domain.status == "10" %} echo "<a title=\"Sold\"><strong>S</strong></a>&nbsp;";
+                        {% endif %} <a href="{{ path('domain_edit',{id: domain.id}) }}">{{ domain.name }}</a>
+                        {% if domain.privacy %} &nbsp;<a
+                                title="Private WHOIS Registration"><strong>prv</strong></a> {% endif %}</td>
+                    {% if app.user.settings.displayDomainExpiryDate %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('domain_edit', { id: domain.id }) }}">{{ domain.getExpiryDate|date('Y-m-d') }}</a>
+                        </td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainFee %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href=""> {{ domain.totalCost|format_currency(app.user.settings.defaultCurrency) }}</a>
+                        </td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainTld %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a href="">.{{ domain.tld }}</a></td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainRegistrar %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">
+                                {{ domain.registrar.name }}
+                            </a></td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainAccount %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('registrar_edit', { id: domain.registrar.id }) }}">{{ domain.registrar.name }}</a>,
+                            <a href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner }}</a>
+                            (<a
+                                    href="{{ path('registrar_account_edit', { id: domain.account.id }) }}">{{ domain.account.username }}</a>)
+                        </td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainDns %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('dns_edit', { id: domain.dns.id }) }}">{{ domain.dns.name }}</a>
+                        </td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainIp %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('ip_address_edit', { id: domain.ip.id }) }}">{{ domain.ip }}
+                            </a></td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainHost %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('hosting_edit', { id: domain.hosting.id }) }}">{{ domain.hosting }}</a>
+                        </td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainCategory %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('category_edit', { id: domain.category.id }) }}">{{ domain.category }}</a>
+                        </td>
+                    {% endif %}
+                    {% if app.user.settings.displayDomainOwner %}
+                        <td {% if systemLargeMode %} style="padding-left: 20px;"
+                                {% endif %}><a
+                                    href="{{ path('owner_edit', { id: domain.owner.id }) }}">{{ domain.owner.name }}</a>
+                        </td>
+                    {% endif %}
 
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				<br>
-			</div>
-		</div>
-	</div>
-</div>
-{% endif %}
+                    {#<?php if ($_SESSION['s_cdf_data']) { foreach
+                    ($_SESSION['s_cdf_data'] as $field) { if ($field['value'] == '1'
+                    && $field['type_id'] != '3') { // Don't show data for Text Areas
+                    ?> <td<?php if ($_SESSION['s_system_large_mode'] == '1') { echo '
+                    style="padding-left:20px;"'; } ?>><?php if ($field['type_id'] ==
+                    '1') { // Check Box echo ($row->{$field['field']} == '1' ? 'Yes'
+                    : 'No'); } elseif ($field['type_id'] == '2') { // Text echo
+                    $row->{$field['field']}; } elseif ($field['type_id'] == '4') { //
+                    Date if ($row->{$field['field']} == '1970-01-01') { echo ''; }
+                    else { echo $row->{$field['field']}; } } elseif
+                    ($field['type_id'] == '5') { // Time Stamp if
+                    ($row->{$field['field']} == '1970-01-01 00:00:00') { echo ''; }
+                    else { echo $row->{$field['field']}; } } ?> </td><?php } } } ?>#}
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        </div>
+        </div>
+        </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css"
-	href="/_includes/theme/plugins/daterangepicker/daterangepicker-bs3.css" />
-<style>
-#domains-main thead th {
-	padding: 2px 0px 2px 6px;
-	border: 0;
-	white-space: nowrap;
-}
+    {{ encore_entry_link_tags('daterangepicker') }}
+    <style>
+        #domains-main thead th {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
 
-#domains-main tbody tr:hover {
-	background-color: #dddddd;
-}
+        #domains-main tbody tr:hover {
+            background-color: #dddddd;
+        }
 
-#domains-main tbody td {
-	padding: 2px 0px 2px 6px;
-	border: 0;
-	white-space: nowrap;
-}
-</style>
+        #domains-main tbody td {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
-<script type="text/javascript"
-	src="/_includes/theme/plugins/daterangepicker/moment.min.js"></script>
-<script type="text/javascript"
-	src="/_includes/theme/plugins/daterangepicker/daterangepicker.js"></script>
-<script type="text/javascript">
-	$(function() {
-
-		$('input[name="daterange"]').daterangepicker({
-			autoUpdateInput : false,
-			locale : {
-				format : 'YYYY-MM-DD',
-				cancelLabel : 'Clear'
-			}
-		});
-
-		$('input[name="daterange"]').on(
-				'apply.daterangepicker',
-				function(ev, picker) {
-					$(this).val(
-							picker.startDate.format('YYYY-MM-DD') + ' - '
-									+ picker.endDate.format('YYYY-MM-DD'));
-				});
-
-		$('input[name="daterange"]').on('cancel.daterangepicker',
-				function(ev, picker) {
-					$(this).val('');
-				});
-
-	});
-</script>
+    {{ encore_entry_script_tags('daterangepicker') }}
+    <script type="text/javascript">
+        $(function () {
+            $('#domains-main').DataTable();
+            $('#domain_filter_expiringBetween').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+            $('#domain_filter_expiringBetween').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            });
+            $('#domain_filter_expiringBetween').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+        });
+    </script>
 {% endblock %}
-
-{% block datatable_options %}
-$('#domains-main').DataTable();
-{% endblock %}
-

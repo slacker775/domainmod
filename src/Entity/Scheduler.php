@@ -1,109 +1,92 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * Scheduler
  *
  * @ORM\Entity
  */
 class Scheduler
 {
 
-use EntityIdTrait;
+    use EntityIdTrait;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @ORM\Column(type="string", length=100, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $slug;
+    private string $slug;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=0, nullable=true)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $description;
+    private string $description;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="interval", type="string", length=50, nullable=false, options={"default"="'Daily'"})
+     * @ORM\Column(type="string", length=50, nullable=false, options={"default"="'Daily'"})
      */
-    private $interval;
+    private string $interval;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="expression", type="string", length=20, nullable=false)
+     * @ORM\Column(type="string", length=20, nullable=false)
      */
-    private $expression;
+    private string $expression;
 
     /**
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_run", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $lastRun;
+    private ?DateTimeInterface $lastRun;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="last_duration", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lastDuration;
+    private ?string $lastDuration;
 
     /**
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="next_run", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $nextRun;
+    private ?DateTimeInterface $nextRun;
 
     /**
      *
      * @var int
      *
-     * @ORM\Column(name="sort_order", type="integer", nullable=false, options={"default"="1"})
+     * @ORM\Column(type="integer", nullable=false, options={"default"="1"})
      */
-    private $sortOrder;
+    private int $sortOrder;
 
     /**
      *
      * @var bool
      *
-     * @ORM\Column(name="is_running", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $isRunning;
+    private bool $isRunning;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="active", type="boolean", nullable=false, options={"default"="1"})
+     * @ORM\Column(type="boolean", nullable=false, options={"default"="1"})
      */
-    private $active;
+    private bool $active;
 
-    use TimestampableEntity;    
+    use TimestampableEntity;
 
     public function __construct()
     {
@@ -113,6 +96,8 @@ use EntityIdTrait;
         $this->sortOrder = 1;
         $this->isRunning = false;
         $this->active = true;
+        $this->lastRun = null;
+        $this->lastDuration = null;
     }
 
     public function getName(): string
@@ -120,9 +105,21 @@ use EntityIdTrait;
         return $this->name;
     }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
     }
 
     public function getDescription(): ?string
@@ -130,9 +127,21 @@ use EntityIdTrait;
         return $this->description;
     }
 
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
     public function getInterval(): string
     {
         return $this->interval;
+    }
+
+    public function setInterval(string $interval): self
+    {
+        $this->interval = $interval;
+        return $this;
     }
 
     public function getExpression(): string
@@ -140,9 +149,21 @@ use EntityIdTrait;
         return $this->expression;
     }
 
-    public function getLastRun(): ?\DateTimeInterface
+    public function setExpression(string $expression): self
+    {
+        $this->expression = $expression;
+        return $this;
+    }
+
+    public function getLastRun(): ?DateTimeInterface
     {
         return $this->lastRun;
+    }
+
+    public function setLastRun(DateTimeInterface $lastRun): self
+    {
+        $this->lastRun = $lastRun;
+        return $this;
     }
 
     public function getLastDuration(): ?string
@@ -150,14 +171,32 @@ use EntityIdTrait;
         return $this->lastDuration;
     }
 
-    public function getNextRun(): ?\DateTimeInterface
+    public function setLastDuration(string $lastDuration): self
+    {
+        $this->lastDuration = $lastDuration;
+        return $this;
+    }
+
+    public function getNextRun(): ?DateTimeInterface
     {
         return $this->nextRun;
+    }
+
+    public function setNextRun(DateTimeInterface $nextRun): self
+    {
+        $this->nextRun = $nextRun;
+        return $this;
     }
 
     public function getSortOrder(): int
     {
         return $this->sortOrder;
+    }
+
+    public function setSortOrder(int $sortOrder): self
+    {
+        $this->sortOrder = $sortOrder;
+        return $this;
     }
 
     public function isIsRunning(): bool
@@ -170,69 +209,15 @@ use EntityIdTrait;
         return $this->active;
     }
 
-    public function setName(string $name): self
+    public function setActive(bool $active = true): self
     {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    public function setInterval(string $interval): self
-    {
-        $this->interval = $interval;
-        return $this;
-    }
-
-    public function setExpression(string $expression): self
-    {
-        $this->expression = $expression;
-        return $this;
-    }
-
-    public function setLastRun(\DateTimeInterface $lastRun): self
-    {
-        $this->lastRun = $lastRun;
-        return $this;
-    }
-
-    public function setLastDuration(string $lastDuration): self
-    {
-        $this->lastDuration = $lastDuration;
-        return $this;
-    }
-
-    public function setNextRun(\DateTimeInterface $nextRun): self
-    {
-        $this->nextRun = $nextRun;
-        return $this;
-    }
-
-    public function setSortOrder(int $sortOrder): self
-    {
-        $this->sortOrder = $sortOrder;
+        $this->active = $active;
         return $this;
     }
 
     public function setRunning(bool $isRunning = true): self
     {
         $this->isRunning = $isRunning;
-        return $this;
-    }
-
-    public function setActive(bool $active = true): self
-    {
-        $this->active = $active;
         return $this;
     }
 }

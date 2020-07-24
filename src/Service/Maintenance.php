@@ -5,10 +5,12 @@ namespace App\Service;
 use App\Entity\Domain;
 use App\Entity\Fee;
 use App\Entity\SegmentData;
+use App\Event\DomainExpired;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use App\Repository\DomainRepository;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Maintenance implements LoggerAwareInterface
 {
@@ -18,9 +20,12 @@ class Maintenance implements LoggerAwareInterface
 
     private DomainRepository $domainRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, DomainRepository $domainRepository)
+    private EventDispatcherInterface $dispatcher;
+
+    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $dispatcher, DomainRepository $domainRepository)
     {
         $this->entityManager = $entityManager;
+        $this->dispatcher = $dispatcher;
         $this->domainRepository = $domainRepository;
     }
 
@@ -33,8 +38,24 @@ class Maintenance implements LoggerAwareInterface
 
         $this->updateDomainFees();
 
+        $this->expireDomains();
+
         $this->entityManager->flush();
         $this->logger->info(sprintf("Maintenance Complete"));
+    }
+
+    private function expireDomains(): void
+    {
+        $expiredDomains = [];
+        $domains = $this->domainRepository->getExpiringDomains(0);
+        foreach($domains as $domain) {
+            //$domain->setStatus(Domain::STATUS_EXPIRED);
+            $expiredDomains[] = $domain;
+            //$this->domainRepository->save($domain);
+        }
+
+        $event = new DomainExpired($expiredDomains);
+        $this->dispatcher->dispatch($event, DomainExpired::NAME);
     }
 
     private function lowercaseDomains(): void

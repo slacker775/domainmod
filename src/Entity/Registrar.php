@@ -120,7 +120,7 @@ class Registrar
         return $this->domains->add($domain->setRegistrar($this));
     }
 
-    public function getDomains(): array
+    public function getDomains(): Collection
     {
         return $this->domains;
     }
@@ -135,7 +135,7 @@ class Registrar
         return $this->accounts->add($account->setRegistrar($this));
     }
 
-    public function getAccounts(): array
+    public function getAccounts(): Collection
     {
         return $this->accounts;
     }

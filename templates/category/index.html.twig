@@ -42,7 +42,7 @@
 							</td>
 							<td><a
 								href="{{ path('category_edit', { id: category.id }) }}">{{ category.stakeholder }}</a></td>
-							<td>{{ category.domains|length ?: '-' }}</td>
+							<td><a href="{{ path("domain_index", { 'domain_filter[category]': category.id }) }}">{{ category.domains|length ?: '-' }}</a></td>
 							<td>{{ category.sslCerts|length ?: '-' }}</td>
 						</tr>
 						{% endfor %}

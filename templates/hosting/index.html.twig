@@ -39,8 +39,8 @@ Web Hosting Providers
 							<td><a href="{{ path('hosting_edit',{ id: hosting.id }) }}">{{ hosting.name }}</a>
 								{% if hosting.id == app.user.settings.defaultHost.id|default(false) %}*{% endif %}
 							</td>
-							<td><a href="{{ path('domain_index', { hosting: hosting.id }) }}">{{ hosting.domains|length ?: '-' }}</a></td>
-							<td><a target="_blank" href="{{ hosting.url }}">www</a></td>
+							<td><a href="{{ path('domain_index', { 'domain_filter[hosting]': hosting.id }) }}">{{ hosting.domains|length ?: '-' }}</a></td>
+							<td>{% if hosting.url|default(false) %}<a target="_blank" href="{{ hosting.url }}">www</a>{% endif %}</td>
 						</tr>
 						{% else %}
 						<tr>

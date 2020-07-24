@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -101,18 +102,15 @@ class User implements UserInterface
 
     /**
      *
-     * @var \DateTime
-     *
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
-    private $lastLogin;
+    private ?DateTimeInterface $lastLogin;
 
     /**
      *
      * @ORM\OneToOne(targetEntity="App\Entity\UserSetting", mappedBy="user", cascade={"persist"})
-     * @var UserSetting
      */
-    private $settings;
+    private UserSetting $settings;
 
     use CreationTypeTrait;
 
@@ -221,7 +219,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLastLogin(): ?\DateTime
+    public function getLastLogin(): ?DateTimeInterface
     {
         return $this->lastLogin;
     }

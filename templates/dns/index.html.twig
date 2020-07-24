@@ -40,7 +40,7 @@ DNS Profiles
 								{% if dn.id == app.user.settings.defaultDns.id|default(false) %}*{% endif %}
 							</td>
 							<td><a href="{{ path('dns_edit', {'id': dn.id}) }}">{{ dn.numberOfServers }}</a></td>
-							<td><a href="{{ path('domain_index', {'dns': dn.id}) }}">{{ dn.getActiveDomains|length }}</a></td>
+							<td><a href="{{ path('domain_index', { 'domain_filter[dns]': dn.id }) }}">{{ dn.getActiveDomains|length }}</a></td>
 						</tr>
 						{% endfor %}
 					</tbody>

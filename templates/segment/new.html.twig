@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Segment{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ path('segment_index') }}">Segments</a></li>
+    <li class='breadcrumb-item active'>Add</li>
+{% endblock %}
+
+{% block body %}
+
+    {{ include('segment/_form.html.twig') }}
+
+{% endblock %}

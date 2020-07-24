@@ -1,0 +1,25 @@
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="card card-danger collapsed-card">
+    <div class="card-header">
+        <div class="card-tools">
+            <button class="btn btn-tool" type="button"
+                    data-card-widget="collapse">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <h3 class="card-title">Advanced Filtering [reset filters]</h3>
+    </div>
+    <div class="card-body" style="display: none;">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <button style="margin-top: 5px" class="btn btn-primary btn-danger">
+            Apply Filters
+        </button>
+        <button type="reset" style="margin-top: 5px" class="btn btn-primary btn-danger">
+            Reset Filters
+        </button>
+        {{ form_end(form) }}
+    </div>
+</div>

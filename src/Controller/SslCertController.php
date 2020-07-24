@@ -1,14 +1,20 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\SslCert;
+use App\Form\SslCertFilterType;
 use App\Form\SslCertType;
+use App\Repository\CreationTypeRepository;
 use App\Repository\SslCertRepository;
+use League\Csv\Writer;
+use SplTempFileObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\CreationTypeRepository;
 
 /**
  *
@@ -28,22 +34,98 @@ class SslCertController extends AbstractController
      *
      * @Route("/", name="ssl_cert_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $sslCerts = $this->repository->findAll();
+        $form = $this->createForm(SslCertFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
+
+        $filters = $this->getFormFilters($form);
+        $sslCerts = $this->repository->getCertsWithFilter($filters);
 
         return $this->render('ssl_cert/index.html.twig', [
-            'ssl_certs' => $sslCerts
+            'ssl_certs' => $sslCerts,
+            'form'      => $form->createView()
         ]);
+    }
+
+    private function getFormFilters(FormInterface $form): array
+    {
+        $filters = $form->getData();
+
+        if ($filters === null) {
+            return [];
+        }
+        $filters = array_filter($filters, function ($var) {
+            return $var !== null;
+        });
+        return $filters;
     }
 
     /**
      *
      * @Route("/export", name="ssl_cert_export")
      */
-    public function export()
+    public function export(Request $request): Response
     {
-        return $this->redirectToRoute('ssl_cert_index');
+        $form = $this->createForm(SslCertFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
+        $filters = $this->getFormFilters($form);
+        $certs = $this->repository->getCertsWithFilter($filters);
+
+        dump($certs);
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        $csv->insertOne([
+            'name',
+            'domain',
+            'owner',
+            'registrar',
+            'account',
+            'cost',
+            'expiration',
+            'ip',
+            'type',
+            'category',
+            'status',
+        ]);
+        foreach ($certs as $cert) {
+            $csv->insertOne([
+                $cert->getName(),
+                $cert->getDomain(),
+                $cert->getOwner(),
+                $cert->getSslProvider(),
+                $cert->getAccount(),
+                $cert->getTotalCost(),
+                $cert->getExpiryDate()
+                    ->format('m/d/Y'),
+                $cert->getIp()
+                    ->getIp(),
+                $cert->getType(),
+                $cert->getCategory(),
+                $cert->getStatus(),
+            ]);
+        }
+
+        return new Response($csv->getContent(), 200, [
+            'Content-Encoding'    => 'none',
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="domain-export.csv"',
+            'Content-Description' => 'Domain Export'
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/raw", name="ssl_cert_raw")
+     */
+    public function raw(Request $request): Response
+    {
+        $form = $this->createForm(SslCertFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
+        $filters = $this->getFormFilters($form);
+
+        return $this->render('ssl_cert/raw.html.twig', [
+            'certs' => $this->repository->getCertsWithFilter($filters)
+        ], new Response(null, 200, ['Content-Type' => 'text/plain']));
     }
 
     /**
@@ -62,11 +144,13 @@ class SslCertController extends AbstractController
             $sslCert->setOwner($sslCert->getAccount()
                 ->getOwner())
                 ->setSslProvider($sslCert->getAccount()
-                ->getSslProvider())
+                    ->getSslProvider())
                 ->setCreationType($creationTypeRepository->findByName('Manual'));
 
-            $fees = $sslCert->getSslProvider()->getFee();
-            $sslCert->setFee($fees)->setTotalCost($fees !== null ? $fees->getInitialFee() : 0);
+            $fees = $sslCert->getSslProvider()
+                ->getFee();
+            $sslCert->setFee($fees)
+                ->setTotalCost($fees !== null ? $fees->getInitialFee() : 0);
 
             $this->repository->save($sslCert);
 
@@ -76,7 +160,7 @@ class SslCertController extends AbstractController
 
         return $this->render('ssl_cert/new.html.twig', [
             'ssl_cert' => $sslCert,
-            'form' => $form->createView()
+            'form'     => $form->createView()
         ]);
     }
 
@@ -99,7 +183,7 @@ class SslCertController extends AbstractController
 
         return $this->render('ssl_cert/edit.html.twig', [
             'ssl_cert' => $sslCert,
-            'form' => $form->createView()
+            'form'     => $form->createView()
         ]);
     }
 

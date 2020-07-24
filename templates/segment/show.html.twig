@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Segment{% endblock %}
+
+{% block body %}
+    <h1>Segment</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ segment.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ segment.description }}</td>
+            </tr>
+            <tr>
+                <th>Segment</th>
+                <td>{{ segment.segment }}</td>
+            </tr>
+            <tr>
+                <th>NumberOfDomains</th>
+                <td>{{ segment.numberOfDomains }}</td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>{{ segment.notes }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ segment.id }}</td>
+            </tr>
+            <tr>
+                <th>CreatedBy</th>
+                <td>{{ segment.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedBy</th>
+                <td>{{ segment.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ segment.createdAt ? segment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ segment.updatedAt ? segment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('segment_index') }}">back to list</a>
+
+    <a href="{{ path('segment_edit', {'id': segment.id}) }}">edit</a>
+
+    {{ include('segment/_delete_form.html.twig') }}
+{% endblock %}

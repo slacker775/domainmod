@@ -50,7 +50,7 @@ Domain Registrar Accounts
 							<td><a href="{{ path('owner_edit', { id: registrar_account.owner.id }) }}">{{ registrar_account.owner }}</a></td>
 
 							<td>{% if registrar_account.getActiveDomainCount > 0 %} <a
-								href="{{ path('domain_index', { account: registrar_account.id }) }}">{{ registrar_account.getActiveDomainCount }}</a>
+								href="{{ path('domain_index', { 'domain_filter[account]': registrar_account.id }) }}">{{ registrar_account.getActiveDomainCount }}</a>
 								{% else %} - {% endif %}</td>
 						</tr>
 						{% endfor %}

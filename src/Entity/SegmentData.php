@@ -17,52 +17,39 @@ class SegmentData
 
     /**
      *
-     * @var Segment
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Segment", inversedBy="segmentData")
-     * @ORM\JoinColumn(name="segment_id", referencedColumnName="id")
      */
-    private $segment;
+    private Segment $segment;
 
     /**
-     *
-     * @var string
      *
      * @ORM\Column(name="domain", type="string", length=255, nullable=false)
      */
-    private $domain;
+    private string $domain;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="active", type="boolean", nullable=false)
      */
-    private $active;
+    private bool $active;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="inactive", type="boolean", nullable=false)
      */
-    private $inactive;
+    private bool $inactive;
 
     /**
-     *
-     * @var bool
      *
      * @ORM\Column(name="missing", type="boolean", nullable=false)
      */
-    private $missing;
+    private bool $missing;
 
     /**
      *
-     * @var bool
-     *
      * @ORM\Column(name="filtered", type="boolean", nullable=false)
      */
-    private $filtered;
+    private bool $filtered;
 
     use TimestampableEntity;
 
@@ -73,6 +60,13 @@ class SegmentData
         $this->inactive = false;
         $this->missing = false;
         $this->filtered = false;
+    }
+
+    static public function create(string $domain)
+    {
+        $obj = new self();
+        $obj->setDomain($domain);
+        return $obj;
     }
 
     public function getSegment(): Segment

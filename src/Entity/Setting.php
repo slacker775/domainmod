@@ -181,12 +181,9 @@ class Setting
     private $expirationDays;
 
     /**
-     *
-     * @var User
      * @ORM\OneToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(name="email_signature", referencedColumnName="id")
      */
-    private $emailSignature;
+    private ?User $emailSignature;
 
     /**
      *
@@ -276,10 +273,10 @@ class Setting
         $this->upgradeAvailable = false;
         $this->largeMode = false;
         $this->expirationDays = 60;
-        $this->emailSignature = 1;
+        $this->emailSignature = null;
         $this->currencyConverter = 'era';
         $this->useSmtp = false;
-        $this->smtpProtocl = 'tls';
+        $this->smtpProtocol = 'tls';
         $this->smtpPort = '587';
         $this->debugMode = false;
         $this->localPhpLog = false;

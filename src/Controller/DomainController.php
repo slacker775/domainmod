@@ -1,23 +1,21 @@
 <?php
+
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\DomainRepository;
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Domain;
-use Symfony\Component\HttpFoundation\Response;
+use App\Form\DomainFilterType;
 use App\Form\DomainType;
-use App\Repository\RegistrarRepository;
 use App\Repository\CreationTypeRepository;
-use App\Repository\UserRepository;
-use App\Entity\Registrar;
-use App\Entity\RegistrarAccount;
-use App\Entity\Dns;
-use App\Entity\Hosting;
-use App\Entity\Owner;
-use League\Csv\Writer;
+use App\Repository\DomainRepository;
 use App\Repository\RegistrarAccountRepository;
+use App\Repository\RegistrarRepository;
+use League\Csv\Writer;
+use SplTempFileObject;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  *
@@ -40,67 +38,17 @@ class DomainController extends AbstractController
         $this->registrarRepository = $registrarRepository;
     }
 
-    /*
-     * This function returns all domains based on filters that may be
-     * present in the request
-     */
-    private function getDomains(array $filters): ?array
-    {
-        $domains = $this->repository->findBy($filters, [
-            'name' => 'ASC'
-        ]);
-        return $domains;
-    }
-
-    private function getRequestFilters(Request $request): array
-    {
-        $filters = [];
-        $registrarId = $request->query->getInt('registrar');
-        if ($registrarId != 0) {
-            $filters['registrar'] = $this->getDoctrine()
-                ->getRepository(Registrar::class)
-                ->find($registrarId);
-        }
-        $accountId = $request->query->getInt('account');
-        if ($accountId != 0) {
-            $filters['account'] = $this->getDoctrine()
-                ->getRepository(RegistrarAccount::class)
-                ->find($accountId);
-        }
-        $dnsId = $request->query->getInt('dns');
-        if ($dnsId != 0) {
-            $filters['dns'] = $this->getDoctrine()
-                ->getRepository(Dns::class)
-                ->find($dnsId);
-        }
-        $hostingId = $request->query->getInt('hosting');
-        if ($hostingId != 0) {
-            $filters['hostingProvider'] = $this->getDoctrine()
-                ->getRepository(Hosting::class)
-                ->find($hostingId);
-        }
-        $ownerId = $request->query->getInt('owner');
-        if ($ownerId != 0) {
-            $filters['owner'] = $this->getDoctrine()
-                ->getRepository(Owner::class)
-                ->find($ownerId);
-        }
-        $tld = $request->query->get('tld');
-        if ($tld != null) {
-            $filters['tld'] = $tld;
-        }
-        return $filters;
-    }
-
     /**
      *
      * @Route("/", name="domain_index")
      */
     public function index(Request $request)
     {
-        $filters = $this->getRequestFilters($request);
+        $form = $this->createForm(DomainFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
 
-        $domains = $this->getDomains($filters);
+        $filters = $this->getFormFilters($form);
+        $domains = $this->repository->getDomainsWithFilter($filters);
 
         $totalCost = 0;
         foreach ($domains as $d) {
@@ -115,8 +63,22 @@ class DomainController extends AbstractController
             'registrarAccountCount' => $this->accountRepository->count([]),
             'totalCost' => $totalCost,
             'sortBy' => 'dn_a',
-            'filters' => $filters
+            'filters' => $filters,
+            'form' => $form->createView()
         ]);
+    }
+
+    private function getFormFilters(FormInterface $form): array
+    {
+        $filters = $form->getData();
+
+        if($filters === null) {
+            return [];
+        }
+        $filters = array_filter($filters, function ($var) {
+            return $var !== null;
+        });
+        return $filters;
     }
 
     /**
@@ -129,7 +91,8 @@ class DomainController extends AbstractController
 
         $domain = new Domain();
 
-        $settings = $this->getUser()->getSettings();
+        $settings = $this->getUser()
+            ->getSettings();
         $domain->setRegistrar($settings->getDefaultRegistrar())
             ->setAccount($settings->getDefaultRegistrarAccount())
             ->setCategory($settings->getDefaultCategoryDomains())
@@ -142,11 +105,11 @@ class DomainController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $domain->setTld()
                 ->setOwner($domain->getAccount()
-                ->getOwner())
+                    ->getOwner())
                 ->setRegistrar($domain->getAccount()
-                ->getRegistrar())
+                    ->getRegistrar())
                 ->setFee($registrarRepository->getFeeByTld($domain->getAccount()
-                ->getRegistrar(), $domain->getTld()))
+                    ->getRegistrar(), $domain->getTld()))
                 ->setCreationType($creationTypeRepository->findByName('Manual'));
             $this->repository->save($domain);
 
@@ -164,22 +127,29 @@ class DomainController extends AbstractController
      *
      * @Route("/raw", name="domain_raw")
      */
-    public function raw(DomainRepository $repository)
+    public function raw(Request $request): Response
     {
+        $form = $this->createForm(DomainFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
+        $filters = $this->getFormFilters($form);
+
         return $this->render('domain/raw.html.twig', [
-            'domains' => $repository->findAll()
-        ]);
+            'domains' => $this->repository->getDomainsWithFilter($filters)
+        ], new Response(null, 200, ['Content-Type' => 'text/plain']));
     }
 
     /**
      *
      * @Route("/export", name="domain_export")
      */
-    public function export(Request $request)
+    public function export(Request $request): Response
     {
-        $domains = $this->getDomains($request);
+        $form = $this->createForm(DomainFilterType::class, null, ['method' => 'GET']);
+        $form->handleRequest($request);
+        $filters = $this->getFormFilters($form);
+        $domains = $this->repository->getDomainsWithFilter($filters);
 
-        $csv = Writer::createFromFileObject(new \SplTempFileObject());
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
         $csv->insertOne([
             'domain',
             'tld',
@@ -221,11 +191,11 @@ class DomainController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $domain->setTld()
                 ->setOwner($domain->getAccount()
-                ->getOwner())
+                    ->getOwner())
                 ->setRegistrar($domain->getAccount()
-                ->getRegistrar())
+                    ->getRegistrar())
                 ->setFee($registrarRepository->getFeeByTld($domain->getAccount()
-                ->getRegistrar(), $domain->getTld()));
+                    ->getRegistrar(), $domain->getTld()));
             $this->addFlash('success', sprintf('Domain %s Updated', $domain->getName()));
             return $this->redirectToRoute('domain_index');
         }

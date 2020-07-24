@@ -43,7 +43,7 @@ Account Owners
 								* {% endif %} {% if owner.id == app.user.settings.defaultOwnerSsl.id|default(false) %}
 								^ {% endif %}</td>
 							<td><a href="{{ path('registrar_account_index', { owner: owner.id }) }}">{{ owner.registrarAccounts|length ?: '-' }}</a></td>
-							<td><a href="{{ path('domain_index', { owner: owner.id }) }}">{{ owner.domains|length ?: '-' }}</a></td>
+							<td><a href="{{ path('domain_index', { 'domain_filter[owner]': owner.id }) }}">{{ owner.domains|length ?: '-' }}</a></td>
 							<td><a href="{{ path('ssl_account_index', { owner: owner.id }) }}">{{ owner.sslAccounts|length ?: '-' }}</a></td>
 							<td><a href="{{ path('ssl_cert_index', { owner: owner.id }) }}">{{ owner.sslCerts|length ?: '-' }}</a></td>
 						</tr>

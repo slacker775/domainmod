@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Segment{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ path('segment_index') }}">Segments</a></li>
+    <li class='breadcrumb-item active'>Edit</li>
+{% endblock %}
+
+{% block body %}
+
+    {{ include('segment/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {{ include('segment/_delete_form.html.twig') }}
+{% endblock %}

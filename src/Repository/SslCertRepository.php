@@ -68,4 +68,47 @@ class SslCertRepository extends ServiceEntityRepository
         $query = $this->getEntityManager()->createQuery("SELECT COUNT(s) FROM App\Entity\SslCert s WHERE s.status = '4'");
         return $query->getSingleScalarResult();
     }
+
+    public function getCertsWithFilter(array $filters = []): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->orderBy('d.name', 'ASC');
+        foreach ($filters as $key => $value) {
+            switch ($key) {
+                case 'keyword':
+                    $qb->andWhere('LOWER(d.name) LIKE :keyword')
+                        ->setParameter('keyword', '%' . strtolower($value) . '%');
+                    break;
+                case 'expiringBetween':
+                    /* Match '02/15/2004 - 03/31/2007' */
+                    $re = '/^(?P<begin>(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d)\s-\s(?P<end>(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d)/';
+                    if (preg_match($re, $value, $matches) == 1) {
+                        $begin = $matches['begin'];
+                        $end = $matches['end'];
+                        $qb->andWhere('d.expiryDate BETWEEN :begin AND :end')
+                            ->setParameters(['begin' => $begin, 'end' => $end]);
+                    }
+                    break;
+                case 'status':
+                    if (is_int($value) == true) {
+                        $qb->andWhere('d.status = :status')
+                            ->setParameter('status', $value);
+                    } else {
+                        switch ($value) {
+                            case 'All':
+                                break;
+                            case 'Live':
+                                $qb->andWhere("d.status IN ('1','2','3','4','5')");
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    $qb->andWhere(sprintf('d.%s = :%s', $key, $key))
+                        ->setParameter($key, $value);
+            }
+        }
+        return $qb->getQuery()
+            ->execute();
+    }
 }

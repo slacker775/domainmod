@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -9,7 +10,6 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * Segments
  *
  * @ORM\Entity
  */
@@ -20,51 +20,39 @@ class Segment
 
     /**
      *
-     * @var string
-     *
      * @ORM\Column(type="string", length=35, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
      *
-     * @var string
+     * @ORM\Column(type="text", length=0, nullable=true)
+     */
+    private ?string $description;
+
+    /**
      *
      * @ORM\Column(type="text", length=0, nullable=false)
      */
-    private $description;
+    private string $segment;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(type="text", length=0, nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\SegmentData", mappedBy="segment", cascade={"persist", "remove"})
      */
-    private $segment;
+    private Collection $segmentData;
 
     /**
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\SegmentData", mappedBy="segment")
-     *
-     * @var Collection
-     */
-    private $segmentData;
-
-    /**
-     *
-     * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $numberOfDomains;
+    private int $numberOfDomains;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(type="text", length=0, nullable=false)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $notes;
+    private ?string $notes;
 
     use CreationTypeTrait;
 
@@ -75,6 +63,11 @@ class Segment
     public function __construct()
     {
         $this->generateId();
+        $this->name = '';
+        $this->segment = '';
+        $this->description = null;
+        $this->notes = null;
+        $this->numberOfDomains = 0;
         $this->segmentData = new ArrayCollection();
     }
 
@@ -89,7 +82,7 @@ class Segment
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -147,6 +140,7 @@ class Segment
     public function addSegmentData(SegmentData $data): self
     {
         if ($this->segmentData->contains($data) === false) {
+            $data->setSegment($this);
             $this->segmentData->add($data);
         }
         return $this;
@@ -156,9 +150,14 @@ class Segment
     {
         if ($this->segmentData->contains($data) === true) {
             $this->segmentData->removeElement($data);
+            $data->setSegment(null);
         }
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

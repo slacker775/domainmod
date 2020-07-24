@@ -5,198 +5,204 @@
 {% block title %}SSL Certificates{% endblock %}
 
 {% block breadcrumbs %}
-<li class='active'>SSL Certs</li>
+    <li class='active'>SSL Certs</li>
 {% endblock %}
 
 {% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
 
-<a href="{{ path('ssl_cert_new') }}">{{ _self.showButton('button','Add SSL Cert') }}</a>
-    <a target="_blank" href="raw.php">{{ _self.showButton('button','Raw List') }}</a>
-    <a href="{{ path('ssl_cert_export') }}">{{ _self.showButton('button','Export') }}</a>
+                    {{ include('ssl_cert/_filter-form.html.twig') }}
+                    <a href="{{ path('ssl_cert_new') }}">{{ _self.showButton('button','Add SSL Cert') }}</a>
+                    <a target="_blank" href="{{ path('ssl_cert_raw') }}">{{ _self.showButton('button','Raw List') }}</a>
+                    <a href="{{ path('ssl_cert_export') }}">{{ _self.showButton('button','Export') }}</a>
 
-    <BR><BR><strong>Total Cost:</strong> $0.00 USD <BR>
-    <strong>Number of SSL Certs:</strong> {{ ssl_certs|length }}<BR><BR>
-    
-    {% if ssl_certs %}
-    <table id="ssl-main" class="table table-striped dt-responsive cell-border compact">
-        <thead>
-            <tr>
-                <th width="20px"></th>
-                <th class="all">
-                    Name
-                </th>
-                {% if app.user.settings.displaySslExpiryDate %}
-                <th>
-                    Expiry
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslFee %}
-                <th>
-                    Fee
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslDomain %}
-                <th>
-                    Domain
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslProvider %}
-                <th>
-                    Provider
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslAccount %}
-                <th>
-                    Account
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslType %}
-                <th>
-                    Type
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslIp %}
-                <th>
-                    IP Address
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslCategory %}
-                <th>
-                    Category
-                </th>
-                {% endif %}
-                {% if app.user.settings.displaySslOwner %}
-                <th>
-                    Owner
-                </th>
-                {% endif %}
-{# 
-                <?php if ($_SESSION['s_csf_data']) {
+                    <BR><BR><strong>Total Cost:</strong> $0.00 USD <BR>
+                    <strong>Number of SSL Certs:</strong> {{ ssl_certs|length }}<BR><BR>
 
-                    foreach ($_SESSION['s_csf_data'] as $field) {
+                    {% if ssl_certs %}
+                        <table id="ssl-main" class="table table-striped dt-responsive cell-border compact">
+                            <thead>
+                            <tr>
+                                <th width="20px"></th>
+                                <th class="all">
+                                    Name
+                                </th>
+                                {% if app.user.settings.displaySslExpiryDate %}
+                                    <th>
+                                        Expiry
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslFee %}
+                                    <th>
+                                        Fee
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslDomain %}
+                                    <th>
+                                        Domain
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslProvider %}
+                                    <th>
+                                        Provider
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslAccount %}
+                                    <th>
+                                        Account
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslType %}
+                                    <th>
+                                        Type
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslIp %}
+                                    <th>
+                                        IP Address
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslCategory %}
+                                    <th>
+                                        Category
+                                    </th>
+                                {% endif %}
+                                {% if app.user.settings.displaySslOwner %}
+                                    <th>
+                                        Owner
+                                    </th>
+                                {% endif %}
+                                {#
+                                                <?php if ($_SESSION['s_csf_data']) {
 
-                        if ($field['value'] == 1 && $field['type_id'] != '3') { // Don't show column for Text Areas ?>
+                                                    foreach ($_SESSION['s_csf_data'] as $field) {
 
-                            <th>
+                                                        if ($field['value'] == 1 && $field['type_id'] != '3') { // Don't show column for Text Areas ?>
 
-                                <?php echo $field['name']; ?>
+                                                            <th>
 
-                            </th><?php
+                                                                <?php echo $field['name']; ?>
 
-                        }
+                                                            </th><?php
 
-                    }
+                                                        }
 
-                } ?>
-#}
-            </tr>
-        </thead>
-	<tbody>
-		{% for ssl_cert in ssl_certs %}
-		<tr>
-			<td></td>
-			<td>{% if ssl_cert.status == '0' %} <a title="Expired"><strong>x</strong></a>&nbsp;
-				{% elseif ssl_cert.status == '3' %} <a title="Pending (Renewal)"><strong>PRn</strong></a>&nbsp;
-				{% elseif ssl_cert.status == '4' %} <a title="Pending (Other)"><strong>PO</strong></a>&nbsp;
-				{% elseif ssl_cert.status == '5' %} <a
-				title="Pending (Registration)"><strong>PRg</strong></a>&nbsp; {% endif %}
-				<a href="{{ path('ssl_cert_edit', { id: ssl_cert.id }) }}">{{ ssl_cert.name }}</a>
-			</td>
-			{% if app.user.settings.displaySslExpiryDate %}
-			<td>{{ ssl_cert.expiryDate ? ssl_cert.expiryDate|date('Y-m-d') : '' }}</td>
-			{% endif %}
-			{% if app.user.settings.displaySslFee %}
-			<td>{{ ssl_cert.fee }}</td>
-			{% endif %}
-			{% if app.user.settings.displaySslDomain %}
-			<td><a
-				href="{{ path('domain_edit', { id: ssl_cert.domain.id }) }}">{{ ssl_cert.domain }}</a></td>
-			{% endif %}
-			{% if app.user.settings.displaySslProvider %}
-			<td><a
-				href="{{ path('ssl_provider_edit', { id: ssl_cert.sslProvider.id }) }}">{{ ssl_cert.sslProvider }}</a></td>
-			{% endif %}
-			{% if app.user.settings.displaySslAccount %}
-			<td><a
-				href="{{ path('ssl_account_edit', { id: ssl_cert.account.id }) }}">{{ ssl_cert.account }}</a></td>
-			{% endif %}
-			{% if app.user.settings.displaySslType %}
-			<td><a
-				href="{{ path('ssl_cert_type_edit', { id: ssl_cert.type.id }) }}">{{ ssl_cert.type }}</a></td>
-			{% endif %}
-			{% if app.user.settings.displaySslIp %}
-			<td><a
-				href="{{ path('ip_address_edit', { id: ssl_cert.ip.id }) }}">{{ ssl_cert.ip }}</a></td>
-			{% endif %}
-			{% if app.user.settings.displaySslCategory %}
-			<td><a
-				href="{{ path('category_edit', { id: ssl_cert.category.id }) }}">{{ ssl_cert.category }}</a></td>
-			{% endif %}
-			{% if app.user.settings.displaySslOwner %}
-			<td><a
-				href="{{ path('owner_edit', { id: ssl_cert.owner.id }) }}">{{ ssl_cert.owner }}</a></td>
-			{% endif %}
+                                                    }
 
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-{% else %}
-Your search returned zero results.
-{% endif %}
+                                                } ?>
+                                #}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for ssl_cert in ssl_certs %}
+                                <tr>
+                                    <td></td>
+                                    <td>{% if ssl_cert.status == '0' %} <a title="Expired"><strong>x</strong></a>&nbsp;
+                                        {% elseif ssl_cert.status == '3' %} <a
+                                                title="Pending (Renewal)"><strong>PRn</strong></a>&nbsp;
+                                        {% elseif ssl_cert.status == '4' %} <a
+                                                title="Pending (Other)"><strong>PO</strong></a>&nbsp;
+                                        {% elseif ssl_cert.status == '5' %} <a
+                                                title="Pending (Registration)"><strong>PRg</strong></a>&nbsp; {% endif %}
+                                        <a href="{{ path('ssl_cert_edit', { id: ssl_cert.id }) }}">{{ ssl_cert.name }}</a>
+                                    </td>
+                                    {% if app.user.settings.displaySslExpiryDate %}
+                                        <td>{{ ssl_cert.expiryDate ? ssl_cert.expiryDate|date('Y-m-d') : '' }}</td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslFee %}
+                                        <td>{{ ssl_cert.fee }}</td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslDomain %}
+                                        <td><a
+                                                    href="{{ path('domain_edit', { id: ssl_cert.domain.id }) }}">{{ ssl_cert.domain }}</a>
+                                        </td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslProvider %}
+                                        <td><a
+                                                    href="{{ path('ssl_provider_edit', { id: ssl_cert.sslProvider.id }) }}">{{ ssl_cert.sslProvider }}</a>
+                                        </td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslAccount %}
+                                        <td><a
+                                                    href="{{ path('ssl_account_edit', { id: ssl_cert.account.id }) }}">{{ ssl_cert.account }}</a>
+                                        </td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslType %}
+                                        <td><a
+                                                    href="{{ path('ssl_cert_type_edit', { id: ssl_cert.type.id }) }}">{{ ssl_cert.type }}</a>
+                                        </td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslIp %}
+                                        <td><a
+                                                    href="{{ path('ip_address_edit', { id: ssl_cert.ip.id }) }}">{{ ssl_cert.ip }}</a>
+                                        </td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslCategory %}
+                                        <td><a
+                                                    href="{{ path('category_edit', { id: ssl_cert.category.id }) }}">{{ ssl_cert.category }}</a>
+                                        </td>
+                                    {% endif %}
+                                    {% if app.user.settings.displaySslOwner %}
+                                        <td><a
+                                                    href="{{ path('owner_edit', { id: ssl_cert.owner.id }) }}">{{ ssl_cert.owner }}</a>
+                                        </td>
+                                    {% endif %}
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        Your search returned zero results.
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
-<style>
-#ssl-main thead th {
-	padding: 2px 0px 2px 6px;
-	border: 0;
-	white-space: nowrap;
-}
+    {{ encore_entry_link_tags('daterangepicker') }}
+    <style>
+        #ssl-main thead th {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
 
-#ssl-main tbody tr:hover {
-	background-color: #dddddd;
-}
+        #ssl-main tbody tr:hover {
+            background-color: #dddddd;
+        }
 
-#ssl-main tbody td {
-	padding: 2px 0px 2px 6px;
-	border: 0;
-	white-space: nowrap;
-}
-</style>
+        #ssl-main tbody td {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
+    </style>
 {% endblock %}
 
-{% block datatable_options %}
-var oldStart = 0;
-$('#ssl-main').DataTable({
-    "paging": true,
-    "lengthChange": true,
-    "lengthMenu": [ [{{ app.user.settings.numberOfSslCerts }}, 50, 75, 100, -1], [{{ app.user.settings.numberOfSslCerts }}, 50, 75, 100, "All"] ],
-    "searching": true,
-    "info": true,
-    "autoWidth": true,
-    "bAutoWidth": false,
-    "responsive": {
-         details: {
-                   type: "column"
-                  }
-                  },
-    "columnDefs": [ {
-                     className: "control",
-                     orderable: false,
-                     targets:   0
-                     } ],
-    "ordering": true,
-    "order": [[ {{ app.user.settings.displaySslExpiryDate ? 2 : 1 }}, "asc" ]],
-    "bSortClasses": false,
-    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
-    "fnDrawCallback": function (o) {
-      if ( o._iDisplayStart != oldStart ) {
-          var targetOffset = $("#ssl-main").offset().top;
-          $("html,body").animate({scrollTop: targetOffset}, 0);
-          oldStart = o._iDisplayStart;
-      }
-    }
-});
+{% block javascripts %}
+    {{ encore_entry_script_tags('daterangepicker') }}
+    <script type="text/javascript">
+        $(function () {
+            $('#ssl-main').DataTable({});
+            $('#ssl_cert_filter_expiringBetween').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            });
+            $('#ssl_cert_filter_expiringBetween').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            });
+            $('#ssl_cert_filter_expiringBetween').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+        });
+    </script>
 {% endblock %}

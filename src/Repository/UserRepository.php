@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Repository;
 
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use App\Entity\User;
 
 class UserRepository extends ServiceEntityRepository
 {
@@ -15,12 +17,14 @@ class UserRepository extends ServiceEntityRepository
 
     public function save(User $user): void
     {
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()
+            ->persist($user);
     }
 
     public function remove(User $user): void
     {
-        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()
+            ->remove($user);
     }
 
     public function findByName(string $username): User
@@ -30,5 +34,14 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('name', $username)
             ->getQuery()
             ->getSingleResult();
+    }
+
+    public function getUsersForExpirationEmails(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.settings', 's')
+            ->andWhere('s.expirationEmails = true')
+            ->getQuery()
+            ->execute();
     }
 }

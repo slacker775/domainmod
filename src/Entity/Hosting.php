@@ -38,7 +38,7 @@ class Hosting
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="hostingProvider")
+     * @ORM\OneToMany(targetEntity="App\Entity\Domain", mappedBy="hosting")
      */
     private Collection $domains;
 

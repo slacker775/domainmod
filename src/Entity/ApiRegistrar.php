@@ -5,7 +5,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Uid\UuidV4;
 
 /**
  * ApiRegistrars
@@ -295,7 +294,7 @@ class ApiRegistrar
         return $this->retTransferLock;
     }
 
-    public function setRetTransferLock($retTransferLock = true): self
+    public function setRetTransferLock(bool $retTransferLock = true): self
     {
         $this->retTransferLock = $retTransferLock;
         return $this;

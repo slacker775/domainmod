@@ -49,7 +49,7 @@ IP Addresses
 							<td><a
 								href="{{ path('ip_address_edit', { id: ip_address.id }) }}">{{ ip_address.rdns }}</a></td>
 							<td><a
-								href="{{ path('domain_index', { ip: ip_address.id }) }}">{{ ip_address.domains|length ?: '-' }}</a></td>
+								href="{{ path('domain_index', { 'domain_filter[ip]': ip_address.id }) }}">{{ ip_address.domains|length ?: '-' }}</a></td>
 							<td><a
 								href="{{ path('ssl_cert_index', { ip: ip_address.id }) }}">{{ ip_address.sslCerts|length ?: '-' }}</a></td>
 						</tr>

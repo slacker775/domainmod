@@ -3,14 +3,17 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTime;
+use DateInterval;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * SslCerts
  *
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class SslCert
 {
@@ -29,123 +32,87 @@ class SslCert
 
     /**
      *
-     * @var Owner
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="sslCerts")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      */
-    private $owner;
+    private Owner $owner;
 
     /**
-     *
-     * @var SslProvider
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\SslProvider", inversedBy="certs")
-     * @ORM\JoinColumn(name="ssl_provider_id", referencedColumnName="id")
      */
-    private $sslProvider;
+    private SslProvider $sslProvider;
 
     /**
-     *
-     * @var SslAccount
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\SslAccount", inversedBy="certs")
-     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
      */
-    private $account;
+    private ?SslAccount $account;
 
     /**
-     *
-     * @var Domain
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Domain")
-     * @ORM\JoinColumn(name="domain_id", referencedColumnName="id")
      */
-    private $domain;
+    private ?Domain $domain;
 
     /**
-     *
-     * @var SslCertType
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\SslCertType", inversedBy="sslCerts")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
-    private $type;
+    private ?SslCertType $type;
 
     /**
-     *
-     * @var IpAddress
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\IpAddress", inversedBy="sslCerts")
-     * @ORM\JoinColumn(name="ip_id", referencedColumnName="id")
      */
-    private $ip;
+    private ?IpAddress $ip;
 
     /**
-     *
-     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="sslCerts")
-     * @ORM\JoinColumn(name="cat_id", referencedColumnName="id")
      */
-    private $category;
+    private ?Category $category;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @ORM\Column(type="string", length=100, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
      *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expiry_date", type="date", nullable=false)
+     * @ORM\Column(type="date", nullable=false)
      */
-    private $expiryDate;
+    private DateTimeInterface $expiryDate;
 
     /**
-     *
-     * @var SslFee
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\SslFee")
-     * @ORM\JoinColumn(name="fee_id", referencedColumnName="id")
      */
-    private $fee;
+    private ?SslFee $fee;
 
     /**
      *
-     * @var float
-     *
-     * @ORM\Column(name="total_cost", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=false)
      */
-    private $totalCost;
+    private float $totalCost;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="notes", type="text", length=0, nullable=true)
+     * @ORM\Column(type="text", length=0, nullable=true)
      */
-    private $notes;
+    private ?string $notes;
 
     /**
      *
-     * @var string
-     *
-     * @ORM\Column(name="active", type="string", length=2, nullable=false, options={"default"="1"})
+     * @ORM\Column(type="string", length=2, nullable=false, options={"default"="1"})
      */
-    private $status;
+    private string $status;
 
     /**
      *
-     * @var bool
-     *
-     * @ORM\Column(name="fee_fixed", type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      */
-    private $feeFixed;
+    private bool $feeFixed;
 
     use CreationTypeTrait;
 
@@ -156,9 +123,17 @@ class SslCert
     public function __construct()
     {
         $this->generateId();
+        $this->name = '';
         $this->status = '1';
-        $this->total_cost = 0.0;
+        $this->totalCost = 0.0;
         $this->feeFixed = false;
+        $this->domain = null;
+        $this->account = null;
+        $this->type = null;
+        $this->ip = null;
+        $this->category = null;
+        $this->notes = null;
+        $this->expiryDate = (new DateTime())->add(new DateInterval('P1Y'));
     }
 
     public function getOwner(): ?Owner
@@ -180,17 +155,6 @@ class SslCert
     public function setSslProvider(SslProvider $sslProvider): self
     {
         $this->sslProvider = $sslProvider;
-        return $this;
-    }
-
-    public function getAccount(): ?SslAccount
-    {
-        return $this->account;
-    }
-
-    public function setAccount(SslAccount $account): self
-    {
-        $this->account = $account;
         return $this;
     }
 
@@ -221,10 +185,6 @@ class SslCert
         return $this->ip;
     }
 
-    /**
-     *
-     * @param number $ipId
-     */
     public function setIp(IpAddress $ip): self
     {
         $this->ip = $ip;
@@ -253,12 +213,12 @@ class SslCert
         return $this;
     }
 
-    public function getExpiryDate(): ?\DateTimeInterface
+    public function getExpiryDate(): ?DateTimeInterface
     {
         return $this->expiryDate;
     }
 
-    public function setExpiryDate(\DateTime $expiryDate): self
+    public function setExpiryDate(DateTime $expiryDate): self
     {
         $this->expiryDate = $expiryDate;
         return $this;
@@ -319,5 +279,26 @@ class SslCert
         return $this;
     }
 
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate()
+     */
+    public function prePersist(): void
+    {
+        $this->setSslProvider($this->getAccount()
+            ->getSslProvider())
+            ->setOwner($this->getAccount()
+                ->getOwner());
+    }
 
+    public function getAccount(): ?SslAccount
+    {
+        return $this->account;
+    }
+
+    public function setAccount(SslAccount $account): self
+    {
+        $this->account = $account;
+        return $this;
+    }
 }

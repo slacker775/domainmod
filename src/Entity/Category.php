@@ -28,13 +28,13 @@ class Category
      *
      * @ORM\Column(name="stakeholder", type="string", length=100, nullable=true)
      */
-    private string $stakeholder;
+    private ?string $stakeholder;
 
     /**
      *
      * @ORM\Column(name="notes", type="text", length=0, nullable=true)
      */
-    private string $notes;
+    private ?string $notes;
 
     /**
      *
@@ -57,6 +57,9 @@ class Category
     public function __construct()
     {
         $this->generateId();
+        $this->name = '';
+        $this->stakeholder = null;
+        $this->notes = null;
         $this->domains = new ArrayCollection();
         $this->sslCerts = new ArrayCollection();
     }

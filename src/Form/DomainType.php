@@ -74,7 +74,7 @@ class DomainType extends AbstractType
             'class' => IpAddress::class,
             'label' => 'IP Address'
         ])
-            ->add('hostingProvider', EntityType::class, [
+            ->add('hosting', EntityType::class, [
             'class' => Hosting::class,
             'label' => 'Web Hosting Provider'
         ])

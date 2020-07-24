@@ -106,7 +106,7 @@ class Domain
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Hosting", inversedBy="domains")
      */
-    private ?Hosting $hostingProvider;
+    private ?Hosting $hosting;
 
     /**
      *
@@ -296,14 +296,30 @@ class Domain
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function getHostingProvider(): ?Hosting
     {
-        return $this->hostingProvider;
+        return $this->getHosting();
     }
 
-    public function setHostingProvider(?Hosting $hostingProvider): self
+    public function getHosting(): ?Hosting
     {
-        $this->hostingProvider = $hostingProvider;
+        return $this->hosting;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function setHostingProvider(?Hosting $hosting): self
+    {
+        return $this->setHosting($hosting);
+    }
+
+    public function setHosting(?Hosting $hosting): self
+    {
+        $this->hosting = $hosting;
         return $this;
     }
 

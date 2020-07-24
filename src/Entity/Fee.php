@@ -78,7 +78,7 @@ class Fee
     public function __construct()
     {
         $this->generateId();
-        $this->fixedFee = false;
+        $this->feeFixed = false;
         $this->initialFee = 0;
         $this->renewalFee = 0.0;
         $this->transferFee = 0.0;
