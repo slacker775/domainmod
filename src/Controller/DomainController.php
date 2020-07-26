@@ -62,8 +62,6 @@ class DomainController extends AbstractController
             'registrarCount' => $this->registrarRepository->count([]),
             'registrarAccountCount' => $this->accountRepository->count([]),
             'totalCost' => $totalCost,
-            'sortBy' => 'dn_a',
-            'filters' => $filters,
             'form' => $form->createView()
         ]);
     }

@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\IpAddress;
+use App\Entity\Owner;
+use App\Entity\SslAccount;
 use App\Entity\SslCert;
 use App\Entity\SslCertType as SslCertTypeEntity;
 use App\Entity\SslProvider;
@@ -21,6 +23,8 @@ class SslCertFilterType extends AbstractType
         $builder
             ->add('domain',null,['required' => false])
             ->add('sslProvider', EntityType::class, ['class' => SslProvider::class, 'label' => false, 'required' => false, 'placeholder' => 'SSL Provider - ALL'])
+            ->add('account', EntityType::class, ['class' => SslAccount::class, 'label' => false, 'required' => false, 'placeholder' => 'SSL Account - ALL'])
+            ->add('owner', EntityType::class, ['class' => Owner::class, 'label' => false, 'required' => false, 'placeholder' => 'Owner - ALL'])
             ->add('type', EntityType::class, ['class' => SslCertTypeEntity::class, 'label' => false, 'required' => false, 'placeholder' => 'SSL Type - ALL'])
             ->add('ip', EntityType::class, ['class' => IpAddress::class, 'label' => false, 'required' => false, 'placeholder' => 'IP Address - ALL'])
             ->add('category', EntityType::class, ['class' => Category::class, 'label' => false, 'required' => false, 'placeholder' => 'Category - ALL'])

@@ -42,8 +42,8 @@ SSL Providers
 							<td><a
 								href="{{ path('ssl_provider_edit', { id: ssl_provider.id }) }}">{{ ssl_provider }}</a></td>
 							<td><a
-								href="{{ path('ssl_account_index', { providerId: ssl_provider.id }) }}">{{ ssl_provider.accounts|length ?: '-' }}</a></td>
-							<td>{{ ssl_provider.certs|length ?: '-' }}</td>
+								href="{{ path('ssl_account_index', { 'ssl_account_filter[sslProvider]': ssl_provider.id }) }}">{{ ssl_provider.accounts|length ?: '-' }}</a></td>
+							<td><a href="{{ path('ssl_cert_index', { 'ssl_cert_filter[sslProvider]': ssl_provider.id }) }}">{{ ssl_provider.certs|length ?: '-' }}</a></td>
 							<td><a
 								href="{{ path('ssl_provider_fees', { id: ssl_provider.id }) }}">fees</a>&nbsp;&nbsp;
 								{% if ssl_provider.url %}<a target="_blank"

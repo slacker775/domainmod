@@ -20,7 +20,7 @@ DomainMOD. For more information please see the
 <br>
 <a href="{{ path('queue_add') }}">{{ _self.showButton('button', 'Add Domains to Queue') }}</a>
 {% if domainsInQueue %}
-<a href="index.php?clear=1">{{ _self.showButton('button', 'Clear Completed') }}</a>
+<a href="{{ path('queue_clear') }}">{{ _self.showButton('button', 'Clear Completed') }}</a>
 {% endif %}
 <a href="{{ path('queue_intro') }}">{{ _self.showButton('button', 'More Info') }}</a>
 {% if domainsInListQueue %}

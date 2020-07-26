@@ -26,7 +26,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('bootstrap', './node_modules/bootstrap')
     .addEntry('datatables', './assets/js/datatables.js')
-    .addEntry('daterangepicker','./assets/js/daterangepicker.js')
+    .addEntry('daterangepicker', './assets/js/daterangepicker.js')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
@@ -73,6 +73,12 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
+
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[hash:8].[ext]',
+        pattern: /\.(ico|png|jpg|jpeg)$/
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

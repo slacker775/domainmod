@@ -38,7 +38,7 @@
 								href="{{ path('ssl_cert_type_edit', { id: ssl_cert_type.id }) }}">{{ ssl_cert_type.type }}</a>
 								{% if ssl_cert_type.id == app.user.settings.defaultSslType.id|default(false) %}*{% endif %}
 							</td>
-							<td>{{ ssl_cert_type.sslCerts|length ?: '-' }}</td>
+							<td><a href="{{ path('ssl_cert_index', { 'ssl_cert_filter[type]': ssl_cert_type.id }) }}">{{ ssl_cert_type.sslCerts|length ?: '-' }}</a></td>
 						</tr>
 						{% endfor %}
 					</tbody>

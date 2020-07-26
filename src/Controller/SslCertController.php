@@ -36,7 +36,7 @@ class SslCertController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $form = $this->createForm(SslCertFilterType::class, null, ['method' => 'GET']);
+        $form = $this->createForm(SslCertFilterType::class, null, ['method' => 'GET', 'csrf_protection' => false]);
         $form->handleRequest($request);
 
         $filters = $this->getFormFilters($form);

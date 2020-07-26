@@ -44,7 +44,7 @@ SSL Accounts
 							{% endif %} {% if ssl_account.reseller %}&nbsp;<strong>^</strong>
 								{% endif %}</td>
 							<td><a href="{{ path('owner_edit', { id: ssl_account.owner.id }) }}">{{ ssl_account.owner }}</a></td>
-							<td><a href="{{ path('ssl_cert_index', { account: ssl_account.id }) }}">{{ ssl_account.certs|length ?: '-'}}</a></td>
+							<td><a href="{{ path('ssl_cert_index', { 'ssl_cert_filter[account]': ssl_account.id }) }}">{{ ssl_account.certs|length ?: '-'}}</a></td>
 						</tr>
 						{% else %}
 						<tr>

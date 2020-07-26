@@ -51,7 +51,7 @@ IP Addresses
 							<td><a
 								href="{{ path('domain_index', { 'domain_filter[ip]': ip_address.id }) }}">{{ ip_address.domains|length ?: '-' }}</a></td>
 							<td><a
-								href="{{ path('ssl_cert_index', { ip: ip_address.id }) }}">{{ ip_address.sslCerts|length ?: '-' }}</a></td>
+								href="{{ path('ssl_cert_index', { 'ssl_cert_filter[ip]': ip_address.id }) }}">{{ ip_address.sslCerts|length ?: '-' }}</a></td>
 						</tr>
 						{% endfor %}
 					</tbody>
@@ -73,39 +73,5 @@ IP Addresses
 {% endblock %}
 
 {% block datatable_options %}
-
-	var oldStart = 0;
-	$('#assets-ip-addresses').DataTable({
-		"paging" : true,
-		"lengthChange" : true,
-		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
-		"searching" : true,
-		"info" : true,
-		"autoWidth" : true,
-		"bAutoWidth" : false,
-		"responsive" : {
-			details : {
-				type : "column"
-			}
-		},
-		"columnDefs" : [ {
-			className : "control",
-			orderable : false,
-			targets : 0
-		} ],
-		"ordering" : true,
-		"order" : [ [ 1, "asc" ] ],
-		"bSortClasses" : false,
-		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
-		"fnDrawCallback" : function(o) {
-			if (o._iDisplayStart != oldStart) {
-				var targetOffset = $("#assets-ip-addresses").offset().top;
-				$("html,body").animate({
-					scrollTop : targetOffset
-				}, 0);
-				oldStart = o._iDisplayStart;
-			}
-		}
-	});
-
+	$('#assets-ip-addresses').DataTable({});
 {% endblock %}

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
 use DateInterval;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
@@ -109,6 +109,11 @@ class SslCert
     private string $status;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $thumbprint;
+
+    /**
      *
      * @ORM\Column(type="boolean", nullable=false)
      */
@@ -133,6 +138,7 @@ class SslCert
         $this->ip = null;
         $this->category = null;
         $this->notes = null;
+        $this->thumbprint = null;
         $this->expiryDate = (new DateTime())->add(new DateInterval('P1Y'));
     }
 
@@ -299,6 +305,17 @@ class SslCert
     public function setAccount(SslAccount $account): self
     {
         $this->account = $account;
+        return $this;
+    }
+
+    public function getThumbprint(): ?string
+    {
+        return $this->thumbprint;
+    }
+
+    public function setThumbprint(?string $thumbprint): self
+    {
+        $this->thumbprint = $thumbprint;
         return $this;
     }
 }

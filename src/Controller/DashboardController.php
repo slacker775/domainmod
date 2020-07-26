@@ -6,6 +6,7 @@ use App\Entity\Domain;
 use App\Repository\DomainRepository;
 use App\Repository\QueueRepository;
 use App\Repository\SslCertRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,6 +17,9 @@ class DashboardController extends AbstractController
      */
     public function index(DomainRepository $domainRepository, SslCertRepository $sslRepository, QueueRepository $queueRepository)
     {
+        $beginDate = (new DateTime())->sub(new \DateInterval('P10Y'));
+        $endDate = (new DateTime())->add(new \DateInterval('P30D'));
+        $expiringBetween = sprintf('%s - %s', $beginDate->format('m/d/Y'), $endDate->format('m/d/Y'));
         return $this->render('dashboard/index.html.twig', [
             'activeDomainCount' => $domainRepository->getActiveDomainCount(),
             'activeCertCount' => $sslRepository->getActiveCertificateCount(),
@@ -31,7 +35,8 @@ class DashboardController extends AbstractController
             'queueFinished' => $queueRepository->getFinishedCount(),
             'sslPendingRenewal' => $sslRepository->getPendingRenewalCount(),
             'sslPendingRegistration' => $sslRepository->getPendingRegistrationCount(),
-            'sslPendingOther' => $sslRepository->getPendingOtherCount()
+            'sslPendingOther' => $sslRepository->getPendingOtherCount(),
+            'expiringBetween' => $expiringBetween
         ]);
     }
 }
