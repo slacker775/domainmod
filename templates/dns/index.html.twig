@@ -45,7 +45,7 @@ DNS Profiles
 						{% endfor %}
 					</tbody>
 				</table>
-				<strong>*</strong> = Default ( <a href="../settings/defaults/">set
+				<strong>*</strong> = Default ( <a href="{{ path('settings_defaults') }}">set
 					defaults</a> ) <BR> <BR>
 				{% else %}
 				<br> You don't currently have any DNS Profiles. <a
@@ -57,39 +57,28 @@ DNS Profiles
 </div>
 {% endblock %}
 
-{% block datatable_options %}
-	var oldStart = 0;
-	$('#assets-dns').DataTable({
-		"paging" : true,
-		"lengthChange" : true,
-		"lengthMenu" : [ [ 25, 50, 75, 100, -1 ], [ 25, 50, 75, 100, "All" ] ],
-		"searching" : true,
-		"info" : true,
-		"autoWidth" : true,
-		"bAutoWidth" : false,
-		"responsive" : {
-			details : {
-				type : "column"
-			}
-		},
-		"columnDefs" : [ {
-			className : "control",
-			orderable : false,
-			targets : 0
-		} ],
-		"ordering" : true,
-		"order" : [ [ 1, "asc" ] ],
-		"bSortClasses" : false,
-		"dom" : '<"top"lif>rt<"bottom"ip><"clear">',
-		"fnDrawCallback" : function(o) {
-			if (o._iDisplayStart != oldStart) {
-				var targetOffset = $("#assets-dns").offset().top;
-				$("html,body").animate({
-					scrollTop : targetOffset
-				}, 0);
-				oldStart = o._iDisplayStart;
-			}
+{% block stylesheets %}
+	<style>
+		#assets-dns thead th {
+			padding: 2px 0px 2px 6px;
+			border: 0;
+			white-space: nowrap;
 		}
-	});
 
+		#assets-dns tbody tr:hover {
+			background-color: #dddddd;
+		}
+
+		#assets-dns tbody td {
+			padding: 2px 0px 2px 6px;
+			border: 0;
+			white-space: nowrap;
+		}
+	</style>
+{% endblock %}
+
+{% block datatable_options %}
+	$('#assets-dns').DataTable({
+	    'pageLength': 25
+	});
 {% endblock %}

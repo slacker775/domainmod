@@ -171,7 +171,9 @@
     {{ encore_entry_script_tags('daterangepicker') }}
     <script type="text/javascript">
         $(function () {
-            $('#ssl-main').DataTable({});
+            $('#ssl-main').DataTable({
+                'pageLength': {{ app.user.settings.numberOfSslCerts }}
+            });
             $('#ssl_cert_filter_expiringBetween').daterangepicker({
                 autoUpdateInput: false,
                 locale: {

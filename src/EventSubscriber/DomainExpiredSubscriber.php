@@ -56,6 +56,9 @@ class DomainExpiredSubscriber implements EventSubscriberInterface, LoggerAwareIn
         foreach ($users as $user) {
             $email->addTo($user->getEmailAddress());
         }
-        $this->mailer->send($email);
+
+        if(empty($email->getTo()) === false) {
+            $this->mailer->send($email);
+        }
     }
 }

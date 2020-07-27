@@ -150,13 +150,13 @@
 
                     <td>{% if domain.status == "0" %} <a title="Inactive Domain"><strong>x</strong></a>&nbsp;
                         {% elseif domain.status == "2" %} <a title="Pending (Transfer)"><strong>T</strong></a>&nbsp;
-                        {% elseif domain.status == "3" %} echo "<a title=\"Pending (Renewal)\">
-                            <strong>PRn</strong></a>&nbsp;";
-                        {% elseif domain.status == "4" %} echo "<a title=\"Pending (Other)\">
-                            <strong>PO</strong></a>&nbsp;";
-                        {% elseif domain.status == "5" %} echo "<a title=\"Pending (Registration)\">
-                            <strong>PRg</strong></a>&nbsp;";
-                        {% elseif domain.status == "10" %} echo "<a title=\"Sold\"><strong>S</strong></a>&nbsp;";
+                        {% elseif domain.status == "3" %} <a title="Pending (Renewal)">
+                            <strong>PRn</strong></a>&nbsp
+                        {% elseif domain.status == "4" %} <a title="Pending (Other)">
+                            <strong>PO</strong></a>&nbsp
+                        {% elseif domain.status == "5" %} <a title="Pending (Registration)">
+                            <strong>PRg</strong></a>&nbsp
+                        {% elseif domain.status == "10" %} <a title="Sold"><strong>S</strong></a>&nbsp
                         {% endif %} <a href="{{ path('domain_edit',{id: domain.id}) }}">{{ domain.name }}</a>
                         {% if domain.privacy %} &nbsp;<a
                                 title="Private WHOIS Registration"><strong>prv</strong></a> {% endif %}</td>
@@ -259,7 +259,9 @@
     {{ encore_entry_script_tags('daterangepicker') }}
     <script type="text/javascript">
         $(function () {
-            $('#domains-main').DataTable();
+            $('#domains-main').DataTable({
+                'pageLength': {{ app.user.settings.numberOfDomains }}
+            });
             $('#domain_filter_expiringBetween').daterangepicker({
                 autoUpdateInput: false,
                 locale: {

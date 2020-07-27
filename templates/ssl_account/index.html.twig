@@ -68,6 +68,28 @@ SSL Accounts
 </div>
 {% endblock %}
 
+{% block stylesheets %}
+	<style>
+		#assets-ssl-accounts thead th {
+			padding: 2px 0px 2px 6px;
+			border: 0;
+			white-space: nowrap;
+		}
+
+		#assets-ssl-accounts tbody tr:hover {
+			background-color: #dddddd;
+		}
+
+		#assets-ssl-accounts tbody td {
+			padding: 2px 0px 2px 6px;
+			border: 0;
+			white-space: nowrap;
+		}
+	</style>
+{% endblock %}
+
 {% block datatable_options %}
-$('#assets-ssl-accounts').DataTable();
+$('#assets-ssl-accounts').DataTable({
+	'pageLength': 25
+});
 {% endblock %}
