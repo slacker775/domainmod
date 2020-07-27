@@ -26,7 +26,7 @@
                         <table id="ssl-main" class="table table-striped dt-responsive cell-border compact">
                             <thead>
                             <tr>
-                                <th width="20px"></th>
+                                <th style="width: 20px"></th>
                                 <th class="all">
                                     Name
                                 </th>
@@ -131,8 +131,6 @@
                                                     href="{{ path('owner_edit', { id: ssl_cert.owner.id }) }}">{{ ssl_cert.owner }}</a>
                                         </td>
                                     {% endif %}
-
-                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
