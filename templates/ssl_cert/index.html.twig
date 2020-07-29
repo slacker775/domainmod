@@ -15,6 +15,35 @@
                 <div class="card-body">
 
                     {{ include('ssl_cert/_filter-form.html.twig') }}
+
+                    {% if sslProviderCount == 0 %}
+                        <strong>0</strong> SSL Providers found<br>
+                        <br> Before you can start adding SSL certificates to DomainMOD you need to add at least one SSL provider, an SSL provider account, and a domain.
+                        <br>
+                        <br>  <br> <a href="{{ path('ssl_provider_new') }}">Click
+                        here to add a
+                        SSL Provider &raquo;</a><br>
+                    {% endif %}
+
+                    {% if sslAccountCount == 0 and sslProviderCount > 0 %}
+                        <strong>0</strong> SSL Provider Accounts found<br>
+                        <br> Before you can start adding SSL certificates to DomainMOD you need to add at least one SSL provider, an SSL provider account, and a domain.
+                        <br>
+                        <br><br> <a
+                            href="{{ path('ssl_account_new') }}">Click here to add a
+                        SSL Provider Account &raquo;</a><br>
+                    {% endif %}
+
+                    {% if domainCount == 0 and sslProviderCount > 0 and sslAccountCount > 0 %}
+                        <strong>0</strong> Domains found<br> <br> Add a domain
+                        <a href='{{ path('domain_new') }}'>manually</a>, add domains using
+                                                                       the <a href='{{ path('queue_intro') }}'>Domain
+                        Queue</a>, or see the <a target='_blank'
+                                                 href='../docs/userguide/adding-domains/'>Adding Domains</a> section
+                                                                                                             of the User Guide for more options.
+                        <br>
+                    {% endif %}
+
                     <a href="{{ path('ssl_cert_new') }}">{{ _self.showButton('button','Add SSL Cert') }}</a>
                     <a target="_blank" href="{{ path('ssl_cert_raw') }}">{{ _self.showButton('button','Raw List') }}</a>
                     <a href="{{ path('ssl_cert_export') }}">{{ _self.showButton('button','Export') }}</a>

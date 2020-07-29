@@ -38,7 +38,7 @@ Domain Registrars
 					<tbody>
 
 						{% for registrar in registrars %}
-						{% if registrar.numDomains >= 1 or displayInactiveAssets %}
+						{% if registrar.numDomains >= 1 or app.user.settings.displayInactiveAssets %}
 						<tr>
 							<td></td>
 							<td><a

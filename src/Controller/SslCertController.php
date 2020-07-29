@@ -7,7 +7,10 @@ use App\Entity\SslCert;
 use App\Form\SslCertFilterType;
 use App\Form\SslCertType;
 use App\Repository\CreationTypeRepository;
+use App\Repository\DomainRepository;
+use App\Repository\SslAccountRepository;
 use App\Repository\SslCertRepository;
+use App\Repository\SslProviderRepository;
 use League\Csv\Writer;
 use SplTempFileObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,9 +28,18 @@ class SslCertController extends AbstractController
 
     private SslCertRepository $repository;
 
-    public function __construct(SslCertRepository $repository)
+    private SslProviderRepository $sslProviderRepository;
+
+    private SslAccountRepository $sslAccountRepository;
+
+    private DomainRepository $domainRepository;
+
+    public function __construct(SslCertRepository $repository, SslProviderRepository $sslProviderRepository, SslAccountRepository $sslAccountRepository, DomainRepository $domainRepository)
     {
         $this->repository = $repository;
+        $this->sslProviderRepository = $sslProviderRepository;
+        $this->sslAccountRepository = $sslAccountRepository;
+        $this->domainRepository = $domainRepository;
     }
 
     /**
@@ -44,7 +56,10 @@ class SslCertController extends AbstractController
 
         return $this->render('ssl_cert/index.html.twig', [
             'ssl_certs' => $sslCerts,
-            'form'      => $form->createView()
+            'form'      => $form->createView(),
+            'sslProviderCount' => $this->sslProviderRepository->count([]),
+            'sslAccountCount' => $this->sslAccountRepository->count([]),
+            'domainCount' => $this->domainRepository->count([]),
         ]);
     }
 

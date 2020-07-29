@@ -11,6 +11,9 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  * Fees
  *
  * @ORM\Entity
+ * @ORM\Table(indexes={
+ *     @ORM\Index(columns={"tld","registrar_id"})
+ * })
  */
 class Fee
 {

@@ -1,14 +1,14 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Registrar;
 use App\Form\RegistrarType;
+use App\Repository\RegistrarRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\RegistrarRepository;
-use App\Repository\SettingRepository;
 
 /**
  *
@@ -30,7 +30,7 @@ class RegistrarController extends AbstractController
      */
     public function index(): Response
     {
-        $registrars = $this->repository->findAll();
+        $registrars = $this->repository->findBy([], ['name' => 'ASC']);
 
         return $this->render('registrar/index.html.twig', [
             'registrars' => $registrars,
@@ -59,7 +59,7 @@ class RegistrarController extends AbstractController
 
         return $this->render('registrar/new.html.twig', [
             'registrar' => $registrar,
-            'form' => $form->createView()
+            'form'      => $form->createView()
         ]);
     }
 
@@ -91,7 +91,7 @@ class RegistrarController extends AbstractController
 
         return $this->render('registrar/edit.html.twig', [
             'registrar' => $registrar,
-            'form' => $form->createView()
+            'form'      => $form->createView()
         ]);
     }
 

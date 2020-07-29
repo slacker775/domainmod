@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  *
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class RegistrarAccount
 {
@@ -295,5 +297,23 @@ class RegistrarAccount
     {
         $this->apiToken = $apiToken;
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function prePersist(LifecycleEventArgs $event)
+    {
+        /*
+        If the owner or registrar changes for account assigned for these domains,
+        update those values in the underlying domain as well.
+        */
+        foreach ($this->domains as $domain) {
+            $domain->setOwner($this->owner)
+                ->setRegistrar($this->registrar);
+            $event->getEntityManager()
+                ->persist($domain);
+        }
     }
 }

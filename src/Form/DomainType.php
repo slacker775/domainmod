@@ -29,7 +29,7 @@ class DomainType extends AbstractType
             $domain = $event->getData();
             $form = $event->getForm();
 
-            if (! $domain || null == $domain->getId()) {
+            if (! $domain || $domain->getName() == '') {
 
                 $form->add('name', TextType::class, [
                     'label' => 'Domain (255)',

@@ -48,7 +48,7 @@ class Format
         $domain_list = explode("\r\n", $clean_domain_list);
         $new_domain_list = array();
         foreach ($domain_list as $value) {
-            $new_domain_list[] = $this->sanitize->text($this->stripSpacing($value));
+            $new_domain_list[] = filter_var($this->stripSpacing($value));//$this->sanitize->text($this->stripSpacing($value));
         }
         return array_unique($new_domain_list);
     }

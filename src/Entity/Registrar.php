@@ -59,7 +59,7 @@ class Registrar
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Fee", mappedBy="registrar")
+     * @ORM\OneToMany(targetEntity="App\Entity\Fee", mappedBy="registrar", cascade={"remove"})
      */
     private Collection $fees;
 

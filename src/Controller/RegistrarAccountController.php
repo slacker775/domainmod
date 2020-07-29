@@ -35,7 +35,7 @@ class RegistrarAccountController extends AbstractController
     {
         $filters = [];
 
-        $registrarId = $request->query->getInt('registrar');
+        $registrarId = $request->query->getAlnum('registrar');
         if ($registrarId != 0) {
             $filters['registrar'] = $this->getDoctrine()
                 ->getRepository(Registrar::class)
@@ -53,7 +53,7 @@ class RegistrarAccountController extends AbstractController
                 ->getRepository(Owner::class)
                 ->find($ownerId);
         }
-        $registrarAccounts = $this->repository->findBy($filters);
+        $registrarAccounts = $this->repository->findBy($filters, ['registrar' => 'ASC', 'username' => 'ASC']);
 
         return $this->render('registrar_account/index.html.twig', [
             'registrar_accounts' => $registrarAccounts,
