@@ -1,24 +1,15 @@
-{% set softwareSectionLogo = 'fa-gears' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Display Settings
+    Display Settings
 {% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="">Settings</a></li>
-<li class='breadcrumb-item active'>Display Settings</li>
-{% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
-{% block body %}
-<div class="row">
-	<div class="col-lg-4">
-		<div class="card">
-			<div class="card-body">
-				{{ include('settings/_display_form.html.twig') }}
-			</div>
-		</div>
-	</div>
-</div>
+        {% block card_body %}
+            {{ include('settings/_display_form.html.twig') }}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

@@ -78,6 +78,15 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/export", name="user_export")
+     */
+    public function export(): Response
+    {
+        return $this->redirectToRoute('user_index');
+    }
+
+
+    /**
      *
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */

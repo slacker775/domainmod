@@ -1,25 +1,42 @@
-version: '3'
+version: '3.4'
 
 services:
-
-  app:
+  fpm:
+    command: ['fpm']
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
-    environment:
-      APP_ENV: prod
-      DATABASE_URL: pgsql://domainmod:password@host.docker.internal/domainmod?serverVersion=12.3
-    volumes:
-      - phpsocket:/var/run/php
+      dockerfile: ./docker/Dockerfile
+      target: php
+    healthcheck:
+      test: ['CMD', 'docker-healthcheck', 'fpm']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+
+  supervisor:
+    command: ['supervisor']
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: php
+    healthcheck:
+      test: ['CMD', 'docker-healthcheck', 'supervisor']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
 
   nginx:
     build:
       context: .
-      dockerfile: docker/nginx/Dockerfile
-    volumes:
-      - phpsocket:/var/run/php
-    ports:
-      - 8001:80
-
-volumes:
-  phpsocket:
+      dockerfile: ./docker/Dockerfile
+      target: nginx
+    healthcheck:
+      test: ['CMD', 'docker-healthcheck']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      - fpm

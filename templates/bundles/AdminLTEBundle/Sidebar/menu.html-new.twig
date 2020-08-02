@@ -1,0 +1,24 @@
+<!-- sidebar menu: : style can be found in sidebar.less -->
+{% from "@AdminLTE/Macros/menu.html-new.twig" import menu_item %}
+
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ path('home') }}" class="brand-link"> <img
+                src="{{ asset('build/images/logo-mini.png') }}" alt="DomainMOD Logo"
+                class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">DomainMOD</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column"
+                data-widget="treeview" role="menu" data-accordian="false">
+                {% for item in menu %}
+                    {{ menu_item(item) }}
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</aside>

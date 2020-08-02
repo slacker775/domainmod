@@ -1,95 +1,97 @@
-{% set softwareSectionLogo = 'fa-cubes' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
-SSL Accounts
+    SSL Accounts
 {% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
-<li class='breadcrumb-item active'>SSL Accounts</li>
-{% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
-{% block body %}
-<div class="row">
-	<div class="col-lg-12">
-		<div class="card">
-			<div class="card-body">
-				Below is a list of all the SSL Provider Accounts that are stored in
-				DomainMOD.<BR> <BR> <a
-					href="{{ path('ssl_account_new') }}">{{ _self.showButton('button','Add SSL Account') }}</a>
-				<a href="">{{ _self.showButton('button','Export') }}</a><BR> <BR>
+        {% block card_body %}
+            Below is a list of all the SSL Provider Accounts that are stored in
+            DomainMOD.<BR> <BR>
 
-				{% if ssl_accounts %}
-				<table id="assets-ssl-accounts"
-					class="table table-striped dt-responsive cell-border compact">
-					<thead>
-						<tr>
-							<th style="width: 20px"></th>
-							<th>Provider</th>
-							<th>Account</th>
-							<th>Owner</th>
-							<th>SSL Certs</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for ssl_account in ssl_accounts %}
-						<tr>
-							<td></td>
-							<td>{{ ssl_account.sslProvider }}</td>
-							<td><a
-								href="{{ path('ssl_account_edit', { id: ssl_account.id }) }}">{{ ssl_account.username }}</a>
-							{% if app.user.settings.defaultSslProviderAccount.id|default(false) == ssl_account.id %}&nbsp;<strong>*</strong>
-							{% endif %} {% if ssl_account.reseller %}&nbsp;<strong>^</strong>
-								{% endif %}</td>
-							<td><a href="{{ path('owner_edit', { id: ssl_account.owner.id }) }}">{{ ssl_account.owner }}</a></td>
-							<td><a href="{{ path('ssl_cert_index', { 'ssl_cert_filter[account]': ssl_account.id }) }}">{{ ssl_account.certs|length ?: '-'}}</a></td>
-						</tr>
-						{% else %}
-						<tr>
-							<td colspan="14">no records found</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-				<strong>*</strong> = Default (<a
-					href="{{ path('settings_defaults') }}">set defaults</a>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>^</strong>
-				= Reseller<BR> <BR>
+            {{ link_button('Add SSL Account', path('ssl_account_new')) }}
+            {{ link_button('Export', path('ssl_account_export')) }}
 
-				{% else %}
-				<BR>You don't currently have any SSL Accounts. <a
-					href="{{ path('ssl_account_new') }}">Click here to add one</a>.<BR>
-				{% endif %}
+            <BR> <BR>
 
-			</div>
-		</div>
-	</div>
-</div>
+            {% if ssl_accounts %}
+                <table id="assets-ssl-accounts"
+                       class="table table-striped dt-responsive cell-border compact">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px"></th>
+                        <th>Provider</th>
+                        <th>Account</th>
+                        <th>Owner</th>
+                        <th>SSL Certs</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ssl_account in ssl_accounts %}
+                        <tr>
+                            <td></td>
+                            <td>{{ ssl_account.sslProvider }}</td>
+                            <td><a
+                                        href="{{ path('ssl_account_edit', { id: ssl_account.id }) }}">{{ ssl_account.username }}</a>
+                                {% if app.user.settings.defaultSslProviderAccount.id|default(false) == ssl_account.id %}&nbsp;
+                                    <strong>*</strong>
+                                {% endif %} {% if ssl_account.reseller %}&nbsp;<strong>^</strong>
+                                {% endif %}</td>
+                            <td>
+                                <a href="{{ path('owner_edit', { id: ssl_account.owner.id }) }}">{{ ssl_account.owner }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('ssl_cert_index', { 'ssl_cert_filter[account]': ssl_account.id }) }}">{{ ssl_account.certs|length ?: '-' }}</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="14">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <strong>*</strong> = Default (<a
+                    href="{{ path('settings_defaults') }}">set defaults</a>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <strong>^</strong>
+                = Reseller<BR> <BR>
+
+            {% else %}
+                <BR>You don't currently have any SSL Accounts. <a
+                    href="{{ path('ssl_account_new') }}">Click here to add one</a>.<BR>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block stylesheets %}
-	<style>
-		#assets-ssl-accounts thead th {
-			padding: 2px 0px 2px 6px;
-			border: 0;
-			white-space: nowrap;
-		}
+    <style>
+        #assets-ssl-accounts thead th {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
 
-		#assets-ssl-accounts tbody tr:hover {
-			background-color: #dddddd;
-		}
+        #assets-ssl-accounts tbody tr:hover {
+            background-color: #dddddd;
+        }
 
-		#assets-ssl-accounts tbody td {
-			padding: 2px 0px 2px 6px;
-			border: 0;
-			white-space: nowrap;
-		}
-	</style>
+        #assets-ssl-accounts tbody td {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
+    </style>
 {% endblock %}
 
-{% block datatable_options %}
-$('#assets-ssl-accounts').DataTable({
-	'pageLength': 25
-});
+{% block javascripts %}
+    {{ encore_entry_script_tags('datatables') }}
+    <script>
+        $('#assets-ssl-accounts').DataTable({
+            'pageLength': 25
+        });
+    </script>
 {% endblock %}

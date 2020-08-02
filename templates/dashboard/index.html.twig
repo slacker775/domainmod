@@ -1,45 +1,117 @@
-{% set softwareSectionLogo = 'fa-dashboard' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
 Dashboard
 {% endblock %}
 
-{% block breadcrumbs %}
-<li>Dashboard</li>
-{% endblock %}
-
-{% block body %}
+{% block page_content %}
 <div class="row">
-
 	<div class="col-md-6">
 		<div class="card card-default">
 		<div class="card-header">
 		<h3 class="card-title"><i class="fas fa-exclamation-triangle"></i>Domain Details</h3></div>
 			<div class="card-body">
 				<div class="row">
-					{{ _self.displayPanel('Domains', activeDomainCount, 'green', 'checkmark-circled', path('domain_index', { is_active: 'LIVE'})) }}
 
-					{{ _self.displayPanel('SSL Certificates', activeCertCount, 'green', 'checkmark-circled', path('ssl_cert_index', { is_active: 'LIVE'})) }}
+					<div class="col-lg-3 col-6">
+					{% embed '@AdminLTE/Widgets/smallbox-widget.html.twig' with {
+						'solid': 'success',
+						'icon': 'far fa-bookmark'
+					} %}
+						{% block box_text %}
+							Domains
+						{% endblock %}
+						{% block box_number %}
+							{{ activeDomainCount }}
+						{% endblock %}
+						{% block box_after %}
+							<a class="small-box-footer" href="{{ path('domain_index') }}">View <i class="fas fa-arrow-circle-right"></i></a>
+						{% endblock %}
+					{% endembed %}
+					</div> <!-- /.col-lg-3 -->
+
+					<div class="col-lg-3 col-6">
+						{% embed '@AdminLTE/Widgets/smallbox-widget.html.twig' with {
+							'solid': 'success',
+							'icon': 'far fa-bookmark'
+						} %}
+							{% block box_text %}
+								SSL Certificates
+							{% endblock %}
+							{% block box_number %}
+								{{ activeCertCount }}
+							{% endblock %}
+							{% block box_after %}
+								<a class="small-box-footer" href="{{ path('ssl_cert_index') }}">View <i class="fas fa-arrow-circle-right"></i></a>
+							{% endblock %}
+						{% endembed %}
+					</div> <!-- /.col-lg-3 -->
 
 					{% if domainsSold > 0 %}
-					{{ _self.displayPanel('Sold Domains', 0, 'aqua', 'android-cart', path('domain_index', { is_active: '10'})) }}
+						<div class="col-lg-3 col-6">
+							{% embed '@AdminLTE/Widgets/smallbox-widget.html.twig' with {
+								'solid': 'info',
+								'icon': 'far fa-bookmark'
+							} %}
+								{% block box_text %}
+									Sold Domains
+								{% endblock %}
+								{% block box_number %}
+									{{ domainsSold }}
+								{% endblock %}
+								{% block box_after %}
+									<a class="small-box-footer" href="{{ path('domain_index', { 'domain_filter[status]': 10 }) }}">View <i class="fas fa-arrow-circle-right"></i></a>
+								{% endblock %}
+							{% endembed %}
+						</div> <!-- /.col-lg-3 -->
 					{% endif %}
-				</div>
+
+				</div> <!-- /.row -->
 
 				<!--  Expiration Panels -->
 				{% if expiringDomains > 0 or expiringSslCerts > 0 %}
 				<div class="row">
-					<h3 style="padding-left: 20px;">Expiring in the next 30 days</h3>
+
 					{% if expiringDomains > 0 %}
-					{{ _self.displayPanel('Domains', expiringDomains, 'red', 'close-circled', path('domain_index', { 'domain_filter[expiringBetween]': expiringBetween})) }}
+						<div class="col-lg-3 col-6">
+							{% embed '@AdminLTE/Widgets/smallbox-widget.html.twig' with {
+								'solid': 'danger',
+								'icon': 'far fa-bookmark'
+							} %}
+								{% block box_text %}
+									Expiring Domains
+								{% endblock %}
+								{% block box_number %}
+									{{ expiringDomains }}
+								{% endblock %}
+								{% block box_after %}
+									<a class="small-box-footer" href="{{ path('domain_index', { 'domain_filter[expiringBetween]': expiringBetween }) }}">View <i class="fas fa-arrow-circle-right"></i></a>
+								{% endblock %}
+							{% endembed %}
+						</div> <!-- /.col-lg-3 -->
 					{% endif %}
 
 					{% if expiringSslCerts > 0 %}
-					{{ _self.displayPanel('SSL Certificates', expiringSslCerts, 'red', 'close-circled', path('ssl_cert_index', { 'ssl_cert_filter[expiringBetween]': expiringBetween})) }}
+						{% if expiringSslCerts > 0 %}
+							<div class="col-lg-3 col-6">
+								{% embed '@AdminLTE/Widgets/smallbox-widget.html.twig' with {
+									'solid': 'danger',
+									'icon': 'far fa-bookmark'
+								} %}
+									{% block box_text %}
+										Expiring Certs
+									{% endblock %}
+									{% block box_number %}
+										{{ expiringSslCerts }}
+									{% endblock %}
+									{% block box_after %}
+										<a class="small-box-footer" href="{{ path('ssl_cert_index', { 'ssl_cert_filter[expiringBetween]': expiringBetween }) }}">View <i class="fas fa-arrow-circle-right"></i></a>
+									{% endblock %}
+								{% endembed %}
+							</div> <!-- /.col-lg-3 -->
+						{% endif %}
 					{% endif %}
-				</div>
+				</div> <!-- /.row -->
 				<!--  /Expiration Panels -->
 				{% endif %}
 

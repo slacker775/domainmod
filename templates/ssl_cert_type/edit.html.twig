@@ -1,27 +1,17 @@
-{% set softwareSectionLogo = 'fa-cubes' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Edit SSL Type
+    Edit SSL Type
 {% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
-<li class="breadcrumb-item"><a href="{{ path('ssl_cert_type_index') }}">SSL Types</a></li>
-<li class='breadcrumb-item active'>Edit</li>
-{% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
-{% block body %}
-<div class="row">
-	<div class="col-lg-6">
-		<div class="card">
-			<div class="card-body">
-				{{ include('ssl_cert_type/_form.html.twig', {'button_label': 'Save'}) }}
+        {% block card_body %}
+            {{ include('ssl_cert_type/_form.html.twig', {'button_label': 'Save'}) }}
 
-				{{ include('ssl_cert_type/_delete_form.html.twig') }}
-			</div>
-		</div>
-	</div>
-</div>
+            {{ include('ssl_cert_type/_delete_form.html.twig') }}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

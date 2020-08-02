@@ -1148,7 +1148,7 @@ adjust-sourcemap-loader@2.0.0:
     object-path "0.11.4"
     regex-parser "2.2.10"
 
-admin-lte@^3.0:
+admin-lte@^3.0.1:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/admin-lte/-/admin-lte-3.0.5.tgz#664664863bb7a5bf306b3a7b76fd16b345f0b00f"
   integrity sha512-VkwBy6KukhuQk8A0GrryZorkDHVK52azkCu4l2Kw5kJt4tMQD2ezb268ssFpd6uKM8swLJ64td2Dx6y/MHA7Ew==
@@ -1645,10 +1645,10 @@ bootstrap-colorpicker@^3.2.0:
     jquery ">=2.1.0"
     popper.js ">=1.10"
 
-bootstrap-scss@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/bootstrap-scss/-/bootstrap-scss-4.5.0.tgz#c1e48d4050dec7885cc9acfc61d3df7827a134ca"
-  integrity sha512-6vCW3JBfOW7v9EQwyV0kWdEyvk2hf7U8TIojRgz19/nJoJGe8BQa1L/Tk7B0wmKEqHR/lA93Lhp+dLRphZt3vg==
+bootstrap-select@^1.13:
+  version "1.13.18"
+  resolved "https://registry.yarnpkg.com/bootstrap-select/-/bootstrap-select-1.13.18.tgz#4557119d58dc1159189977161c803962220e4dda"
+  integrity sha512-V1IzK4rxBq5FrJtkzSH6RmFLFBsjx50byFbfAf8jYyXROWs7ZpprGjdHeoyq2HSsHyjJhMMwjsQhRoYAfxCGow==
 
 bootstrap-slider@^10.6.2:
   version "10.6.2"
@@ -1665,7 +1665,7 @@ bootstrap4-duallistbox@^4.0.1:
   resolved "https://registry.yarnpkg.com/bootstrap4-duallistbox/-/bootstrap4-duallistbox-4.0.2.tgz#c6942e34a39d0d05e436d51ebaf31c9349f119d3"
   integrity sha512-vQdANVE2NN0HMaZO9qWJy0C7u04uTpAmtUGO3KLq3xAZKCboJweQ437hDTszI6pbYV2olJCGZMbdhvIkBNGeGQ==
 
-bootstrap@>=4.0, bootstrap@>=4.1.2, bootstrap@^4.4.1:
+bootstrap@>=4.0, bootstrap@>=4.1.2, bootstrap@^4.4.0, bootstrap@^4.4.1:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.5.0.tgz#97d9dbcb5a8972f8722c9962483543b907d9b9ec"
   integrity sha512-Z93QoXvodoVslA+PWNdk23Hze4RBYIkpb5h8I2HY2Tu2h7A0LpAgLcyrhrSUyo2/Oxm2l1fRZPs1e5hnxnliXA==
@@ -2817,7 +2817,7 @@ datatables.net@1.10.21, datatables.net@^1.10.15, datatables.net@^1.10.20:
   dependencies:
     jquery ">=1.7"
 
-daterangepicker@^3.0.5:
+daterangepicker@^3.0, daterangepicker@^3.0.5:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/daterangepicker/-/daterangepicker-3.1.0.tgz#718d606614331df3e774c9aba82ccd8838d45da1"
   integrity sha512-DxWXvvPq4srWLCqFugqSV+6CBt/CvQ0dnpXhQ3gl0autcIDAruG1PuGG3gC7yPRNytAD1oU1AcUOzaYhOawhTw==
@@ -4210,7 +4210,7 @@ icheck-bootstrap@^3.0.1:
   resolved "https://registry.yarnpkg.com/icheck-bootstrap/-/icheck-bootstrap-3.0.1.tgz#60c9c9a71524e1d9dd5bd05167a62fef05cc3a1b"
   integrity sha512-Rj3SybdcMcayhsP4IJ+hmCNgCKclaFcs/5zwCuLXH1WMo468NegjhZVxbSNKhEjJjnwc4gKETogUmPYSQ9lEZQ==
 
-icheck@^1.0.2:
+icheck@^1.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/icheck/-/icheck-1.0.2.tgz#06d08da3d47ae448c153b2639b86e9ad7fdf7128"
   integrity sha1-BtCNo9R65EjBU7Jjm4bprX/fcSg=
@@ -4358,11 +4358,6 @@ ion-rangeslider@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/ion-rangeslider/-/ion-rangeslider-2.3.1.tgz#92ade52cb56fc30b9162d0483ff02b6f9ed237c2"
   integrity sha512-6V+24FD13/feliI485gnRHZYD9Ev64M5NAFTxnVib516ATHa9PlXQrC+nOiPngouRYTCLPJyokAJEi3e1Umi5g==
-
-ionicons@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.1.2.tgz#f00f17d2f23be94e8a248c9ebbaea236a6132f0d"
-  integrity sha512-zO7ZgbBbXhpA7cXO2rDzTNdcCqErjg1Sprq/ossTvaiV0MriOjRE7JO3EGvYjDTPzF9YALGpvLXqCgsRT0tprA==
 
 ip-regex@^2.1.0:
   version "2.1.0"
@@ -4685,7 +4680,7 @@ jquery-mousewheel@^3.1, jquery-mousewheel@^3.1.13:
   resolved "https://registry.yarnpkg.com/jquery-mousewheel/-/jquery-mousewheel-3.1.13.tgz#06f0335f16e353a695e7206bf50503cb523a6ee5"
   integrity sha1-BvAzXxbjU6aV5yBr9QUDy1I6buU=
 
-jquery-slimscroll@^1.3.8:
+jquery-slimscroll@^1.3:
   version "1.3.8"
   resolved "https://registry.yarnpkg.com/jquery-slimscroll/-/jquery-slimscroll-1.3.8.tgz#8481c44e7a47687653908a28f7f70aed64c84e36"
   integrity sha1-hIHETnpHaHZTkIoo9/cK7WTITjY=
@@ -4697,12 +4692,17 @@ jquery-ui-dist@^1.12.1:
   resolved "https://registry.yarnpkg.com/jquery-ui-dist/-/jquery-ui-dist-1.12.1.tgz#5c0815d3cc6f90ff5faaf5b268a6e23b4ca904fa"
   integrity sha1-XAgV08xvkP9fqvWyaKbiO0ypBPo=
 
+jquery-ui@^1.12:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
+  integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
+
 jquery-validation@^1.19.1:
   version "1.19.2"
   resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.19.2.tgz#c602831b0d8c5881400af424e872757ce241eff9"
   integrity sha512-yHaAqOGaAB7+p2u5lpzhhQVt3CBMUw3fHcuCJ7nXmXz0LWLHPN7yOhwnocp5nrn2SmnXR1jpV+whx2j1kLz1tQ==
 
-"jquery@>= 1.7", jquery@>=1.10, jquery@>=1.12.0, jquery@>=1.7, jquery@>=2.1.0, jquery@^3.0, "jquery@^3.0 || ^2.0 || ^1.0", jquery@^3.4.0, jquery@^3.4.1:
+"jquery@>= 1.7", jquery@>=1.10, jquery@>=1.12.0, jquery@>=1.7, jquery@>=2.1.0, jquery@^3.0, "jquery@^3.0 || ^2.0 || ^1.0", jquery@^3.4, jquery@^3.4.0, jquery@^3.4.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
   integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
@@ -4718,6 +4718,11 @@ js-base64@^2.1.8:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.6.2.tgz#cf9301bc5cc756892a9a6c8d7138322e5944fb0d"
   integrity sha512-1hgLrLIrmCgZG+ID3VoLNLOSwjGnoZa8tyrUdEteMeIzsT6PH7PMLyUvbDwzNE56P3PNxyvuIOx4Uh2E5rzQIw==
+
+js-cookie@^2.2:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
+  integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -8038,7 +8043,7 @@ webpack-manifest-plugin@^2.0.2:
     object.entries "^1.1.0"
     tapable "^1.0.0"
 
-webpack-notifier@^1.6.0:
+webpack-notifier@^1.8:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/webpack-notifier/-/webpack-notifier-1.8.0.tgz#994bdde0fcefc5f1a92b6d91353c8152ddd9c583"
   integrity sha512-I6t76NoPe5DZCCm5geELmDV2wlJ89LbU425uN6T2FG8Ywrrt1ZcUMz6g8yWGNg4pttqTPFQJYUPjWAlzUEQ+cQ==

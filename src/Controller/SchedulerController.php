@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use http\Env\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\SchedulerRepository;
@@ -13,18 +14,24 @@ use App\Entity\Scheduler;
  */
 class SchedulerController extends AbstractController
 {
+    private SchedulerRepository $repository;
+
+    public function __construct(SchedulerRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      *
      * @Route("/", name="scheduler_index")
      */
-    public function index(SchedulerRepository $repository)
+    public function index()
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         return $this->render('scheduler/index.html.twig', [
             'controller_name' => 'SchedulerController',
-            'schedules' => $repository->findBy([], [
+            'schedules' => $this->repository->findBy([], [
                 'sortOrder' => 'ASC'
             ])
         ]);
@@ -34,12 +41,12 @@ class SchedulerController extends AbstractController
      *
      * @Route("/{id}/disable", name="scheduler_disable")
      */
-    public function disable(SchedulerRepository $repository, Scheduler $schedule)
+    public function disable(Scheduler $schedule)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $schedule->setActive(false);
-        $repository->save($schedule);
+        $this->repository->save($schedule);
         return $this->redirectToRoute('scheduler_index');
     }
 
@@ -47,12 +54,12 @@ class SchedulerController extends AbstractController
      *
      * @Route("/{id}/enable", name="scheduler_enable")
      */
-    public function enable(SchedulerRepository $repository, Scheduler $schedule)
+    public function enable(Scheduler $schedule)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $schedule->setActive(true);
-        $repository->save($schedule);
+        $this->repository->save($schedule);
         return $this->redirectToRoute('scheduler_index');
     }
 
@@ -60,10 +67,19 @@ class SchedulerController extends AbstractController
      *
      * @Route("/{id}/run", name="scheduler_run")
      */
-    public function run(SchedulerRepository $repository, Scheduler $schedule)
+    public function run(Scheduler $schedule)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         return $this->redirectToRoute('scheduler_index');
     }
+
+    /**
+     * @Route("/{id}/update", name="scheduler_update")
+     */
+    public function update(Scheduler $schedule): Response
+    {
+        return $this->redirectToRoute('scheduler_index');
+    }
+
 }

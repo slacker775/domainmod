@@ -1,5 +1,3 @@
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
-
 {{ form_start(form) }}
 <h3>Domain Defaults</h3>
     {{ form_row(form.defaultRegistrar) }}
@@ -18,5 +16,5 @@
     {{ form_row(form.defaultCategorySsl) }}
     {{ form_row(form.defaultOwnerSsl) }}
 
-    <button style="margin-top:5px" class="btn btn-primary btn-danger">{{ button_label|default('Update User Defaults') }}</button>
+    <button style="margin-top:5px" class="btn btn-primary btn-primary">{{ button_label|default('Update User Defaults') }}</button>
 {{ form_end(form) }}

@@ -1,96 +1,76 @@
-{% set softwareSectionLogo = 'fa-wrench' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}User Administration{% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ path('admin_index') }}">Admin</a></li>
-<li class='breadcrumb-item active'>Users</li>
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
+
+        {% block card_body %}
+            Below is a list of all users that have access to DomainMOD.<BR>
+            <BR>
+
+            {{ link_button('Add User', path('user_new')) }}
+            {{ link_button('Export', path('user_export')) }}
+
+            <BR>
+            <BR>
+            <table id="admin-users-main"
+                   class="table table-striped dt-responsive cell-border compact">
+                <thead>
+                <tr>
+                    <th style="width: 20px"></th>
+                    <th>User</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td></td>
+                        <td><a href="{{ path('user_edit', { id: user.id }) }}"
+                                    {{ user.active ?: 'style="text-decoration: line-through;"' }}>{{ user.firstName }}
+                                {{ user.lastName }}</a> {{ user.admin ? '<strong>A</strong>' }} {{ user.readOnly ? '<strong>R</strong>' }}
+                        </td>
+                        <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.username }}</a></td>
+                        <td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.emailAddress }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <strong>A</strong> = Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <strong>R</strong> = Read-Only&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="text-decoration: line-through;">STRIKE</span> = Inactive
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
-{% block body %}
-<div class="row">
-	<div class="col-lg-12">
-		<div class="card">
-			<div class="card-body">
-				Below is a list of all users that have access to DomainMOD.<BR>
-				<BR> <a href="{{ path('user_new') }}">{{ _self.showButton('button','Add User') }}</a>
-				<a href="">{{ _self.showButton('button', 'Export') }}</a><BR>
-				<BR>
-				<table id="admin-users-main"
-					class="table table-striped dt-responsive cell-border compact">
-					<thead>
-						<tr>
-							<th style="width: 20px"></th>
-							<th>User</th>
-							<th>Username</th>
-							<th>Email</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for user in users %}
-						<tr>
-							<td></td>
-							<td><a href="{{ path('user_edit', { id: user.id }) }}"
-								{{ user.active ?: 'style="text-decoration: line-through;"' }}>{{ user.firstName }}
-									{{ user.lastName }}</a> {{ user.admin ? '<strong>A</strong>' }} {{ user.readOnly ? '<strong>R</strong>' }}
-							</td>
-							<td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.username }}</a></td>
-							<td><a href="{{ path('user_edit', { id: user.id }) }}">{{ user.emailAddress }}</a></td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+{% block javascripts %}
+    {{ encore_entry_script_tags('datatables') }}
 
-				<strong>A</strong> = Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<strong>R</strong> = Read-Only&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-					style="text-decoration: line-through;">STRIKE</span> = Inactive
-			</div>
-		</div>
-	</div>
-</div>
-{% endblock %}
-
-{% block datatable_options %}
-var oldStart = 0;
-$('#admin-users-main').DataTable({
-    "paging": true,
-    "lengthChange": true,
-    "lengthMenu": [ [25, 50, 75, 100, -1], [25, 50, 75, 100, "All"] ],
-    "searching": true,
-    "info": true,
-    "autoWidth": true,
-    "bAutoWidth": false,
-    "responsive": {
-         details: {
-                   type: "column"
-                  }
-                  },
-    "columnDefs": [ {
-                     className: "control",
-                     orderable: false,
-                     targets:   0
-                     } ],
-    "ordering": true,
-    "order": [[ 1, "asc" ]],
-    "bSortClasses": false,
-    "dom": '<"top"lif>rt<"bottom"ip><"clear">',
-    "fnDrawCallback": function (o) {
-      if ( o._iDisplayStart != oldStart ) {
-          var targetOffset = $("#admin-users-main").offset().top;
-          $("html,body").animate({scrollTop: targetOffset}, 0);
-          oldStart = o._iDisplayStart;
-      }
-    }
-});
-
+    <script>
+        $('#admin-users-main').DataTable({});
+    </script>
 {% endblock %}
 
 {% block stylesheets %}
-<style>
-#admin-users-main thead th { padding: 2px 0px 2px 6px; border: 0; white-space: nowrap; }
-#admin-users-main tbody tr:hover { background-color: #dddddd; }
-#admin-users-main tbody td { padding: 2px 0px 2px 6px; border: 0; white-space: nowrap; }
-</style>
+    <style>
+        #admin-users-main thead th {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
+
+        #admin-users-main tbody tr:hover {
+            background-color: #dddddd;
+        }
+
+        #admin-users-main tbody td {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
+    </style>
 {% endblock %}

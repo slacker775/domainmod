@@ -1,5 +1,3 @@
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
-
 {{ form_start(form) }}
 {# {{ form_widget(form) }} #}
 <table width="100%">
@@ -60,7 +58,7 @@
 		<td colspan="3">{{ form_row(form.notes) }}</td>
 	</tr>
 </table>
-<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+<button style="margin-top: 5px" class="btn btn-primary btn-primary">
 	{{ button_label|default('Add DNS Profile') }}
 </button>
 {{ form_end(form) }}

@@ -1,14 +1,8 @@
-{% set softwareSectionLogo = 'fa-gears' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Settings{% endblock %}
 
-{% block breadcrumbs %}
-<li class='active'>Settings</li>
-{% endblock %}
-
-{% block body %}
+{% block page_content %}
 <a href="{{ path('settings_display') }}">Display Settings</a><BR><BR>
 <a href="{{ path('settings_defaults') }}">User Defaults</a><BR><BR>
 <a href="{{ path('settings_profile') }}">User Profile</a><BR><BR>

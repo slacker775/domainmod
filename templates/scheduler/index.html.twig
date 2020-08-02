@@ -1,79 +1,81 @@
-{% set softwareSectionLogo = 'fa-wrench' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Task Scheduler{% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ path('admin_index') }}">Admin</a></li>
-<li class='breadcrumb-item active'>Scheduler</li>
-{% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button,action_button %}
 
-{% block body %}
-The Task Scheduler allows you to run various system jobs at specified times, which helps keep your
-echo SOFTWARE_TITLE; ?> installation up-to-date and running smoothly, as well as notifies you of important information,
-such as emailing you to let you know about upcoming Domain & SSL Certificate expirations.
-This file should be executed <em>every 10 minutes</em>, and once it's setup the Task Scheduler will be live.<BR>
-<BR>
-Using the Task Scheduler is optional, but <em>highly</em> recommended.<BR>
-<BR>
-Current Timestamp: <strong>{{ "now"|date('r') }}</strong><BR>
-<BR>
-<table id="admin-scheduler-main" class="table table-striped dt-responsive cell-border compact">
+        {% block card_body %}
+            The Task Scheduler allows you to run various system jobs at specified times, which helps keep your
+            echo SOFTWARE_TITLE; ?> installation up-to-date and running smoothly, as well as notifies you of important information,
+            such as emailing you to let you know about upcoming Domain & SSL Certificate expirations.
+            This file should be executed <em>every 10 minutes</em>, and once it's setup the Task Scheduler will be live.
+            <BR>
+            <BR>
+            Using the Task Scheduler is optional, but <em>highly</em> recommended.<BR>
+            <BR>
+            Current Timestamp: <strong>{{ "now"|date('r') }}</strong><BR>
+            <BR>
+            <table id="admin-scheduler-main" class="table table-striped dt-responsive cell-border compact">
 
-    <thead>
-        <tr>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for s in schedules %}
-        <tr>
-        <td style="padding: 7px 5px 0px 10px;">
-            <h4>{{ s.name }}</h4>{{ s.description|raw }}<BR><BR><BR>
-        </td>
-        <td style="padding: 15px 0px 18px 0px;">
-            <strong>Runs:</strong> {{ s.interval }}<BR>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for s in schedules %}
+                    <tr>
+                        <td style="padding: 7px 5px 0px 10px;">
+                            <h4>{{ s.name }}</h4>{{ s.description|raw }}<BR><BR><BR>
+                        </td>
+                        <td style="padding: 15px 0px 18px 0px;">
+                            <strong>Runs:</strong> {{ s.interval }}<BR>
 
-            <strong>Status:</strong> 
-            {% if s.active %}
-            <strong><font color='green'>Active</font></strong> [<a href='{{ path('scheduler_disable',{ id: s.id }) }}'>disable</a>] [<a href='{{ path('scheduler_run',{ id: s.id }) }}'>run now</a>]
-            {% else %}
-            <strong><font color='red'>Inactive</font></strong> [<a href='{{ path('scheduler_enable',{ id: s.id }) }}'>enable</a>] [<a href='{{ path('scheduler_run',{ id: s.id }) }}'>run now</a>]
-            {% endif %}
-            <br>
-            <strong>Last Run:</strong>            
-            {% if s.lastRun %}
-            {{ s.lastRun|date('r') }}
-            {% else %}
-            -
-            {% endif %} ({{ s.lastDuration }})<br>
-            <strong>Next Run:</strong> 
-            {% if s.nextRun %}
-            {{ s.nextRun|date('r') }}
-            {% else %}
-            -
-            {% endif %}
-            <br>
-            {% if s.interval == 'Daily' and s.active %}            
-                <BR>
-                <form name="edit_task_form" method="post" action="update.php">
-                    <select name="new_hour" title="Task Time">
-                        {% for i in 0..23 %}
-                        <option value='{{ "%02d"|format(i) }}'>{{ "%02d"|format(i) }}:00</option>
-                        {% endfor %}
-                    </select><br><br>
-                    <input type="hidden" name="id" value="{{ s.id }}">
-                    <input type="hidden" name="a" value="u">
-                    {{ _self.showButton('button','Change Time') }}
-                </form>
-            {% endif %}
-        </td>
-
-        </tr>
-{% endfor %}
-
-    </tbody>
-</table>
+                            <strong>Status:</strong>
+                            {% if s.active %}
+                                <strong><font color='green'>Active</font></strong> [<a
+                                    href='{{ path('scheduler_disable',{ id: s.id }) }}'>disable</a>] [<a
+                                    href='{{ path('scheduler_run',{ id: s.id }) }}'>run now</a>]
+                            {% else %}
+                                <strong><font color='red'>Inactive</font></strong> [<a
+                                    href='{{ path('scheduler_enable',{ id: s.id }) }}'>enable</a>] [<a
+                                    href='{{ path('scheduler_run',{ id: s.id }) }}'>run now</a>]
+                            {% endif %}
+                            <br>
+                            <strong>Last Run:</strong>
+                            {% if s.lastRun %}
+                                {{ s.lastRun|date('r') }}
+                            {% else %}
+                                -
+                            {% endif %} ({{ s.lastDuration }})<br>
+                            <strong>Next Run:</strong>
+                            {% if s.nextRun %}
+                                {{ s.nextRun|date('r') }}
+                            {% else %}
+                                -
+                            {% endif %}
+                            <br>
+                            {% if s.interval == 'Daily' and s.active %}
+                                <BR>
+                                <form name="edit_task_form" method="post" action="{{ path('scheduler_update', { id: 0 }) }}">
+                                    <select name="new_hour" title="Task Time">
+                                        {% for i in 0..23 %}
+                                            <option value='{{ "%02d"|format(i) }}'>{{ "%02d"|format(i) }}:00</option>
+                                        {% endfor %}
+                                    </select><br><br>
+                                    <input type="hidden" name="id" value="{{ s.id }}">
+                                    <input type="hidden" name="a" value="u">
+                                    {{ action_button('Change Time','') }}
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

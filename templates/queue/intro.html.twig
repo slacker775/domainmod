@@ -1,25 +1,26 @@
-{% set softwareSectionLogo = 'fa-hourglass-2' %}
+{% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Domain Queue Information
+    Domain Queue Information
 {% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ path('queue') }}">Queue</a></li>
-<li class='breadcrumb-item active'>Information</li>
-{% endblock %}
-
-{% block body %}
-The Domain Queue allows you to use your domain registrar's API to automatically import the details of your domains, such as expiry date and DNS servers, which are then added to your main DomainMOD database along with your domains. All you have to do is choose the registrar account, supply a list of domains, and the rest of the work is done for you. Depending on the registrar, you may not even have to supply the list of domains.<BR>
-<BR>
-If you use a registrar that isn't already supported, and they have an API, send us an email at <a href="mailto:suggestions@domainmod.org">suggestions@domainmod.org</a> and we'll see what we can do about adding it.<BR>
-<BR>
-<strong>Currently Supported Registrars</strong>: {{ apiRegistrars|join(', ') }}<BR>
-<BR>
-<strong>NOTE:</strong> In order to use the Domain Queue you must setup the cron job that comes with DomainMOD. For more information please see the <a target="_blank" href="https://domainmod.org/docs/userguide/getting-started/#cron-job">User Guide</a>.<BR>
-<BR>
-<a href="{{ path('queue_add') }}">{{ _self.showButton('button','Add Domains to Queue') }}</a>
-<BR><BR>
+{% block page_content %}
+    The Domain Queue allows you to use your domain registrar's API to automatically import the details of your domains, such as expiry date and DNS servers, which are then added to your main DomainMOD database along with your domains. All you have to do is choose the registrar account, supply a list of domains, and the rest of the work is done for you. Depending on the registrar, you may not even have to supply the list of domains.
+    <BR>
+    <BR>
+    If you use a registrar that isn't already supported, and they have an API, send us an email at <a
+        href="mailto:suggestions@domainmod.org">suggestions@domainmod.org</a> and we'll see what we can do about adding it.
+    <BR>
+    <BR>
+    <strong>Currently Supported Registrars</strong>: {{ apiRegistrars|join(', ') }}<BR>
+    <BR>
+    <strong>NOTE:</strong> In order to use the Domain Queue you must setup the cron job that comes with DomainMOD. For more information please see the
+    <a target="_blank" href="https://domainmod.org/docs/userguide/getting-started/#cron-job">User Guide</a>.<BR>
+    <BR>
+    {{ link_button(
+        'Add Domains to Queue', path('queue_add')
+    ) }}
+    <BR><BR>
 {% endblock %}

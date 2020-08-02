@@ -1,14 +1,8 @@
-{% set softwareSectionLogo = 'fa-wrench' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}System Administration{% endblock %}
 
-{% block breadcrumbs %}
-<li class='breadcrumb-item active'>Administration</li>
-{% endblock %}
-
-{% block body %}
+{% block page_content %}
 <a href="{{ path('admin_settings') }}">System Settings</a><BR><BR>
 <a href="{{ path('admin_defaults') }}">System Defaults</a><BR><BR>
 <a href="{{ path('user_index') }}">Users</a><BR><BR>

@@ -16,4 +16,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     Aws\Symfony\AwsBundle::class => ['all' => true],
+    KevinPapst\AdminLTEBundle\AdminLTEBundle::class => ['all' => true],
 ];

@@ -1,0 +1,163 @@
+{#
+    Use this as your new starter template page by adding that code to your own base template:
+
+    {% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+    Enjoy your AdminLTE theme!
+#}
+<!DOCTYPE html{% block html_start %}{% endblock %}>
+<html lang="{{ app.request.locale }}">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    {% endblock %}
+    <title>{% block title %}DomainMod :: {{ block('page_title') }}{% endblock %}</title>
+    {{ encore_entry_link_tags('app') }}
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+{#
+Apply one of the following classes for the skin:
+skin-blue, skin-black, skin-purple, skin-yellow, skin-red, skin-green
+
+Apply one or more of the following classes for the layout options:
+fixed, layout-boxed, layout-top-nav, sidebar-collapse, sidebar-mini
+#}
+<body{% block body_start %}{% endblock %} class="{{ admin_lte_context.skin|default("")|body_class }} ">
+{% block after_body_start %}{% endblock %}
+<div class="wrapper">
+
+    <nav class="main-header navbar navbar-expand navbar-dark">
+        <ul class="navbar-nav">
+            {% block navbar_toggle %}
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#">
+                        <i class="fas fa-bars"></i>
+                        <span class="sr-only">{{ 'Toggle navigation'|trans({}, 'AdminLTEBundle')  }}</span>
+                    </a>
+                </li>
+            {% endblock %}
+            {% block navbar_links %}
+                {# TODO document me #}
+                {#
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="../../index3.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+                #}
+            {% endblock %}
+        </ul>
+
+        {% block navbar_search %}
+            {% block sidebar_search %}
+                {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\SidebarController::searchFormAction')) }}
+            {% endblock %}
+        {% endblock %}
+        
+        <ul class="navbar-nav ml-auto">
+            {% block navbar_start %}{% endblock %}
+            {% block navbar_messages %}
+                {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::messagesAction')) }}
+            {% endblock %}
+            {% block navbar_notifications %}
+                {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::notificationsAction')) }}
+            {% endblock %}
+            {% block navbar_tasks %}
+                {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::tasksAction')) }}
+            {% endblock %}
+            {% block navbar_user %}
+                {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::userAction')) }}
+            {% endblock %}
+            {% block navbar_end %}{% endblock %}
+            {% block navbar_control_sidebar_toggle %}
+                {% if admin_lte_context.control_sidebar is defined and admin_lte_context.control_sidebar is not empty %}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-widget="control-sidebar" data-slide="true"><i class="fas fa-th-large"></i></a>
+                    </li>
+                {% endif %}
+            {% endblock %}
+        </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="{% block logo_path %}{{ path('adminlte_welcome'|route_alias) }}{% endblock %}" class="brand-link ">
+            {% block logo_mini %}
+                <img src="{{ asset(admin_lte_context.default_brand_logo) }}" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            {% endblock %}
+        </a>
+        
+        <div class="sidebar">
+            {% block sidebar_user %}
+                {% if app.user is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\SidebarController::userPanelAction')) }}
+                {% endif %}
+            {% endblock %}
+
+            {% block sidebar_nav %}
+                {% if admin_lte_context.knp_menu.enable %}
+                    {% include '@AdminLTE/Sidebar/knp-menu.html.twig' %}
+                {% else %}
+                    {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\SidebarController::menuAction', {'request':app.request})) }}
+                {% endif %}
+            {% endblock %}
+        </div>
+    </aside>
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">
+                            {% block page_title %}{{ block('title') }}{% endblock %}
+                            {% if block('page_subtitle') is defined %}<small>{{ block('page_subtitle') }}</small>{% endif %}
+                        </h1>
+                    </div>
+                    <div class="col-sm-6">
+                        {% block breadcrumb %}
+                            {% if admin_lte_context.knp_menu.enable %}
+                                {% include '@AdminLTE/Breadcrumb/knp-breadcrumb.html.twig' %}
+                            {% else %}
+                                {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\BreadcrumbController::breadcrumbAction', {'request':app.request})) }}
+                            {% endif %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block page_content_before %}{% endblock %}
+
+        <section class="{% block page_content_class %}content{% endblock %}">
+            <div class="container-fluid">
+                {% block page_content_start %}{{ include('@AdminLTE/Partials/_flash_messages.html.twig') }}{% endblock %}
+                {% block page_content %}{% endblock %}
+                {% block page_content_end %}{% endblock %}
+            </div>
+        </section>
+
+        {% block page_content_after %}{% endblock %}
+    </div>
+
+    {% block footer %}
+        {% include '@AdminLTE/Partials/_footer.html.twig' %}
+    {% endblock %}
+    {% block control_sidebar %}
+        {% if admin_lte_context.control_sidebar %}
+            {% include '@AdminLTE/Partials/_control-sidebar.html.twig' %}
+        {% endif %}
+    {% endblock %}
+
+</div>
+
+{{ encore_entry_script_tags('app') }}
+{% block javascripts %}
+{% endblock %}
+
+</body>
+</html>

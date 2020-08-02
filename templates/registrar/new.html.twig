@@ -1,25 +1,15 @@
-{% set softwareSectionLogo = 'fa-cubes' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Add Domain Registrar
+    Add Domain Registrar
 {% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ path('asset') }}">Assets</a></li>
-<li class="breadcrumb-item"><a href="{{ path('registrar_index') }}">Registrars</a></li>
-<li class='breadcrumb-item active'>Add</li>
-{% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
-{% block body %}
-<div class="row">
-	<div class="col-lg-6">
-		<div class="card">
-			<div class="card-body">
-				{{ include('registrar/_form.html.twig') }}
-			</div>
-		</div>
-	</div>
-</div>
+        {% block card_body %}
+            {{ include('registrar/_form.html.twig') }}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

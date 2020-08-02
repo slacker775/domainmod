@@ -63,6 +63,14 @@ class SslAccountController extends AbstractController
     }
 
     /**
+     * @Route("/export", name="ssl_account_export")
+     */
+    public function export(): Response
+    {
+        return $this->redirectToRoute('ssl_account_index');
+    }
+
+    /**
      *
      * @Route("/{id}/edit", name="ssl_account_edit", methods={"GET","POST"})
      */

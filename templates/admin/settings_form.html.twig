@@ -1,5 +1,3 @@
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
-
 {{ form_start(form) }}
 {{ form_row(form.fullUrl) }}
 {{ form_row(form.emailAddress) }}
@@ -31,7 +29,7 @@
 </div>
 <br>
 
-<button style="margin-top: 5px" class="btn btn-primary btn-danger">
+<button style="margin-top: 5px" class="btn btn-primary">
 	{{ button_label|default('Update System Settings') }}
 </button>
 {{ form_end(form) }}

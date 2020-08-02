@@ -1,4 +1,4 @@
-{% set softwareSectionLogo = 'fa-hourglass-2' %}
+{% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
 {% extends 'base.html.twig' %}
 
@@ -6,11 +6,7 @@
 Domain Queue
 {% endblock %}
 
-{% block breadcrumbs %}
-<li class='breadcrumb-item active'>Domain Queue</li>
-{% endblock %}
-
-{% block body %}
+{% block page_content %}
 The Domain Queue relies on your domain registrar's API to import your
 domains, so they must have an API and support for it must be built into
 DomainMOD. For more information please see the
@@ -18,16 +14,16 @@ DomainMOD. For more information please see the
 .
 <br>
 <br>
-<a href="{{ path('queue_add') }}">{{ _self.showButton('button', 'Add Domains to Queue') }}</a>
+    {{ link_button('Add Domain to Queue', path('queue_add')) }}
 {% if domainsInQueue %}
-<a href="{{ path('queue_clear') }}">{{ _self.showButton('button', 'Clear Completed') }}</a>
+    {{ link_button('Clear Completed', path('queue_clear')) }}
 {% endif %}
-<a href="{{ path('queue_intro') }}">{{ _self.showButton('button', 'More Info') }}</a>
+    {{ link_button('More Info', path('queue_intro')) }}
 {% if domainsInListQueue %}
-<a href="{{ path('queue_export_lists') }}">{{ _self.showButton('button', 'Export Lists') }}</a>
+    {{ link_button('Export', path('queue_export_lists')) }}
 {% endif %}
 {% if domainsInQueue %}
-<a href="{{ path('queue_export_domains') }}">{{ _self.showButton('button', 'Export Domains') }}</a>
+    {{ link_button('Export Domains', path('queue_export_domains')) }}
 {% endif %}
 <br>
 <br>

@@ -1,90 +1,90 @@
-{% set softwareSectionLogo = 'fa-cubes' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}
-SSL Providers
+    SSL Providers
 {% endblock %}
 
-{% block breadcrumbs %}
-<li class='breadcrumb-item'><a href="{{ path('asset') }}">Assets</a></li>
-<li class='breadcrumb-item active'>SSL Providers</li>
-{% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
-{% block body %}
-<div class="row">
-	<div class="col-lg-12">
-		<div class="card">
-			<div class="card-body">
-				Below is a list of all the SSL Certificate Providers that are stored
-				in DomainMOD. <br> <br> <a
-					href="{{ path('ssl_provider_new') }}">{{ _self.showButton('button','Add SSL Provider') }}</a>
-				<a href="{{ path('ssl_provider_export') }}">{{ _self.showButton('button','Export') }}</a>
-				<br> <br>
+        {% block card_body %}
+            Below is a list of all the SSL Certificate Providers that are stored
+            in DomainMOD. <br> <br>
 
-				{% if ssl_providers %}
+            {{ link_button('Add SSL Provider', path('ssl_provider_new')) }}
+            {{ link_button('Export', path('ssl_provider_export')) }}
 
-				<table id="assets-ssl-providers"
-					class="table table-striped dt-responsive cell-border compact">
-					<thead>
-						<tr>
-							<th style="width: 20px"></th>
-							<th>Provider</th>
-							<th>Accounts</th>
-							<th>Certs</th>
-							<th>Options</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for ssl_provider in ssl_providers %}
-						<tr>
-							<td></td>
-							<td><a
-								href="{{ path('ssl_provider_edit', { id: ssl_provider.id }) }}">{{ ssl_provider }}</a></td>
-							<td><a
-								href="{{ path('ssl_account_index', { 'ssl_account_filter[sslProvider]': ssl_provider.id }) }}">{{ ssl_provider.accounts|length ?: '-' }}</a></td>
-							<td><a href="{{ path('ssl_cert_index', { 'ssl_cert_filter[sslProvider]': ssl_provider.id }) }}">{{ ssl_provider.certs|length ?: '-' }}</a></td>
-							<td><a
-								href="{{ path('ssl_provider_fees', { id: ssl_provider.id }) }}">fees</a>&nbsp;&nbsp;
-								{% if ssl_provider.url %}<a target="_blank"
-								href="{{ ssl_provider.url }}">www</a> {% endif %}</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+            <br> <br>
 
-				{% else %}
-				<br>You don't currently have any SSL Providers. <a
-					href="{{ path('ssl_provider_new') }}">Click here to add one</a>.
-			</div>
-		</div>
-	</div>
-</div>
-{% endif %}
+            {% if ssl_providers %}
+
+                <table id="assets-ssl-providers"
+                       class="table table-striped dt-responsive cell-border compact">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px"></th>
+                        <th>Provider</th>
+                        <th>Accounts</th>
+                        <th>Certs</th>
+                        <th>Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for ssl_provider in ssl_providers %}
+                        <tr>
+                            <td></td>
+                            <td><a
+                                        href="{{ path('ssl_provider_edit', { id: ssl_provider.id }) }}">{{ ssl_provider }}</a>
+                            </td>
+                            <td><a
+                                        href="{{ path('ssl_account_index', { 'ssl_account_filter[sslProvider]': ssl_provider.id }) }}">{{ ssl_provider.accounts|length ?: '-' }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('ssl_cert_index', { 'ssl_cert_filter[sslProvider]': ssl_provider.id }) }}">{{ ssl_provider.certs|length ?: '-' }}</a>
+                            </td>
+                            <td><a
+                                        href="{{ path('ssl_provider_fees', { id: ssl_provider.id }) }}">fees</a>&nbsp;&nbsp;
+                                {% if ssl_provider.url %}<a target="_blank"
+                                                            href="{{ ssl_provider.url }}">www</a> {% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            {% else %}
+                <br>You don't currently have any SSL Providers. <a
+                    href="{{ path('ssl_provider_new') }}">Click here to add one</a>.
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block stylesheets %}
-	<style>
-		#assets-ssl-providers thead th {
-			padding: 2px 0px 2px 6px;
-			border: 0;
-			white-space: nowrap;
-		}
+    <style>
+        #assets-ssl-providers thead th {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
 
-		#assets-ssl-providers tbody tr:hover {
-			background-color: #dddddd;
-		}
+        #assets-ssl-providers tbody tr:hover {
+            background-color: #dddddd;
+        }
 
-		#assets-ssl-providers tbody td {
-			padding: 2px 0px 2px 6px;
-			border: 0;
-			white-space: nowrap;
-		}
-	</style>
+        #assets-ssl-providers tbody td {
+            padding: 2px 0px 2px 6px;
+            border: 0;
+            white-space: nowrap;
+        }
+    </style>
 {% endblock %}
 
-{% block datatable_options %}
-$('#assets-ssl-providers').DataTable({
-	'pageLength': 25
-});
+{% block javascripts %}
+    {{ encore_entry_script_tags('datatables') }}
+    <script>
+        $('#assets-ssl-providers').DataTable({
+            'pageLength': 25
+        });
+    </script>
 {% endblock %}

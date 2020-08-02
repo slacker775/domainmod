@@ -1,14 +1,13 @@
-{% set softwareSectionLogo = 'fa-lock' %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Add SSL Certificate{% endblock %}
 
-{% block breadcrumbs %}
-<li class="breadcrumb-item"><a href="{{ path('ssl_cert_index') }}">SSL Certs</a></li>
-<li class='breadcrumb-item active'>Add</li>
-{% endblock %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
-{% block body %}
-    {{ include('ssl_cert/_form.html.twig') }}
+        {% block card_body %}
+            {{ include('ssl_cert/_form.html.twig') }}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

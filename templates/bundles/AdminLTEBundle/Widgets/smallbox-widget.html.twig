@@ -1,0 +1,16 @@
+<div class="small-box{% if solid is defined %} bg-{{ solid }}{% endif %}">
+    <div class="inner">
+        <h3>
+            {% if block('box_number') is defined %}
+                {{ block('box_number') }}
+            {% endif %}
+        </h3>
+        <p>{{ block('box_text') }}</p>
+    </div>
+    <div class="icon">
+        <i class="{{ icon|default('info-circle') }}"></i>
+    </div>
+    {% if block('box_after') is defined %}{{ block('box_after') }}{% endif %}
+</div>
+
+

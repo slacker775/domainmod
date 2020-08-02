@@ -9,14 +9,17 @@
 import '../css/app.css';
 import '../../node_modules/admin-lte/dist/css/adminlte.css';
 
+/*
 require('@fortawesome/fontawesome-free/js/all.js');
 require('ionicons');
 require('icheck');
 require('icheck-bootstrap');
 require('select2');
 require('admin-lte');
+*/
+require('../../vendor/kevinpapst/adminlte-bundle/Resources/assets/admin-lte');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 //import $ from 'jquery';
-const $ = require('jquery');
-global.$ = global.jQuery = $;
+//const $ = require('jquery');
+//global.$ = global.jQuery = $;

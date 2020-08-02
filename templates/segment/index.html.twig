@@ -2,44 +2,53 @@
 
 {% block title %}Segments{% endblock %}
 
-{% block body %}
+{% block page_content %}
+    {% embed '@AdminLTE/Widgets/card-widget.html.twig' %}
+        {% from "@AdminLTE/Macros/buttons.html.twig" import link_button %}
 
-    Segments are lists of domains that can be used to help filter and manage your <a href="{{ path('domain_index') }}">domain
-    results</a>.<BR>
-    <BR>
-    Segment filters will tell you which domains match with domains that are saved in DomainMOD, as well
-    as which domains don't match, and you can easily view and export the results.<BR>
-    <BR>
-    <a href="{{ path('segment_new') }}">{{ _self.showButton('button','Add New Segment') }}</a>
-    <a href="{{ path('segment_export') }}">{{ _self.showButton('button','Export') }}</a><BR><BR>
+        {% block card_body %}
+            Segments are lists of domains that can be used to help filter and manage your <a
+                href="{{ path('domain_index') }}">domain
+            results</a>.<br>
+            <br>
+            Segment filters will tell you which domains match with domains that are saved in DomainMOD, as well
+            as which domains don't match, and you can easily view and export the results.<br>
+            <br>
 
-    {% if segments %}
-        <table id="segments-main" class="table table-striped dt-responsive cell-border compact">
-            <thead>
-            <tr>
-                <th style="width: 20px"></th>
-                <th>Name</th>
-                <th>Domains</th>
-                <th>Count</th>
-                <th>Export</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for segment in segments %}
-                <tr>
-                    <td></td>
-                    <td><a href="{{ path('segment_edit', { id: segment.id }) }}">{{ segment.name }}</a></td>
-                    <td>{{ segment.segment }}</td>
-                    <td>{{ segment.numberOfDomains }}</td>
-                    <td><a href="{{ path('segment_export', { segment: segment.id }) }}">EXPORT</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        You don't currently have any Segments. <a href="{{ path('segment_new') }}">Click here to add one</a>.<BR><BR>
-    {% endif %}
+            {{ link_button('Add Segment', path('segment_new')) }}
+            {{ link_button('Export', path('segment_export')) }}
+            <br><br>
+
+            {% if segments %}
+                <table id="segments-main" class="table table-striped dt-responsive cell-border compact">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px"></th>
+                        <th>Name</th>
+                        <th>Domains</th>
+                        <th>Count</th>
+                        <th>Export</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for segment in segments %}
+                        <tr>
+                            <td></td>
+                            <td><a href="{{ path('segment_edit', { id: segment.id }) }}">{{ segment.name }}</a></td>
+                            <td>{{ segment.segment }}</td>
+                            <td>{{ segment.numberOfDomains }}</td>
+                            <td><a href="{{ path('segment_export', { segment: segment.id }) }}">EXPORT</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                You don't currently have any Segments. <a href="{{ path('segment_new') }}">Click here to add one</a>.
+                <BR><BR>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -62,6 +71,8 @@
     </style>
 {% endblock %}
 
-{% block datatable_options %}
+{% block javascripts %}
+    <script>
     $('#segments-main').DataTable({});
+    </script>
 {% endblock %}
