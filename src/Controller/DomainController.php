@@ -154,17 +154,27 @@ class DomainController extends AbstractController
             'owner',
             'registrar',
             'account',
-            'expiration'
+            'expiration',
+            'category',
+            'function',
+            'totalcost',
+            'autorenew',
+            'privacy',
         ]);
         foreach ($domains as $d) {
             $csv->insertOne([
-                $d->getDomain(),
+                $d->getName(),
                 $d->getTld(),
                 $d->getOwner(),
                 $d->getRegistrar(),
                 $d->getAccount(),
                 $d->getExpiryDate()
-                    ->format('m/d/Y')
+                    ->format('m/d/Y'),
+                $d->getCategory(),
+                $d->getFunction(),
+                $d->getTotalCost(),
+                $d->isAutoRenew() ? 'true' : 'false',
+                $d->isPrivacy() ? 'true' : 'false',
             ]);
         }
 
